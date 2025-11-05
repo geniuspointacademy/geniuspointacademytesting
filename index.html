@@ -1,0 +1,1326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Genius Point Academy - FUTA</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary: #1a4b8c;
+            --secondary: #f8b739;
+            --light: #f5f5f5;
+            --dark: #333;
+            --success: #28a745;
+        }
+
+        body {
+            background-color: #f9f9f9;
+            color: var(--dark);
+            line-height: 1.6;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        /* Header Styles */
+        header {
+            background-color: var(--primary);
+            color: white;
+            padding: 1rem 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo img {
+            height: 60px;
+            width: auto;
+        }
+
+        .logo-text h1 {
+            font-size: 1.8rem;
+            margin-bottom: 5px;
+        }
+
+        .logo-text p {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+
+        nav ul li {
+            margin-left: 20px;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+            padding: 5px 10px;
+            border-radius: 4px;
+        }
+
+        nav ul li a:hover {
+            color: var(--secondary);
+        }
+
+        .mobile-menu {
+            display: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(rgba(26, 75, 140, 0.8), rgba(26, 75, 140, 0.9)), url('https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 5rem 0;
+            text-align: center;
+        }
+
+        .hero h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 2rem;
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: var(--secondary);
+            color: var(--dark);
+            padding: 12px 30px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background-color: #e6a532;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Section Styles */
+        section {
+            padding: 5rem 0;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .section-title h2 {
+            font-size: 2.2rem;
+            color: var(--primary);
+            position: relative;
+            display: inline-block;
+            padding-bottom: 10px;
+        }
+
+        .section-title h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background-color: var(--secondary);
+        }
+
+        /* About Section */
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: center;
+        }
+
+        .about-text h3 {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            color: var(--primary);
+        }
+
+        .about-text p {
+            margin-bottom: 15px;
+        }
+
+        .about-image img {
+            width: 100%;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .mission-vision {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .mission, .vision {
+            background-color: white;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .mission h3, .vision h3 {
+            color: var(--primary);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Tutors Section */
+        .tutors-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 30px;
+        }
+
+        .tutor-card {
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s;
+        }
+
+        .tutor-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .tutor-img {
+            height: 200px;
+            background-color: #e0e0e0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #777;
+        }
+
+        .tutor-img i {
+            font-size: 4rem;
+        }
+
+        .tutor-info {
+            padding: 20px;
+        }
+
+        .tutor-info h3 {
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+
+        .tutor-info p {
+            color: #666;
+            margin-bottom: 15px;
+        }
+
+        .courses-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .course-tag {
+            background-color: var(--light);
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            color: var(--dark);
+        }
+
+        /* Courses Section */
+        .level-tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .level-tab {
+            padding: 10px 20px;
+            background-color: white;
+            border: 1px solid #ddd;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .level-tab.active {
+            background-color: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .level-tab:first-child {
+            border-radius: 5px 0 0 5px;
+        }
+
+        .level-tab:last-child {
+            border-radius: 0 5px 5px 0;
+        }
+
+        .courses-content {
+            display: none;
+        }
+
+        .courses-content.active {
+            display: block;
+        }
+
+        .course-card {
+            background-color: white;
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .course-card h3 {
+            color: var(--primary);
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .tutors-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .tutor-tag {
+            background-color: var(--light);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+
+        /* Booking Section */
+        .booking-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: center;
+        }
+
+        .booking-form {
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        .booking-info {
+            text-align: center;
+        }
+
+        .booking-info i {
+            font-size: 5rem;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+
+        .booking-info h3 {
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+
+        /* New Contact Preference Styles */
+        .contact-preferences {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .contact-option {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .contact-option:hover {
+            background-color: #f5f5f5;
+        }
+
+        .contact-option.selected {
+            background-color: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .contact-option input {
+            display: none;
+        }
+
+        .confirmation-message {
+            background-color: #e8f5e8;
+            border: 1px solid #4caf50;
+            border-radius: 5px;
+            padding: 15px;
+            margin-top: 20px;
+            display: none;
+        }
+
+        .confirmation-message.show {
+            display: block;
+        }
+
+        .whatsapp-info {
+            background-color: #25D366;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 5px;
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--primary);
+            color: white;
+            padding: 3rem 0 1rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h3 {
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .footer-section h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 2px;
+            background-color: var(--secondary);
+        }
+
+        .footer-section p {
+            margin-bottom: 15px;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 10px;
+        }
+
+        .footer-section ul li a {
+            color: #ddd;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-section ul li a:hover {
+            color: var(--secondary);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            color: white;
+            transition: all 0.3s;
+        }
+
+        .social-links a:hover {
+            background-color: var(--secondary);
+            color: var(--dark);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background-color: white;
+            width: 90%;
+            max-width: 500px;
+            border-radius: 8px;
+            padding: 30px;
+            position: relative;
+            animation: modalFade 0.3s;
+        }
+
+        @keyframes modalFade {
+            from {opacity: 0; transform: translateY(-50px);}
+            to {opacity: 1; transform: translateY(0);}
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #777;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 992px) {
+            .about-content, .booking-container, .mission-vision {
+                grid-template-columns: 1fr;
+            }
+
+            .about-image {
+                order: -1;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .logo {
+                margin-bottom: 15px;
+            }
+
+            nav ul {
+                margin-top: 15px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            nav ul li {
+                margin: 5px 10px;
+            }
+
+            .mobile-menu {
+                display: block;
+                position: absolute;
+                top: 20px;
+                right: 20px;
+            }
+
+            .nav-menu {
+                display: none;
+                width: 100%;
+                margin-top: 15px;
+            }
+
+            .nav-menu.active {
+                display: block;
+            }
+
+            .hero h2 {
+                font-size: 2rem;
+            }
+
+            .hero p {
+                font-size: 1rem;
+            }
+
+            .section-title h2 {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <div class="logo-img">
+                        <!-- Placeholder for logo -->
+                        <i class="fas fa-graduation-cap" style="font-size: 3rem; color: var(--secondary);"></i>
+                    </div>
+                    <div class="logo-text">
+                        <h1>Genius Point Academy</h1>
+                        <p>FUTA Tutorial Body</p>
+                    </div>
+                </div>
+                <div class="mobile-menu">
+                    <i class="fas fa-bars"></i>
+                </div>
+                <nav class="nav-menu">
+                    <ul>
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#about">About</a></li>
+                        <li><a href="#tutors">Tutors</a></li>
+                        <li><a href="#courses">Courses</a></li>
+                        <li><a href="#booking" class="btn">Book a Tutor</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="container">
+            <h2>Welcome to Genius Point Academy</h2>
+            <p>Your premier tutorial body at FUTA, providing quality tutoring services to help students excel in their academic pursuits.</p>
+            <a href="#booking" class="btn">Book a Tutor Now</a>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about">
+        <div class="container">
+            <div class="section-title">
+                <h2>About GPA</h2>
+            </div>
+            <div class="about-content">
+                <div class="about-text">
+                    <h3>Who We Are</h3>
+                    <p>Genius Point Academy (GPA) is a premier tutorial body at the Federal University of Technology, Akure (FUTA), dedicated to providing quality academic support to students across various departments and levels.</p>
+                    <p>Our team of experienced tutors are committed to helping students understand complex concepts, improve their grades, and achieve academic excellence.</p>
+                    
+                    <div class="mission-vision">
+                        <div class="mission">
+                            <h3><i class="fas fa-bullseye"></i> Our Mission</h3>
+                            <p>To provide exceptional tutorial services that empower FUTA students to achieve academic excellence through personalized learning approaches and dedicated mentorship.</p>
+                        </div>
+                        <div class="vision">
+                            <h3><i class="fas fa-eye"></i> Our Vision</h3>
+                            <p>To become the leading tutorial academy at FUTA, recognized for producing outstanding scholars through innovative teaching methods and comprehensive academic support.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="about-image">
+                    <!-- Fixed image URL -->
+                    <img src="https://images.unsplash.com/photo-1524178239883-8a4c4c6a8b95?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80" alt="Students studying">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tutors Section -->
+    <section id="tutors" style="background-color: var(--light);">
+        <div class="container">
+            <div class="section-title">
+                <h2>Our Tutors</h2>
+            </div>
+            <div class="tutors-grid">
+                <!-- Tutor 1 -->
+                <div class="tutor-card">
+                    <div class="tutor-img">
+                        <i class="fas fa-user-graduate"></i>
+                    </div>
+                    <div class="tutor-info">
+                        <h3>E-Simple</h3>
+                        <p>Senior Tutor</p>
+                        <div class="courses-list">
+                            <span class="course-tag">MTS 101</span>
+                            <span class="course-tag">CHE 101</span>
+                            <span class="course-tag">PHY 101</span>
+                            <span class="course-tag">MTS 201</span>
+                            <span class="course-tag">EEE 201</span>
+                            <span class="course-tag">EEE 305</span>
+                            <span class="course-tag">MTS 315</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Tutor 2 -->
+                <div class="tutor-card">
+                    <div class="tutor-img">
+                        <i class="fas fa-user-graduate"></i>
+                    </div>
+                    <div class="tutor-info">
+                        <h3>Muzzle</h3>
+                        <p>Mathematics Specialist</p>
+                        <div class="courses-list">
+                            <span class="course-tag">MTS 101</span>
+                            <span class="course-tag">MTS 201</span>
+                            <span class="course-tag">MEE 207</span>
+                            <span class="course-tag">MTS 315</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Tutor 3 -->
+                <div class="tutor-card">
+                    <div class="tutor-img">
+                        <i class="fas fa-user-graduate"></i>
+                    </div>
+                    <div class="tutor-info">
+                        <h3>O'yemi</h3>
+                        <p>Engineering Tutor</p>
+                        <div class="courses-list">
+                            <span class="course-tag">MTS 101</span>
+                            <span class="course-tag">PHY 101</span>
+                            <span class="course-tag">MTS 201</span>
+                            <span class="course-tag">EEE 201</span>
+                            <span class="course-tag">MEE 207</span>
+                            <span class="course-tag">MME 201</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Tutor 4 -->
+                <div class="tutor-card">
+                    <div class="tutor-img">
+                        <i class="fas fa-user-graduate"></i>
+                    </div>
+                    <div class="tutor-info">
+                        <h3>Absamie</h3>
+                        <p>Science Tutor</p>
+                        <div class="courses-list">
+                            <span class="course-tag">MTS 101</span>
+                            <span class="course-tag">PHY 101</span>
+                            <span class="course-tag">MTS 201</span>
+                            <span class="course-tag">EEE 201</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Tutor 5 -->
+                <div class="tutor-card">
+                    <div class="tutor-img">
+                        <i class="fas fa-user-graduate"></i>
+                    </div>
+                    <div class="tutor-info">
+                        <h3>Physiobrain</h3>
+                        <p>Science Specialist</p>
+                        <div class="courses-list">
+                            <span class="course-tag">CHE 101</span>
+                            <span class="course-tag">PHY 101</span>
+                            <span class="course-tag">BIO 101</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Courses Section -->
+    <section id="courses">
+        <div class="container">
+            <div class="section-title">
+                <h2>Available Courses</h2>
+            </div>
+            
+            <div class="level-tabs">
+                <div class="level-tab active" data-level="100">100 Level</div>
+                <div class="level-tab" data-level="200">200 Level</div>
+                <div class="level-tab" data-level="300">300 Level</div>
+            </div>
+            
+            <!-- 100 Level Courses -->
+            <div class="courses-content active" id="level-100">
+                <div class="course-card">
+                    <h3>MTS 101 <span>General Mathematics</span></h3>
+                    <div class="tutors-list">
+                        <span class="tutor-tag">Muzzle</span>
+                        <span class="tutor-tag">O'yemi</span>
+                        <span class="tutor-tag">Absamie</span>
+                    </div>
+                </div>
+                
+                <div class="course-card">
+                    <h3>CHE 101 <span>General Chemistry</span></h3>
+                    <div class="tutors-list">
+                        <span class="tutor-tag">E-Simple</span>
+                        <span class="tutor-tag">Physiobrain</span>
+                    </div>
+                </div>
+                
+                <div class="course-card">
+                    <h3>PHY 101/103 <span>General Physics</span></h3>
+                    <div class="tutors-list">
+                        <span class="tutor-tag">E-Simple</span>
+                        <span class="tutor-tag">O'yemi</span>
+                        <span class="tutor-tag">Absamie</span>
+                        <span class="tutor-tag">Physiobrain</span>
+                    </div>
+                </div>
+                
+                <div class="course-card">
+                    <h3>BIO 101 <span>General Biology</span></h3>
+                    <div class="tutors-list">
+                        <span class="tutor-tag">Physiobrain</span>
+                    </div>
+                </div>
+                
+                <div class="course-card">
+                    <h3>MEE 101 <span>Introduction to Mechanical Engineering</span></h3>
+                    <p>No tutors currently available</p>
+                </div>
+            </div>
+            
+            <!-- 200 Level Courses -->
+            <div class="courses-content" id="level-200">
+                <div class="course-card">
+                    <h3>MTS 201 <span>Mathematical Methods</span></h3>
+                    <div class="tutors-list">
+                        <span class="tutor-tag">E-Simple</span>
+                        <span class="tutor-tag">O'yemi</span>
+                        <span class="tutor-tag">Muzzle</span>
+                        <span class="tutor-tag">Absamie</span>
+                    </div>
+                </div>
+                
+                <div class="course-card">
+                    <h3>EEE 201 <span>Electrical Circuit Theory</span></h3>
+                    <div class="tutors-list">
+                        <span class="tutor-tag">Absamie</span>
+                        <span class="tutor-tag">O'yemi</span>
+                        <span class="tutor-tag">E-Simple</span>
+                    </div>
+                </div>
+                
+                <div class="course-card">
+                    <h3>MEE 207 <span>Engineering Drawing</span></h3>
+                    <div class="tutors-list">
+                        <span class="tutor-tag">Muzzle</span>
+                        <span class="tutor-tag">O'yemi</span>
+                    </div>
+                </div>
+                
+                <div class="course-card">
+                    <h3>MME 201 <span>Introduction to Metallurgical Engineering</span></h3>
+                    <div class="tutors-list">
+                        <span class="tutor-tag">O'yemi</span>
+                    </div>
+                </div>
+                
+                <div class="course-card">
+                    <h3>CHE 205 <span>Chemical Engineering Thermodynamics</span></h3>
+                    <p>No tutors currently available</p>
+                </div>
+            </div>
+            
+            <!-- 300 Level Courses -->
+            <div class="courses-content" id="level-300">
+                <div class="course-card">
+                    <h3>EEE 305 <span>Electromagnetic Field Theory</span></h3>
+                    <div class="tutors-list">
+                        <span class="tutor-tag">E-Simple</span>
+                    </div>
+                </div>
+                
+                <div class="course-card">
+                    <h3>MTS 315 <span>Numerical Analysis</span></h3>
+                    <div class="tutors-list">
+                        <span class="tutor-tag">E-Simple</span>
+                        <span class="tutor-tag">Muzzle</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Booking Section -->
+    <section id="booking" style="background-color: var(--light);">
+        <div class="container">
+            <div class="section-title">
+                <h2>Book a Tutor</h2>
+            </div>
+            <div class="booking-container">
+                <div class="booking-form">
+                    <form id="bookingForm">
+                        <div class="form-group">
+                            <label for="fullName">Full Name</label>
+                            <input type="text" id="fullName" name="fullName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email Address</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Phone Number</label>
+                            <input type="tel" id="phone" name="phone" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="department">Department</label>
+                            <input type="text" id="department" name="department" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="level">Level</label>
+                            <select id="level" name="level" required>
+                                <option value="">Select Level</option>
+                                <option value="100">100 Level</option>
+                                <option value="200">200 Level</option>
+                                <option value="300">300 Level</option>
+                                <option value="400">400 Level</option>
+                                <option value="500">500 Level</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="course">Course</label>
+                            <select id="course" name="course" required>
+                                <option value="">Select Course</option>
+                                <!-- Options will be populated based on level selection -->
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="tutor">Preferred Tutor</label>
+                            <select id="tutor" name="tutor">
+                                <option value="">Any Available Tutor</option>
+                                <!-- Options will be populated based on course selection -->
+                            </select>
+                        </div>
+                        
+                        <!-- New Contact Preference Section -->
+                        <div class="form-group">
+                            <label>Preferred Contact Method</label>
+                            <div class="contact-preferences">
+                                <label class="contact-option">
+                                    <input type="checkbox" name="contactMethod" value="email">
+                                    <i class="fas fa-envelope"></i>
+                                    <span>Email</span>
+                                </label>
+                                <label class="contact-option">
+                                    <input type="checkbox" name="contactMethod" value="whatsapp">
+                                    <i class="fab fa-whatsapp"></i>
+                                    <span>WhatsApp</span>
+                                </label>
+                                <label class="contact-option">
+                                    <input type="checkbox" name="contactMethod" value="phone">
+                                    <i class="fas fa-phone"></i>
+                                    <span>Phone Call</span>
+                                </label>
+                                <label class="contact-option">
+                                    <input type="checkbox" name="contactMethod" value="sms">
+                                    <i class="fas fa-sms"></i>
+                                    <span>SMS</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="message">Additional Message (Optional)</label>
+                            <textarea id="message" name="message" rows="4" placeholder="Any specific topics you need help with? Preferred time for tutoring sessions?"></textarea>
+                        </div>
+                        
+                        <button type="submit" class="btn" style="width: 100%;">Submit Booking Request</button>
+                    </form>
+                    
+                    <!-- Confirmation Message -->
+                    <div class="confirmation-message" id="confirmationMessage">
+                        <h4><i class="fas fa-check-circle" style="color: var(--success);"></i> Booking Request Received!</h4>
+                        <p>We've sent a confirmation email to <strong id="userEmail"></strong>. You'll be contacted within 24 hours via your preferred method(s) to confirm your session.</p>
+                        <div class="whatsapp-info">
+                            <i class="fab fa-whatsapp"></i>
+                            <span>You can also message us directly on WhatsApp: <strong>+234 810 123 4567</strong></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="booking-info">
+                    <i class="fas fa-calendar-check"></i>
+                    <h3>How It Works</h3>
+                    <p>1. Fill out the booking form with your details</p>
+                    <p>2. Select your level and desired course</p>
+                    <p>3. Choose a preferred tutor (optional)</p>
+                    <p>4. Select how you want to be contacted</p>
+                    <p>5. Submit your request</p>
+                    <p>6. Get instant email confirmation</p>
+                    <p>7. We'll contact you within 24 hours to confirm your booking</p>
+                    
+                    <div style="margin-top: 30px; padding: 20px; background: white; border-radius: 8px; box-shadow: 0 3px 10px rgba(0,0,0,0.1);">
+                        <h4><i class="fas fa-envelope" style="color: var(--primary);"></i> Email Confirmation</h4>
+                        <p>After booking, you'll receive an email with:</p>
+                        <ul style="text-align: left; margin-top: 10px; padding-left: 20px;">
+                            <li>Booking details summary</li>
+                            <li>Expected response time</li>
+                            <li>Contact information for urgent queries</li>
+                            <li>Next steps in the process</li>
+                        </ul>
+                    </div>
+
+                    <!-- WhatsApp Button -->
+                    <button onclick="sendWhatsAppMessage()" class="btn" style="background-color: #25D366; margin-top: 20px; width: 100%;">
+                        <i class="fab fa-whatsapp"></i> Message us on WhatsApp
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Genius Point Academy</h3>
+                    <p>Premier tutorial body at FUTA dedicated to academic excellence and student success.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#about">About Us</a></li>
+                        <li><a href="#tutors">Our Tutors</a></li>
+                        <li><a href="#courses">Courses</a></li>
+                        <li><a href="#booking">Book a Tutor</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Contact Info</h3>
+                    <p><i class="fas fa-map-marker-alt"></i> Federal University of Technology, Akure</p>
+                    <p><i class="fas fa-phone"></i> +234 810 123 4567</p>
+                    <p><i class="fab fa-whatsapp"></i> +234 810 123 4567</p>
+                    <p><i class="fas fa-envelope"></i> contact@geniuspointacademy.edu.ng</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2023 Genius Point Academy. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Success Modal -->
+    <div class="modal" id="successModal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <div style="text-align: center; padding: 20px;">
+                <i class="fas fa-check-circle" style="font-size: 4rem; color: var(--success); margin-bottom: 20px;"></i>
+                <h2>Booking Submitted Successfully!</h2>
+                <p id="modalMessage">Thank you for your booking request. We will contact you within 24 hours to confirm your session.</p>
+                <button class="btn" style="margin-top: 20px;" id="modalClose">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Mobile Menu Toggle
+        document.querySelector('.mobile-menu').addEventListener('click', function() {
+            document.querySelector('.nav-menu').classList.toggle('active');
+        });
+
+        // Level Tabs
+        const levelTabs = document.querySelectorAll('.level-tab');
+        const coursesContents = document.querySelectorAll('.courses-content');
+
+        levelTabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                // Remove active class from all tabs and contents
+                levelTabs.forEach(t => t.classList.remove('active'));
+                coursesContents.forEach(content => content.classList.remove('active'));
+                
+                // Add active class to clicked tab and corresponding content
+                tab.classList.add('active');
+                const level = tab.getAttribute('data-level');
+                document.getElementById(`level-${level}`).classList.add('active');
+            });
+        });
+
+        // Course data based on level
+        const coursesData = {
+            '100': [
+                { code: 'MTS 101', name: 'General Mathematics', tutors: ['Muzzle', 'O\'yemi', 'Absamie'] },
+                { code: 'CHE 101', name: 'General Chemistry', tutors: ['E-Simple', 'Physiobrain'] },
+                { code: 'PHY 101/103', name: 'General Physics', tutors: ['E-Simple', 'O\'yemi', 'Absamie', 'Physiobrain'] },
+                { code: 'BIO 101', name: 'General Biology', tutors: ['Physiobrain'] },
+                { code: 'MEE 101', name: 'Introduction to Mechanical Engineering', tutors: [] }
+            ],
+            '200': [
+                { code: 'MTS 201', name: 'Mathematical Methods', tutors: ['E-Simple', 'O\'yemi', 'Muzzle', 'Absamie'] },
+                { code: 'EEE 201', name: 'Electrical Circuit Theory', tutors: ['Absamie', 'O\'yemi', 'E-Simple'] },
+                { code: 'MEE 207', name: 'Engineering Drawing', tutors: ['Muzzle', 'O\'yemi'] },
+                { code: 'MME 201', name: 'Introduction to Metallurgical Engineering', tutors: ['O\'yemi'] },
+                { code: 'CHE 205', name: 'Chemical Engineering Thermodynamics', tutors: [] }
+            ],
+            '300': [
+                { code: 'EEE 305', name: 'Electromagnetic Field Theory', tutors: ['E-Simple'] },
+                { code: 'MTS 315', name: 'Numerical Analysis', tutors: ['E-Simple', 'Muzzle'] }
+            ],
+            '400': [
+                { code: 'No courses', name: 'No courses available for 400 level', tutors: [] }
+            ],
+            '500': [
+                { code: 'No courses', name: 'No courses available for 500 level', tutors: [] }
+            ]
+        };
+
+        // Update course options based on selected level
+        document.getElementById('level').addEventListener('change', function() {
+            const level = this.value;
+            const courseSelect = document.getElementById('course');
+            const tutorSelect = document.getElementById('tutor');
+            
+            // Clear previous options
+            courseSelect.innerHTML = '<option value="">Select Course</option>';
+            tutorSelect.innerHTML = '<option value="">Any Available Tutor</option>';
+            
+            if (level && coursesData[level]) {
+                // Add courses for selected level
+                coursesData[level].forEach(course => {
+                    const option = document.createElement('option');
+                    option.value = course.code;
+                    option.textContent = `${course.code} - ${course.name}`;
+                    courseSelect.appendChild(option);
+                });
+            }
+        });
+
+        // Update tutor options based on selected course
+        document.getElementById('course').addEventListener('change', function() {
+            const level = document.getElementById('level').value;
+            const courseCode = this.value;
+            const tutorSelect = document.getElementById('tutor');
+            
+            // Clear previous options except the first one
+            tutorSelect.innerHTML = '<option value="">Any Available Tutor</option>';
+            
+            if (level && courseCode && coursesData[level]) {
+                const selectedCourse = coursesData[level].find(course => course.code === courseCode);
+                
+                if (selectedCourse && selectedCourse.tutors.length > 0) {
+                    // Add tutors for selected course
+                    selectedCourse.tutors.forEach(tutor => {
+                        const option = document.createElement('option');
+                        option.value = tutor;
+                        option.textContent = tutor;
+                        tutorSelect.appendChild(option);
+                    });
+                }
+            }
+        });
+
+        // Contact preference selection
+        document.querySelectorAll('.contact-option').forEach(option => {
+            option.addEventListener('click', function() {
+                const checkbox = this.querySelector('input');
+                checkbox.checked = !checkbox.checked;
+                this.classList.toggle('selected', checkbox.checked);
+            });
+        });
+
+        // Form submission with email confirmation simulation
+        document.getElementById('bookingForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Get form data
+            const formData = new FormData(this);
+            const userEmail = document.getElementById('email').value;
+            const userName = document.getElementById('fullName').value;
+            
+            // Validate contact method selection
+            const contactMethods = document.querySelectorAll('input[name="contactMethod"]:checked');
+            if (contactMethods.length === 0) {
+                alert('Please select at least one contact method');
+                return;
+            }
+            
+            // Show confirmation message
+            document.getElementById('userEmail').textContent = userEmail;
+            document.getElementById('confirmationMessage').classList.add('show');
+            
+            // Simulate email sending (in real implementation, this would connect to a backend)
+            simulateEmailConfirmation(userName, userEmail, formData);
+            
+            // Update modal message based on contact methods
+            const selectedMethods = Array.from(contactMethods).map(cb => cb.value);
+            let contactMessage = '';
+            
+            if (selectedMethods.includes('whatsapp')) {
+                contactMessage += '• WhatsApp: +234 810 123 4567<br>';
+            }
+            if (selectedMethods.includes('phone')) {
+                contactMessage += '• Phone Call: +234 810 123 4567<br>';
+            }
+            if (selectedMethods.includes('email')) {
+                contactMessage += '• Email: contact@geniuspointacademy.edu.ng<br>';
+            }
+            if (selectedMethods.includes('sms')) {
+                contactMessage += '• SMS: +234 810 123 4567<br>';
+            }
+            
+            document.getElementById('modalMessage').innerHTML = `
+                Thank you for your booking request! We've sent a confirmation email to your inbox.<br><br>
+                <strong>You'll be contacted via:</strong><br>
+                ${contactMessage || 'Your selected contact method(s)'}<br>
+                We'll get back to you within 24 hours to confirm your session.
+            `;
+            
+            // Show success modal
+            document.getElementById('successModal').style.display = 'flex';
+            
+            // Reset form after submission
+            setTimeout(() => {
+                this.reset();
+                document.querySelectorAll('.contact-option').forEach(option => {
+                    option.classList.remove('selected');
+                });
+                document.getElementById('confirmationMessage').classList.remove('show');
+            }, 5000);
+        });
+
+        // Function to simulate email confirmation
+        function simulateEmailConfirmation(name, email, formData) {
+            // In a real application, this would be handled by a backend service
+            console.log('Sending confirmation email to:', email);
+            console.log('Booking details:', {
+                name: name,
+                email: email,
+                department: formData.get('department'),
+                level: formData.get('level'),
+                course: formData.get('course'),
+                tutor: formData.get('tutor'),
+                contactMethods: Array.from(document.querySelectorAll('input[name="contactMethod"]:checked')).map(cb => cb.value)
+            });
+        }
+
+        // WhatsApp direct message functionality
+        function sendWhatsAppMessage() {
+            const phone = '+2348101234567'; // Replace with actual GPA WhatsApp number
+            const course = document.getElementById('course').value || 'a course';
+            const level = document.getElementById('level').value || 'your level';
+            const message = `Hello GPA! I'm interested in booking a tutor for ${course} (${level} Level).`;
+            const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
+            window.open(url, '_blank');
+        }
+
+        // Close modal
+        document.querySelector('.close-modal').addEventListener('click', function() {
+            document.getElementById('successModal').style.display = 'none';
+        });
+
+        document.getElementById('modalClose').addEventListener('click', function() {
+            document.getElementById('successModal').style.display = 'none';
+        });
+
+        // Close modal when clicking outside
+        window.addEventListener('click', function(e) {
+            const modal = document.getElementById('successModal');
+            if (e.target === modal) {
+                modal.style.display = 'none';
+            }
+        });
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                    
+                    // Close mobile menu if open
+                    document.querySelector('.nav-menu').classList.remove('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
