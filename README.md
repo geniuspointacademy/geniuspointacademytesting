@@ -1,2 +1,0 @@
-# geniuspointacademytesting
-tutrials
