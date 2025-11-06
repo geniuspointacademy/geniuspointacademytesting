@@ -6,6 +6,7 @@
     <title>Genius Point Academy - FUTA</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        /* All previous CSS remains the same */
         * {
             margin: 0;
             padding: 0;
@@ -57,7 +58,17 @@
             gap: 15px;
         }
 
-        .logo img {
+        .logo-img {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: white;
+            border-radius: 8px;
+            padding: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .logo-img img {
             height: 60px;
             width: auto;
         }
@@ -241,6 +252,13 @@
             align-items: center;
             justify-content: center;
             color: #777;
+            overflow: hidden;
+        }
+
+        .tutor-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
         .tutor-img i {
@@ -254,6 +272,12 @@
         .tutor-info h3 {
             color: var(--primary);
             margin-bottom: 10px;
+        }
+
+        .tutor-info .full-name {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 5px;
         }
 
         .tutor-info p {
@@ -567,6 +591,45 @@
             color: #777;
         }
 
+        /* New Content Styles */
+        .path-to-clarity {
+            background-color: var(--light);
+            padding: 40px;
+            border-radius: 10px;
+            margin-top: 30px;
+        }
+
+        .learning-option {
+            margin-bottom: 25px;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+        }
+
+        .learning-option h4 {
+            color: var(--primary);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .real-education {
+            margin-top: 40px;
+            padding: 30px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+
+        .education-type {
+            margin: 20px 0;
+            padding: 15px;
+            border-left: 4px solid var(--secondary);
+            background-color: #f9f9f9;
+        }
+
         /* Responsive Styles */
         @media (max-width: 992px) {
             .about-content, .booking-container, .mission-vision {
@@ -636,12 +699,15 @@
             <div class="header-content">
                 <div class="logo">
                     <div class="logo-img">
-                        <!-- Placeholder for logo -->
-                        <i class="fas fa-graduation-cap" style="font-size: 3rem; color: var(--secondary);"></i>
+                        <!-- Logo will be added here -->
+                        <div style="background: white; padding: 10px; border-radius: 5px; text-align: center; font-weight: bold; color: var(--primary);">
+                            <div style="font-size: 1.2rem;">GENIUS POINT</div>
+                            <div style="font-size: 1rem;">ACADEMY</div>
+                        </div>
                     </div>
                     <div class="logo-text">
                         <h1>Genius Point Academy</h1>
-                        <p>FUTA Tutorial Body</p>
+                        <p>Find Your Academic Breakthrough</p>
                     </div>
                 </div>
                 <div class="mobile-menu">
@@ -664,7 +730,7 @@
     <section class="hero" id="home">
         <div class="container">
             <h2>Welcome to Genius Point Academy</h2>
-            <p>Your premier tutorial body at FUTA, providing quality tutoring services to help students excel in their academic pursuits.</p>
+            <p>Find Your Academic Breakthrough at FUTA's Premier Tutorial Community</p>
             <a href="#booking" class="btn">Book a Tutor Now</a>
         </div>
     </section>
@@ -678,22 +744,47 @@
             <div class="about-content">
                 <div class="about-text">
                     <h3>Who We Are</h3>
-                    <p>Genius Point Academy (GPA) is a premier tutorial body at the Federal University of Technology, Akure (FUTA), dedicated to providing quality academic support to students across various departments and levels.</p>
-                    <p>Our team of experienced tutors are committed to helping students understand complex concepts, improve their grades, and achieve academic excellence.</p>
+                    <p>We know what it feels like to hit a wall—when a concept just won't click, or a test date looms large. At Genius Point Academy, we built a community, not just a tutoring service, dedicated to helping students move past frustration and into genuine mastery and confidence.</p>
+                    <p>Our mission is simple: To provide the precise support you need, when you need it, ensuring no student is left behind.</p>
                     
-                    <div class="mission-vision">
-                        <div class="mission">
-                            <h3><i class="fas fa-bullseye"></i> Our Mission</h3>
-                            <p>To provide exceptional tutorial services that empower FUTA students to achieve academic excellence through personalized learning approaches and dedicated mentorship.</p>
+                    <div class="path-to-clarity">
+                        <h3 style="color: var(--primary); margin-bottom: 20px;">Your Path to Clarity</h3>
+                        <p style="margin-bottom: 20px;">We understand that learning isn't one-size-fits-all, so we offer flexible, high-impact environments designed around you:</p>
+                        
+                        <div class="learning-option">
+                            <h4><i class="fas fa-user-graduate"></i> 1:1 Personalized Tutorials</h4>
+                            <p>This is where the magic happens. You work side-by-side with a dedicated mentor who digs into your specific struggles, custom-builds a strategy just for you, and focuses on true understanding—not just memorization.</p>
                         </div>
-                        <div class="vision">
-                            <h3><i class="fas fa-eye"></i> Our Vision</h3>
-                            <p>To become the leading tutorial academy at FUTA, recognized for producing outstanding scholars through innovative teaching methods and comprehensive academic support.</p>
+                        
+                        <div class="learning-option">
+                            <h4><i class="fas fa-users"></i> Private Group Tutoring</h4>
+                            <p>Bring your study group, share the cost, and thrive together! We offer focused, collaborative sessions where you can debate concepts, solve problems as a team, and reinforce learning under the guidance of an expert.</p>
                         </div>
+                        
+                        <div class="learning-option">
+                            <h4><i class="fas fa-chalkboard-teacher"></i> Mass Tutorials</h4>
+                            <p>Need a quick, powerful refresh before a major exam? Join our engaging, large-scale sessions designed to efficiently demystify entire topics, consolidate knowledge, and boost your curriculum confidence quickly.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="real-education">
+                        <h3 style="color: var(--primary); margin-bottom: 20px;">Real Education, Real Access</h3>
+                        <p>We believe expertise should be accessible to everyone. That's why we offer a blend of support to get you started and keep you going:</p>
+                        
+                        <div class="education-type">
+                            <h4><i class="fas fa-graduation-cap"></i> Free Classes</h4>
+                            <p>Jump in immediately! Access essential introductory workshops, foundational subject reviews, and large-scale concept previews to build momentum and get a feel for our community—no commitment necessary.</p>
+                        </div>
+                        
+                        <div class="education-type">
+                            <h4><i class="fas fa-star"></i> Paid Classes</h4>
+                            <p>Unlock premium resources, intensive exam prep bootcamps, and the dedicated time of our expert tutors through our specialized group and personalized programs.</p>
+                        </div>
+                        
+                        <p style="margin-top: 20px; font-weight: bold;">Stop just going through the motions. Join the Genius Point Academy community and start transforming your academic effort into real, measurable results.</p>
                     </div>
                 </div>
                 <div class="about-image">
-                    <!-- Fixed image URL -->
                     <img src="https://images.unsplash.com/photo-1524178239883-8a4c4c6a8b95?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80" alt="Students studying">
                 </div>
             </div>
@@ -707,13 +798,15 @@
                 <h2>Our Tutors</h2>
             </div>
             <div class="tutors-grid">
-                <!-- Tutor 1 -->
+                <!-- Tutor 1 - E-Simple -->
                 <div class="tutor-card">
                     <div class="tutor-img">
+                        <!-- To add E-Simple's photo: <img src="e-simple-photo.jpg" alt="E-Simple"> -->
                         <i class="fas fa-user-graduate"></i>
                     </div>
                     <div class="tutor-info">
                         <h3>E-Simple</h3>
+                        <div class="full-name"><!-- E-Simple full name here --></div>
                         <p>Senior Tutor</p>
                         <div class="courses-list">
                             <span class="course-tag">MTS 101</span>
@@ -727,13 +820,15 @@
                     </div>
                 </div>
                 
-                <!-- Tutor 2 -->
+                <!-- Tutor 2 - Muzzle -->
                 <div class="tutor-card">
                     <div class="tutor-img">
+                        <!-- To add Muzzle's photo: <img src="muzzle-photo.jpg" alt="Muzzle"> -->
                         <i class="fas fa-user-graduate"></i>
                     </div>
                     <div class="tutor-info">
                         <h3>Muzzle</h3>
+                        <div class="full-name"><!-- Muzzle full name here --></div>
                         <p>Mathematics Specialist</p>
                         <div class="courses-list">
                             <span class="course-tag">MTS 101</span>
@@ -744,14 +839,16 @@
                     </div>
                 </div>
                 
-                <!-- Tutor 3 -->
+                <!-- Tutor 3 - O'yemi -->
                 <div class="tutor-card">
                     <div class="tutor-img">
+                        <!-- To add O'yemi's photo: <img src="oyemi-photo.jpg" alt="O'yemi"> -->
                         <i class="fas fa-user-graduate"></i>
                     </div>
                     <div class="tutor-info">
                         <h3>O'yemi</h3>
-                        <p>Engineering Tutor</p>
+                        <div class="full-name"><!-- O'yemi full name here --></div>
+                        <p><!-- O'yemi department here --></p>
                         <div class="courses-list">
                             <span class="course-tag">MTS 101</span>
                             <span class="course-tag">PHY 101</span>
@@ -763,35 +860,76 @@
                     </div>
                 </div>
                 
-                <!-- Tutor 4 -->
+                <!-- Tutor 4 - Absamie -->
                 <div class="tutor-card">
                     <div class="tutor-img">
+                        <!-- To add Absamie's photo: <img src="absamie-photo.jpg" alt="Absamie"> -->
                         <i class="fas fa-user-graduate"></i>
                     </div>
                     <div class="tutor-info">
                         <h3>Absamie</h3>
-                        <p>Science Tutor</p>
+                        <div class="full-name">Iluyomade Samson Abimbola</div>
+                        <p>Electrical and Electronics Engineering</p>
                         <div class="courses-list">
                             <span class="course-tag">MTS 101</span>
                             <span class="course-tag">PHY 101</span>
+                            <span class="course-tag">PHY 103</span>
                             <span class="course-tag">MTS 201</span>
                             <span class="course-tag">EEE 201</span>
                         </div>
                     </div>
                 </div>
                 
-                <!-- Tutor 5 -->
+                <!-- Tutor 5 - Physiobrain -->
                 <div class="tutor-card">
                     <div class="tutor-img">
+                        <!-- To add Physiobrain's photo: <img src="physiobrain-photo.jpg" alt="Physiobrain"> -->
                         <i class="fas fa-user-graduate"></i>
                     </div>
                     <div class="tutor-info">
                         <h3>Physiobrain</h3>
-                        <p>Science Specialist</p>
+                        <div class="full-name">Olayonwa Rokeeb oluwafikayomi</div>
+                        <p>Physiology</p>
                         <div class="courses-list">
                             <span class="course-tag">CHE 101</span>
                             <span class="course-tag">PHY 101</span>
                             <span class="course-tag">BIO 101</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Tutor 6 - Davero -->
+                <div class="tutor-card">
+                    <div class="tutor-img">
+                        <!-- To add Davero's photo: <img src="davero-photo.jpg" alt="Davero"> -->
+                        <i class="fas fa-user-graduate"></i>
+                    </div>
+                    <div class="tutor-info">
+                        <h3>Davero</h3>
+                        <div class="full-name">Idima David Nduka</div>
+                        <p>Medical Laboratory Science</p>
+                        <div class="courses-list">
+                            <span class="course-tag">CHE 101</span>
+                            <span class="course-tag">CHE 102</span>
+                            <span class="course-tag">BIO 101</span>
+                            <span class="course-tag">BIO 102</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Tutor 7 - Peace (Favour) -->
+                <div class="tutor-card">
+                    <div class="tutor-img">
+                        <!-- To add Peace's photo: <img src="peace-photo.jpg" alt="Peace"> -->
+                        <i class="fas fa-user-graduate"></i>
+                    </div>
+                    <div class="tutor-info">
+                        <h3>Peace (Favour)</h3>
+                        <div class="full-name">Adesakin Peace</div>
+                        <p>Microbiology</p>
+                        <div class="courses-list">
+                            <span class="course-tag">BIO 101</span>
+                            <span class="course-tag">MCB 101</span>
                         </div>
                     </div>
                 </div>
@@ -820,6 +958,7 @@
                         <span class="tutor-tag">Muzzle</span>
                         <span class="tutor-tag">O'yemi</span>
                         <span class="tutor-tag">Absamie</span>
+                        <span class="tutor-tag">E-Simple</span>
                     </div>
                 </div>
                 
@@ -828,6 +967,7 @@
                     <div class="tutors-list">
                         <span class="tutor-tag">E-Simple</span>
                         <span class="tutor-tag">Physiobrain</span>
+                        <span class="tutor-tag">Davero</span>
                     </div>
                 </div>
                 
@@ -845,6 +985,8 @@
                     <h3>BIO 101 <span>General Biology</span></h3>
                     <div class="tutors-list">
                         <span class="tutor-tag">Physiobrain</span>
+                        <span class="tutor-tag">Davero</span>
+                        <span class="tutor-tag">Peace (Favour)</span>
                     </div>
                 </div>
                 
@@ -1008,7 +1150,7 @@
                         <p>We've sent a confirmation email to <strong id="userEmail"></strong>. You'll be contacted within 24 hours via your preferred method(s) to confirm your session.</p>
                         <div class="whatsapp-info">
                             <i class="fab fa-whatsapp"></i>
-                            <span>You can also message us directly on WhatsApp: <strong>+234 810 123 4567</strong></span>
+                            <span>You can also message us directly on WhatsApp: <strong><!-- GPA WhatsApp number here --></strong></span>
                         </div>
                     </div>
                 </div>
@@ -1049,12 +1191,12 @@
             <div class="footer-content">
                 <div class="footer-section">
                     <h3>Genius Point Academy</h3>
-                    <p>Premier tutorial body at FUTA dedicated to academic excellence and student success.</p>
+                    <p>Find Your Academic Breakthrough at FUTA's Premier Tutorial Community</p>
                     <div class="social-links">
-                        <a href="#"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#"><i class="fab fa-twitter"></i></a>
-                        <a href="#"><i class="fab fa-instagram"></i></a>
-                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                        <!-- Facebook link: <a href="YOUR_FACEBOOK_URL"><i class="fab fa-facebook-f"></i></a> -->
+                        <!-- Twitter link: <a href="YOUR_TWITTER_URL"><i class="fab fa-twitter"></i></a> -->
+                        <!-- Instagram link: <a href="YOUR_INSTAGRAM_URL"><i class="fab fa-instagram"></i></a> -->
+                        <!-- LinkedIn link: <a href="YOUR_LINKEDIN_URL"><i class="fab fa-linkedin-in"></i></a> -->
                     </div>
                 </div>
                 <div class="footer-section">
@@ -1070,9 +1212,9 @@
                 <div class="footer-section">
                     <h3>Contact Info</h3>
                     <p><i class="fas fa-map-marker-alt"></i> Federal University of Technology, Akure</p>
-                    <p><i class="fas fa-phone"></i> +234 810 123 4567</p>
-                    <p><i class="fab fa-whatsapp"></i> +234 810 123 4567</p>
-                    <p><i class="fas fa-envelope"></i> contact@geniuspointacademy.edu.ng</p>
+                    <p><i class="fas fa-phone"></i> <!-- GPA phone number here --></p>
+                    <p><i class="fab fa-whatsapp"></i> <!-- GPA WhatsApp number here --></p>
+                    <p><i class="fas fa-envelope"></i> academygeniuspoint@gmail.com</p>
                 </div>
             </div>
             <div class="footer-bottom">
@@ -1120,10 +1262,10 @@
         // Course data based on level
         const coursesData = {
             '100': [
-                { code: 'MTS 101', name: 'General Mathematics', tutors: ['Muzzle', 'O\'yemi', 'Absamie'] },
-                { code: 'CHE 101', name: 'General Chemistry', tutors: ['E-Simple', 'Physiobrain'] },
+                { code: 'MTS 101', name: 'General Mathematics', tutors: ['Muzzle', 'O\'yemi', 'Absamie', 'E-Simple'] },
+                { code: 'CHE 101', name: 'General Chemistry', tutors: ['E-Simple', 'Physiobrain', 'Davero'] },
                 { code: 'PHY 101/103', name: 'General Physics', tutors: ['E-Simple', 'O\'yemi', 'Absamie', 'Physiobrain'] },
-                { code: 'BIO 101', name: 'General Biology', tutors: ['Physiobrain'] },
+                { code: 'BIO 101', name: 'General Biology', tutors: ['Physiobrain', 'Davero', 'Peace (Favour)'] },
                 { code: 'MEE 101', name: 'Introduction to Mechanical Engineering', tutors: [] }
             ],
             '200': [
@@ -1207,6 +1349,12 @@
             const formData = new FormData(this);
             const userEmail = document.getElementById('email').value;
             const userName = document.getElementById('fullName').value;
+            const userPhone = document.getElementById('phone').value;
+            const userDepartment = document.getElementById('department').value;
+            const userLevel = document.getElementById('level').value;
+            const selectedCourse = document.getElementById('course').value;
+            const selectedTutor = document.getElementById('tutor').value;
+            const userMessage = document.getElementById('message').value;
             
             // Validate contact method selection
             const contactMethods = document.querySelectorAll('input[name="contactMethod"]:checked');
@@ -1220,23 +1368,23 @@
             document.getElementById('confirmationMessage').classList.add('show');
             
             // Simulate email sending (in real implementation, this would connect to a backend)
-            simulateEmailConfirmation(userName, userEmail, formData);
+            simulateEmailConfirmation(userName, userEmail, userPhone, userDepartment, userLevel, selectedCourse, selectedTutor, userMessage, formData);
             
             // Update modal message based on contact methods
             const selectedMethods = Array.from(contactMethods).map(cb => cb.value);
             let contactMessage = '';
             
             if (selectedMethods.includes('whatsapp')) {
-                contactMessage += '• WhatsApp: +234 810 123 4567<br>';
+                contactMessage += '• WhatsApp: <!-- GPA WhatsApp number here --><br>';
             }
             if (selectedMethods.includes('phone')) {
-                contactMessage += '• Phone Call: +234 810 123 4567<br>';
+                contactMessage += '• Phone Call: <!-- GPA phone number here --><br>';
             }
             if (selectedMethods.includes('email')) {
-                contactMessage += '• Email: contact@geniuspointacademy.edu.ng<br>';
+                contactMessage += '• Email: academygeniuspoint@gmail.com<br>';
             }
             if (selectedMethods.includes('sms')) {
-                contactMessage += '• SMS: +234 810 123 4567<br>';
+                contactMessage += '• SMS: <!-- GPA SMS number here --><br>';
             }
             
             document.getElementById('modalMessage').innerHTML = `
@@ -1260,23 +1408,32 @@
         });
 
         // Function to simulate email confirmation
-        function simulateEmailConfirmation(name, email, formData) {
+        function simulateEmailConfirmation(name, email, phone, department, level, course, tutor, message, formData) {
             // In a real application, this would be handled by a backend service
             console.log('Sending confirmation email to:', email);
+            console.log('Sending notification to academy email: academygeniuspoint@gmail.com');
             console.log('Booking details:', {
                 name: name,
                 email: email,
-                department: formData.get('department'),
-                level: formData.get('level'),
-                course: formData.get('course'),
-                tutor: formData.get('tutor'),
+                phone: phone,
+                department: department,
+                level: level,
+                course: course,
+                tutor: tutor,
+                message: message,
                 contactMethods: Array.from(document.querySelectorAll('input[name="contactMethod"]:checked')).map(cb => cb.value)
             });
+            
+            // In a real implementation, you would:
+            // 1. Send confirmation email to the student
+            // 2. Send notification to the academy email (academygeniuspoint@gmail.com)
+            // 3. Send notification to the selected tutor (if any)
+            // 4. Store the booking in a database
         }
 
         // WhatsApp direct message functionality
         function sendWhatsAppMessage() {
-            const phone = '+2348101234567'; // Replace with actual GPA WhatsApp number
+            const phone = '<!-- GPA WhatsApp number here -->'; // Replace with actual GPA WhatsApp number
             const course = document.getElementById('course').value || 'a course';
             const level = document.getElementById('level').value || 'your level';
             const message = `Hello GPA! I'm interested in booking a tutor for ${course} (${level} Level).`;
