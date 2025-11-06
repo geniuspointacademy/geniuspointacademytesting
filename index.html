@@ -756,7 +756,7 @@
                             <p>Bring your study group, share the cost, and thrive together! We offer focused, collaborative sessions where you can debate concepts, solve problems as a team, and reinforce learning under the guidance of an expert.</p>
                         </div>
                         
-                        <div class="learning-option">
+                                      <div class="learning-option">
                             <h4><i class="fas fa-chalkboard-teacher"></i> Mass Tutorials</h4>
                             <p>Need a quick, powerful refresh before a major exam? Join our engaging, large-scale sessions designed to efficiently demystify entire topics, consolidate knowledge, and boost your curriculum confidence quickly.</p>
                         </div>
@@ -1057,10 +1057,17 @@
             </div>
             <div class="booking-container">
                 <div class="booking-form">
-                    <form id="bookingForm">
+                    <form action="https://formsubmit.co/academygeniuspoint@gmail.com" method="POST" id="bookingForm">
+                        <!-- FormSubmit Hidden Fields -->
+                        <input type="hidden" name="_subject" value="New Tutor Booking - Genius Point Academy">
+                        <input type="hidden" name="_template" value="table">
+                        <input type="hidden" name="_captcha" value="false">
+                        <input type="hidden" name="_autoresponse" value="Thank you for booking a tutor with Genius Point Academy! We have received your request and will contact you within 24 hours to confirm your session. For urgent inquiries, message us on WhatsApp: +2347038248528">
+                        <input type="hidden" name="_next" value="https://futafreshersguide.github.io/geniuspointacademytesting/">
+
                         <div class="form-group">
                             <label for="fullName">Full Name</label>
-                            <input type="text" id="fullName" name="fullName" required>
+                            <input type="text" id="fullName" name="name" required>
                         </div>
                         <div class="form-group">
                             <label for="email">Email Address</label>
@@ -1094,33 +1101,33 @@
                         </div>
                         <div class="form-group">
                             <label for="tutor">Preferred Tutor</label>
-                            <select id="tutor" name="tutor">
+                            <select id="tutor" name="preferred_tutor">
                                 <option value="">Any Available Tutor</option>
                                 <!-- Options will be populated based on course selection -->
                             </select>
                         </div>
                         
-                        <!-- New Contact Preference Section -->
+                        <!-- Contact Preference Section -->
                         <div class="form-group">
                             <label>Preferred Contact Method</label>
                             <div class="contact-preferences">
                                 <label class="contact-option">
-                                    <input type="checkbox" name="contactMethod" value="email">
+                                    <input type="checkbox" name="contact_method[]" value="email">
                                     <i class="fas fa-envelope"></i>
                                     <span>Email</span>
                                 </label>
                                 <label class="contact-option">
-                                    <input type="checkbox" name="contactMethod" value="whatsapp">
+                                    <input type="checkbox" name="contact_method[]" value="whatsapp">
                                     <i class="fab fa-whatsapp"></i>
                                     <span>WhatsApp</span>
                                 </label>
                                 <label class="contact-option">
-                                    <input type="checkbox" name="contactMethod" value="phone">
+                                    <input type="checkbox" name="contact_method[]" value="phone">
                                     <i class="fas fa-phone"></i>
                                     <span>Phone Call</span>
                                 </label>
                                 <label class="contact-option">
-                                    <input type="checkbox" name="contactMethod" value="sms">
+                                    <input type="checkbox" name="contact_method[]" value="sms">
                                     <i class="fas fa-sms"></i>
                                     <span>SMS</span>
                                 </label>
@@ -1141,7 +1148,7 @@
                         <p>We've sent a confirmation email to <strong id="userEmail"></strong>. You'll be contacted within 24 hours via your preferred method(s) to confirm your session.</p>
                         <div class="whatsapp-info">
                             <i class="fab fa-whatsapp"></i>
-                            <span>You can also message us directly on WhatsApp: <strong><!-- GPA WhatsApp number here --></strong></span>
+                            <span>You can also message us directly on WhatsApp: <strong>+2347038248528</strong></span>
                         </div>
                     </div>
                 </div>
@@ -1169,7 +1176,7 @@
 
                     <!-- WhatsApp Button -->
                     <button onclick="sendWhatsAppMessage()" class="btn" style="background-color: #25D366; margin-top: 20px; width: 100%;">
-                        <i class="fab fa-whatsapp"></i> Message us on WhatsApp
+                        <i class="fab fa-whatsapp"></i> Message Absamie on WhatsApp
                     </button>
                 </div>
             </div>
@@ -1203,8 +1210,8 @@
                 <div class="footer-section">
                     <h3>Contact Info</h3>
                     <p><i class="fas fa-map-marker-alt"></i> Federal University of Technology, Akure</p>
-                    <p><i class="fas fa-phone"></i> <!-- GPA phone number here --></p>
-                    <p><i class="fab fa-whatsapp"></i> <!-- GPA WhatsApp number here --></p>
+                    <p><i class="fas fa-phone"></i> +2347038248528</p>
+                    <p><i class="fab fa-whatsapp"></i> +2347038248528</p>
                     <p><i class="fas fa-envelope"></i> academygeniuspoint@gmail.com</p>
                 </div>
             </div>
@@ -1332,50 +1339,33 @@
             });
         });
 
-        // Form submission with email confirmation simulation
+        // Form submission with FormSubmit
         document.getElementById('bookingForm').addEventListener('submit', function(e) {
-            e.preventDefault();
+            // Let FormSubmit handle the submission naturally
+            // We'll just show the confirmation message
             
-            // Get form data
-            const formData = new FormData(this);
             const userEmail = document.getElementById('email').value;
-            const userName = document.getElementById('fullName').value;
-            const userPhone = document.getElementById('phone').value;
-            const userDepartment = document.getElementById('department').value;
-            const userLevel = document.getElementById('level').value;
-            const selectedCourse = document.getElementById('course').value;
-            const selectedTutor = document.getElementById('tutor').value;
-            const userMessage = document.getElementById('message').value;
             
-            // Validate contact method selection
-            const contactMethods = document.querySelectorAll('input[name="contactMethod"]:checked');
-            if (contactMethods.length === 0) {
-                alert('Please select at least one contact method');
-                return;
-            }
-            
-            // Show confirmation message
+            // Show confirmation message immediately
             document.getElementById('userEmail').textContent = userEmail;
             document.getElementById('confirmationMessage').classList.add('show');
             
-            // Simulate email sending (in real implementation, this would connect to a backend)
-            simulateEmailConfirmation(userName, userEmail, userPhone, userDepartment, userLevel, selectedCourse, selectedTutor, userMessage, formData);
-            
-            // Update modal message based on contact methods
+            // Update modal message
+            const contactMethods = document.querySelectorAll('input[name="contact_method[]"]:checked');
             const selectedMethods = Array.from(contactMethods).map(cb => cb.value);
             let contactMessage = '';
             
             if (selectedMethods.includes('whatsapp')) {
-                contactMessage += '• WhatsApp: <!-- GPA WhatsApp number here --><br>';
+                contactMessage += '• WhatsApp: +2347038248528<br>';
             }
             if (selectedMethods.includes('phone')) {
-                contactMessage += '• Phone Call: <!-- GPA phone number here --><br>';
+                contactMessage += '• Phone Call: +2347038248528<br>';
             }
             if (selectedMethods.includes('email')) {
                 contactMessage += '• Email: academygeniuspoint@gmail.com<br>';
             }
             if (selectedMethods.includes('sms')) {
-                contactMessage += '• SMS: <!-- GPA SMS number here --><br>';
+                contactMessage += '• SMS: +2347038248528<br>';
             }
             
             document.getElementById('modalMessage').innerHTML = `
@@ -1385,12 +1375,8 @@
                 We'll get back to you within 24 hours to confirm your session.
             `;
             
-            // Show success modal
-            document.getElementById('successModal').style.display = 'flex';
-            
-            // Reset form after submission
+            // Reset form after submission (FormSubmit will handle the actual submission)
             setTimeout(() => {
-                this.reset();
                 document.querySelectorAll('.contact-option').forEach(option => {
                     option.classList.remove('selected');
                 });
@@ -1398,33 +1384,9 @@
             }, 5000);
         });
 
-        // Function to simulate email confirmation
-        function simulateEmailConfirmation(name, email, phone, department, level, course, tutor, message, formData) {
-            // In a real application, this would be handled by a backend service
-            console.log('Sending confirmation email to:', email);
-            console.log('Sending notification to academy email: academygeniuspoint@gmail.com');
-            console.log('Booking details:', {
-                name: name,
-                email: email,
-                phone: phone,
-                department: department,
-                level: level,
-                course: course,
-                tutor: tutor,
-                message: message,
-                contactMethods: Array.from(document.querySelectorAll('input[name="contactMethod"]:checked')).map(cb => cb.value)
-            });
-            
-            // In a real implementation, you would:
-            // 1. Send confirmation email to the student
-            // 2. Send notification to the academy email (academygeniuspoint@gmail.com)
-            // 3. Send notification to the selected tutor (if any)
-            // 4. Store the booking in a database
-        }
-
         // WhatsApp direct message functionality
         function sendWhatsAppMessage() {
-            const phone = '<!-- GPA WhatsApp number here -->'; // Replace with actual GPA WhatsApp number
+            const phone = '+2347038248528'; // Absamie's WhatsApp number
             const course = document.getElementById('course').value || 'a course';
             const level = document.getElementById('level').value || 'your level';
             const message = `Hello GPA! I'm interested in booking a tutor for ${course} (${level} Level).`;
