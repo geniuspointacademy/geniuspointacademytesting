@@ -65,16 +65,11 @@
             border-radius: 8px;
             padding: 5px;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            /* Logo image sizing */
-            width: 200px;
-            height: 60px;
-            overflow: hidden;
         }
 
         .logo-img img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain; /* Keeps logo aspect ratio */
+            height: 60px;
+            width: auto;
         }
 
         .logo-text h1 {
@@ -120,17 +115,9 @@
             background: linear-gradient(rgba(26, 75, 140, 0.8), rgba(26, 75, 140, 0.9)), url('studentstudyingimage.jpg');
             background-size: cover;
             background-position: center;
-            background-repeat: no-repeat;
             color: white;
             padding: 5rem 0;
             text-align: center;
-            min-height: 60vh;
-            display: flex;
-            align-items: center;
-        }
-
-        .hero-content {
-            width: 100%;
         }
 
         .hero h2 {
@@ -210,17 +197,10 @@
             margin-bottom: 15px;
         }
 
-        .about-image {
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-            height: 400px; /* Fixed height for consistency */
-        }
-
         .about-image img {
             width: 100%;
-            height: 100%;
-            object-fit: cover; /* Ensures image covers the area without distortion */
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         }
 
         .mission-vision {
@@ -265,7 +245,7 @@
         }
 
         .tutor-img {
-            height: 250px; /* Fixed height for tutor images */
+            height: 200px;
             background-color: #e0e0e0;
             display: flex;
             align-items: center;
@@ -277,12 +257,7 @@
         .tutor-img img {
             width: 100%;
             height: 100%;
-            object-fit: cover; /* Ensures images fill the space without distortion */
-            transition: transform 0.3s;
-        }
-
-        .tutor-card:hover .tutor-img img {
-            transform: scale(1.05); /* Slight zoom on hover */
+            object-fit: cover;
         }
 
         .tutor-img i {
@@ -654,24 +629,6 @@
             background-color: #f9f9f9;
         }
 
-        /* Image fallback styling */
-        .image-placeholder {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100%;
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-            color: #666;
-            text-align: center;
-            padding: 20px;
-        }
-
-        .image-placeholder i {
-            font-size: 3rem;
-            margin-bottom: 10px;
-        }
-
         /* Responsive Styles */
         @media (max-width: 992px) {
             .about-content, .booking-container, .mission-vision {
@@ -680,7 +637,6 @@
 
             .about-image {
                 order: -1;
-                height: 300px; /* Adjust height for mobile */
             }
         }
 
@@ -692,11 +648,6 @@
 
             .logo {
                 margin-bottom: 15px;
-            }
-
-            .logo-img {
-                width: 150px; /* Smaller logo on mobile */
-                height: 50px;
             }
 
             nav ul {
@@ -737,17 +688,6 @@
             .section-title h2 {
                 font-size: 1.8rem;
             }
-
-            .tutor-img {
-                height: 200px; /* Smaller tutor images on mobile */
-            }
-        }
-
-        /* Print Styles */
-        @media print {
-            .btn, .mobile-menu, .social-links {
-                display: none !important;
-            }
         }
     </style>
 </head>
@@ -758,11 +698,7 @@
             <div class="header-content">
                 <div class="logo">
                     <div class="logo-img">
-                        <img src="gpa logo.jpg" alt="Genius Point Academy Logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                        <div class="image-placeholder" style="display: none;">
-                            <i class="fas fa-graduation-cap"></i>
-                            <div>GENIUS POINT ACADEMY</div>
-                        </div>
+                        <img src="gpa logo.jpg" alt="Genius Point Academy Logo">
                     </div>
                     <div class="logo-text">
                         <h1>Genius Point Academy</h1>
@@ -788,11 +724,9 @@
     <!-- Hero Section -->
     <section class="hero" id="home">
         <div class="container">
-            <div class="hero-content">
-                <h2>Welcome to Genius Point Academy</h2>
-                <p>Find Your Academic Breakthrough at FUTA's Premier Tutorial Community</p>
-                <a href="#booking" class="btn">Book a Tutor Now</a>
-            </div>
+            <h2>Welcome to Genius Point Academy</h2>
+            <p>Find Your Academic Breakthrough at FUTA's Premier Tutorial Community</p>
+            <a href="#booking" class="btn">Book a Tutor Now</a>
         </div>
     </section>
 
@@ -846,11 +780,7 @@
                     </div>
                 </div>
                 <div class="about-image">
-                    <img src="studentstudyingimage.jpg" alt="Students studying" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                    <div class="image-placeholder" style="display: none;">
-                        <i class="fas fa-users"></i>
-                        <div>Students Learning Together</div>
-                    </div>
+                    <img src="studentstudyingimage.jpg" alt="Students studying">
                 </div>
             </div>
         </div>
@@ -867,10 +797,7 @@
                 <div class="tutor-card">
                     <div class="tutor-img">
                         <!-- To add E-Simple's photo: <img src="e-simple-photo.jpg" alt="E-Simple"> -->
-                        <div class="image-placeholder">
-                            <i class="fas fa-user-graduate"></i>
-                            <div>E-Simple</div>
-                        </div>
+                        <i class="fas fa-user-graduate"></i>
                     </div>
                     <div class="tutor-info">
                         <h3>E-Simple</h3>
@@ -892,10 +819,7 @@
                 <div class="tutor-card">
                     <div class="tutor-img">
                         <!-- To add Muzzle's photo: <img src="muzzle-photo.jpg" alt="Muzzle"> -->
-                        <div class="image-placeholder">
-                            <i class="fas fa-user-graduate"></i>
-                            <div>Muzzle</div>
-                        </div>
+                        <i class="fas fa-user-graduate"></i>
                     </div>
                     <div class="tutor-info">
                         <h3>Muzzle</h3>
@@ -914,10 +838,7 @@
                 <div class="tutor-card">
                     <div class="tutor-img">
                         <!-- To add O'yemi's photo: <img src="oyemi-photo.jpg" alt="O'yemi"> -->
-                        <div class="image-placeholder">
-                            <i class="fas fa-user-graduate"></i>
-                            <div>O'yemi</div>
-                        </div>
+                        <i class="fas fa-user-graduate"></i>
                     </div>
                     <div class="tutor-info">
                         <h3>O'yemi</h3>
@@ -937,11 +858,7 @@
                 <!-- Tutor 4 - Absamie -->
                 <div class="tutor-card">
                     <div class="tutor-img">
-                        <img src="absamiepicture.jpg" alt="Absamie" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                        <div class="image-placeholder" style="display: none;">
-                            <i class="fas fa-user-graduate"></i>
-                            <div>Absamie</div>
-                        </div>
+                        <img src="absamiepicture.jpg" alt="Absamie">
                     </div>
                     <div class="tutor-info">
                         <h3>Absamie</h3>
@@ -960,11 +877,7 @@
                 <!-- Tutor 5 - Physiobrain -->
                 <div class="tutor-card">
                     <div class="tutor-img">
-                        <img src="roqeebpicture.jpg" alt="Physiobrain" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                        <div class="image-placeholder" style="display: none;">
-                            <i class="fas fa-user-graduate"></i>
-                            <div>Physiobrain</div>
-                        </div>
+                        <img src="roqeebpicture.jpg" alt="Physiobrain">
                     </div>
                     <div class="tutor-info">
                         <h3>Physiobrain</h3>
@@ -981,11 +894,7 @@
                 <!-- Tutor 6 - Davero -->
                 <div class="tutor-card">
                     <div class="tutor-img">
-                        <img src="davidpicture.jpg" alt="Davero" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                        <div class="image-placeholder" style="display: none;">
-                            <i class="fas fa-user-graduate"></i>
-                            <div>Davero</div>
-                        </div>
+                        <img src="davidpicture.jpg" alt="Davero">
                     </div>
                     <div class="tutor-info">
                         <h3>Davero</h3>
@@ -1003,11 +912,7 @@
                 <!-- Tutor 7 - Peace (Favour) -->
                 <div class="tutor-card">
                     <div class="tutor-img">
-                        <img src="favourpicture.jpg" alt="Peace" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                        <div class="image-placeholder" style="display: none;">
-                            <i class="fas fa-user-graduate"></i>
-                            <div>Peace (Favour)</div>
-                        </div>
+                        <img src="favourpicture.jpg" alt="Peace">
                     </div>
                     <div class="tutor-info">
                         <h3>Peace (Favour)</h3>
@@ -1023,8 +928,547 @@
         </div>
     </section>
 
-    <!-- Rest of the HTML remains the same as before -->
-    <!-- ... (Courses, Booking, Footer sections remain unchanged) ... -->
+    <!-- Courses Section -->
+    <section id="courses">
+        <div class="container">
+            <div class="section-title">
+                <h2>Available Courses</h2>
+            </div>
+            
+            <div class="level-tabs">
+                <div class="level-tab active" data-level="100">100 Level</div>
+                <div class="level-tab" data-level="200">200 Level</div>
+                <div class="level-tab" data-level="300">300 Level</div>
+            </div>
+            
+            <!-- 100 Level Courses -->
+            <div class="courses-content active" id="level-100">
+                <div class="course-card">
+                    <h3>MTS 101 <span>General Mathematics</span></h3>
+                    <div class="tutors-list">
+                        <span class="tutor-tag">Muzzle</span>
+                        <span class="tutor-tag">O'yemi</span>
+                        <span class="tutor-tag">Absamie</span>
+                        <span class="tutor-tag">E-Simple</span>
+                    </div>
+                </div>
+                
+                <div class="course-card">
+                    <h3>CHE 101 <span>General Chemistry</span></h3>
+                    <div class="tutors-list">
+                        <span class="tutor-tag">E-Simple</span>
+                        <span class="tutor-tag">Physiobrain</span>
+                        <span class="tutor-tag">Davero</span>
+                    </div>
+                </div>
+                
+                <div class="course-card">
+                    <h3>PHY 101/103 <span>General Physics</span></h3>
+                    <div class="tutors-list">
+                        <span class="tutor-tag">E-Simple</span>
+                        <span class="tutor-tag">O'yemi</span>
+                        <span class="tutor-tag">Absamie</span>
+                        <span class="tutor-tag">Physiobrain</span>
+                    </div>
+                </div>
+                
+                <div class="course-card">
+                    <h3>BIO 101 <span>General Biology</span></h3>
+                    <div class="tutors-list">
+                        <span class="tutor-tag">Physiobrain</span>
+                        <span class="tutor-tag">Davero</span>
+                        <span class="tutor-tag">Peace (Favour)</span>
+                    </div>
+                </div>
+                
+                <div class="course-card">
+                    <h3>MEE 101 <span>Introduction to Mechanical Engineering</span></h3>
+                    <p>No tutors currently available</p>
+                </div>
+            </div>
+            
+            <!-- 200 Level Courses -->
+            <div class="courses-content" id="level-200">
+                <div class="course-card">
+                    <h3>MTS 201 <span>Mathematical Methods</span></h3>
+                    <div class="tutors-list">
+                        <span class="tutor-tag">E-Simple</span>
+                        <span class="tutor-tag">O'yemi</span>
+                        <span class="tutor-tag">Muzzle</span>
+                        <span class="tutor-tag">Absamie</span>
+                    </div>
+                </div>
+                
+                <div class="course-card">
+                    <h3>EEE 201 <span>Electrical Circuit Theory</span></h3>
+                    <div class="tutors-list">
+                        <span class="tutor-tag">Absamie</span>
+                        <span class="tutor-tag">O'yemi</span>
+                        <span class="tutor-tag">E-Simple</span>
+                    </div>
+                </div>
+                
+                <div class="course-card">
+                    <h3>MEE 207 <span>Engineering Drawing</span></h3>
+                    <div class="tutors-list">
+                        <span class="tutor-tag">Muzzle</span>
+                        <span class="tutor-tag">O'yemi</span>
+                    </div>
+                </div>
+                
+                <div class="course-card">
+                    <h3>MME 201 <span>Introduction to Metallurgical Engineering</span></h3>
+                    <div class="tutors-list">
+                        <span class="tutor-tag">O'yemi</span>
+                    </div>
+                </div>
+                
+                <div class="course-card">
+                    <h3>CHE 205 <span>Chemical Engineering Thermodynamics</span></h3>
+                    <p>No tutors currently available</p>
+                </div>
+            </div>
+            
+            <!-- 300 Level Courses -->
+            <div class="courses-content" id="level-300">
+                <div class="course-card">
+                    <h3>EEE 305 <span>Electromagnetic Field Theory</span></h3>
+                    <div class="tutors-list">
+                        <span class="tutor-tag">E-Simple</span>
+                    </div>
+                </div>
+                
+                <div class="course-card">
+                    <h3>MTS 315 <span>Numerical Analysis</span></h3>
+                    <div class="tutors-list">
+                        <span class="tutor-tag">E-Simple</span>
+                        <span class="tutor-tag">Muzzle</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
+    <!-- Booking Section -->
+    <section id="booking" style="background-color: var(--light);">
+        <div class="container">
+            <div class="section-title">
+                <h2>Book a Tutor</h2>
+            </div>
+            <div class="booking-container">
+                <div class="booking-form">
+                    <form id="bookingForm">
+                        <div class="form-group">
+                            <label for="fullName">Full Name</label>
+                            <input type="text" id="fullName" name="fullName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email Address</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Phone Number</label>
+                            <input type="tel" id="phone" name="phone" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="department">Department</label>
+                            <input type="text" id="department" name="department" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="level">Level</label>
+                            <select id="level" name="level" required>
+                                <option value="">Select Level</option>
+                                <option value="100">100 Level</option>
+                                <option value="200">200 Level</option>
+                                <option value="300">300 Level</option>
+                                <option value="400">400 Level</option>
+                                <option value="500">500 Level</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="course">Course</label>
+                            <select id="course" name="course" required>
+                                <option value="">Select Course</option>
+                                <!-- Options will be populated based on level selection -->
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="tutor">Preferred Tutor</label>
+                            <select id="tutor" name="tutor">
+                                <option value="">Any Available Tutor</option>
+                                <!-- Options will be populated based on course selection -->
+                            </select>
+                        </div>
+                        
+                        <!-- New Contact Preference Section -->
+                        <div class="form-group">
+                            <label>Preferred Contact Method</label>
+                            <div class="contact-preferences">
+                                <label class="contact-option">
+                                    <input type="checkbox" name="contactMethod" value="email">
+                                    <i class="fas fa-envelope"></i>
+                                    <span>Email</span>
+                                </label>
+                                <label class="contact-option">
+                                    <input type="checkbox" name="contactMethod" value="whatsapp">
+                                    <i class="fab fa-whatsapp"></i>
+                                    <span>WhatsApp</span>
+                                </label>
+                                <label class="contact-option">
+                                    <input type="checkbox" name="contactMethod" value="phone">
+                                    <i class="fas fa-phone"></i>
+                                    <span>Phone Call</span>
+                                </label>
+                                <label class="contact-option">
+                                    <input type="checkbox" name="contactMethod" value="sms">
+                                    <i class="fas fa-sms"></i>
+                                    <span>SMS</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="message">Additional Message (Optional)</label>
+                            <textarea id="message" name="message" rows="4" placeholder="Any specific topics you need help with? Preferred time for tutoring sessions?"></textarea>
+                        </div>
+                        
+                        <button type="submit" class="btn" style="width: 100%;">Submit Booking Request</button>
+                    </form>
+                    
+                    <!-- Confirmation Message -->
+                    <div class="confirmation-message" id="confirmationMessage">
+                        <h4><i class="fas fa-check-circle" style="color: var(--success);"></i> Booking Request Received!</h4>
+                        <p>We've sent a confirmation email to <strong id="userEmail"></strong>. You'll be contacted within 24 hours via your preferred method(s) to confirm your session.</p>
+                        <div class="whatsapp-info">
+                            <i class="fab fa-whatsapp"></i>
+                            <span>You can also message us directly on WhatsApp: <strong><!-- GPA WhatsApp number here --></strong></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="booking-info">
+                    <i class="fas fa-calendar-check"></i>
+                    <h3>How It Works</h3>
+                    <p>1. Fill out the booking form with your details</p>
+                    <p>2. Select your level and desired course</p>
+                    <p>3. Choose a preferred tutor (optional)</p>
+                    <p>4. Select how you want to be contacted</p>
+                    <p>5. Submit your request</p>
+                    <p>6. Get instant email confirmation</p>
+                    <p>7. We'll contact you within 24 hours to confirm your booking</p>
+                    
+                    <div style="margin-top: 30px; padding: 20px; background: white; border-radius: 8px; box-shadow: 0 3px 10px rgba(0,0,0,0.1);">
+                        <h4><i class="fas fa-envelope" style="color: var(--primary);"></i> Email Confirmation</h4>
+                        <p>After booking, you'll receive an email with:</p>
+                        <ul style="text-align: left; margin-top: 10px; padding-left: 20px;">
+                            <li>Booking details summary</li>
+                            <li>Expected response time</li>
+                            <li>Contact information for urgent queries</li>
+                            <li>Next steps in the process</li>
+                        </ul>
+                    </div>
+
+                    <!-- WhatsApp Button -->
+                    <button onclick="sendWhatsAppMessage()" class="btn" style="background-color: #25D366; margin-top: 20px; width: 100%;">
+                        <i class="fab fa-whatsapp"></i> Message us on WhatsApp
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Genius Point Academy</h3>
+                    <p>Find Your Academic Breakthrough at FUTA's Premier Tutorial Community</p>
+                    <div class="social-links">
+                        <!-- Facebook link: <a href="YOUR_FACEBOOK_URL"><i class="fab fa-facebook-f"></i></a> -->
+                        <!-- Twitter link: <a href="YOUR_TWITTER_URL"><i class="fab fa-twitter"></i></a> -->
+                        <!-- Instagram link: <a href="YOUR_INSTAGRAM_URL"><i class="fab fa-instagram"></i></a> -->
+                        <!-- LinkedIn link: <a href="YOUR_LINKEDIN_URL"><i class="fab fa-linkedin-in"></i></a> -->
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#about">About Us</a></li>
+                        <li><a href="#tutors">Our Tutors</a></li>
+                        <li><a href="#courses">Courses</a></li>
+                        <li><a href="#booking">Book a Tutor</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Contact Info</h3>
+                    <p><i class="fas fa-map-marker-alt"></i> Federal University of Technology, Akure</p>
+                    <p><i class="fas fa-phone"></i> <!-- GPA phone number here --></p>
+                    <p><i class="fab fa-whatsapp"></i> <!-- GPA WhatsApp number here --></p>
+                    <p><i class="fas fa-envelope"></i> academygeniuspoint@gmail.com</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2023 Genius Point Academy. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Success Modal -->
+    <div class="modal" id="successModal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <div style="text-align: center; padding: 20px;">
+                <i class="fas fa-check-circle" style="font-size: 4rem; color: var(--success); margin-bottom: 20px;"></i>
+                <h2>Booking Submitted Successfully!</h2>
+                <p id="modalMessage">Thank you for your booking request. We will contact you within 24 hours to confirm your session.</p>
+                <button class="btn" style="margin-top: 20px;" id="modalClose">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Mobile Menu Toggle
+        document.querySelector('.mobile-menu').addEventListener('click', function() {
+            document.querySelector('.nav-menu').classList.toggle('active');
+        });
+
+        // Level Tabs
+        const levelTabs = document.querySelectorAll('.level-tab');
+        const coursesContents = document.querySelectorAll('.courses-content');
+
+        levelTabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                // Remove active class from all tabs and contents
+                levelTabs.forEach(t => t.classList.remove('active'));
+                coursesContents.forEach(content => content.classList.remove('active'));
+                
+                // Add active class to clicked tab and corresponding content
+                tab.classList.add('active');
+                const level = tab.getAttribute('data-level');
+                document.getElementById(`level-${level}`).classList.add('active');
+            });
+        });
+
+        // Course data based on level
+        const coursesData = {
+            '100': [
+                { code: 'MTS 101', name: 'General Mathematics', tutors: ['Muzzle', 'O\'yemi', 'Absamie', 'E-Simple'] },
+                { code: 'CHE 101', name: 'General Chemistry', tutors: ['E-Simple', 'Physiobrain', 'Davero'] },
+                { code: 'PHY 101/103', name: 'General Physics', tutors: ['E-Simple', 'O\'yemi', 'Absamie', 'Physiobrain'] },
+                { code: 'BIO 101', name: 'General Biology', tutors: ['Physiobrain', 'Davero', 'Peace (Favour)'] },
+                { code: 'MEE 101', name: 'Introduction to Mechanical Engineering', tutors: [] }
+            ],
+            '200': [
+                { code: 'MTS 201', name: 'Mathematical Methods', tutors: ['E-Simple', 'O\'yemi', 'Muzzle', 'Absamie'] },
+                { code: 'EEE 201', name: 'Electrical Circuit Theory', tutors: ['Absamie', 'O\'yemi', 'E-Simple'] },
+                { code: 'MEE 207', name: 'Engineering Drawing', tutors: ['Muzzle', 'O\'yemi'] },
+                { code: 'MME 201', name: 'Introduction to Metallurgical Engineering', tutors: ['O\'yemi'] },
+                { code: 'CHE 205', name: 'Chemical Engineering Thermodynamics', tutors: [] }
+            ],
+            '300': [
+                { code: 'EEE 305', name: 'Electromagnetic Field Theory', tutors: ['E-Simple'] },
+                { code: 'MTS 315', name: 'Numerical Analysis', tutors: ['E-Simple', 'Muzzle'] }
+            ],
+            '400': [
+                { code: 'No courses', name: 'No courses available for 400 level', tutors: [] }
+            ],
+            '500': [
+                { code: 'No courses', name: 'No courses available for 500 level', tutors: [] }
+            ]
+        };
+
+        // Update course options based on selected level
+        document.getElementById('level').addEventListener('change', function() {
+            const level = this.value;
+            const courseSelect = document.getElementById('course');
+            const tutorSelect = document.getElementById('tutor');
+            
+            // Clear previous options
+            courseSelect.innerHTML = '<option value="">Select Course</option>';
+            tutorSelect.innerHTML = '<option value="">Any Available Tutor</option>';
+            
+            if (level && coursesData[level]) {
+                // Add courses for selected level
+                coursesData[level].forEach(course => {
+                    const option = document.createElement('option');
+                    option.value = course.code;
+                    option.textContent = `${course.code} - ${course.name}`;
+                    courseSelect.appendChild(option);
+                });
+            }
+        });
+
+        // Update tutor options based on selected course
+        document.getElementById('course').addEventListener('change', function() {
+            const level = document.getElementById('level').value;
+            const courseCode = this.value;
+            const tutorSelect = document.getElementById('tutor');
+            
+            // Clear previous options except the first one
+            tutorSelect.innerHTML = '<option value="">Any Available Tutor</option>';
+            
+            if (level && courseCode && coursesData[level]) {
+                const selectedCourse = coursesData[level].find(course => course.code === courseCode);
+                
+                if (selectedCourse && selectedCourse.tutors.length > 0) {
+                    // Add tutors for selected course
+                    selectedCourse.tutors.forEach(tutor => {
+                        const option = document.createElement('option');
+                        option.value = tutor;
+                        option.textContent = tutor;
+                        tutorSelect.appendChild(option);
+                    });
+                }
+            }
+        });
+
+        // Contact preference selection
+        document.querySelectorAll('.contact-option').forEach(option => {
+            option.addEventListener('click', function() {
+                const checkbox = this.querySelector('input');
+                checkbox.checked = !checkbox.checked;
+                this.classList.toggle('selected', checkbox.checked);
+            });
+        });
+
+        // Form submission with email confirmation simulation
+        document.getElementById('bookingForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Get form data
+            const formData = new FormData(this);
+            const userEmail = document.getElementById('email').value;
+            const userName = document.getElementById('fullName').value;
+            const userPhone = document.getElementById('phone').value;
+            const userDepartment = document.getElementById('department').value;
+            const userLevel = document.getElementById('level').value;
+            const selectedCourse = document.getElementById('course').value;
+            const selectedTutor = document.getElementById('tutor').value;
+            const userMessage = document.getElementById('message').value;
+            
+            // Validate contact method selection
+            const contactMethods = document.querySelectorAll('input[name="contactMethod"]:checked');
+            if (contactMethods.length === 0) {
+                alert('Please select at least one contact method');
+                return;
+            }
+            
+            // Show confirmation message
+            document.getElementById('userEmail').textContent = userEmail;
+            document.getElementById('confirmationMessage').classList.add('show');
+            
+            // Simulate email sending (in real implementation, this would connect to a backend)
+            simulateEmailConfirmation(userName, userEmail, userPhone, userDepartment, userLevel, selectedCourse, selectedTutor, userMessage, formData);
+            
+            // Update modal message based on contact methods
+            const selectedMethods = Array.from(contactMethods).map(cb => cb.value);
+            let contactMessage = '';
+            
+            if (selectedMethods.includes('whatsapp')) {
+                contactMessage += '• WhatsApp: <!-- GPA WhatsApp number here --><br>';
+            }
+            if (selectedMethods.includes('phone')) {
+                contactMessage += '• Phone Call: <!-- GPA phone number here --><br>';
+            }
+            if (selectedMethods.includes('email')) {
+                contactMessage += '• Email: academygeniuspoint@gmail.com<br>';
+            }
+            if (selectedMethods.includes('sms')) {
+                contactMessage += '• SMS: <!-- GPA SMS number here --><br>';
+            }
+            
+            document.getElementById('modalMessage').innerHTML = `
+                Thank you for your booking request! We've sent a confirmation email to your inbox.<br><br>
+                <strong>You'll be contacted via:</strong><br>
+                ${contactMessage || 'Your selected contact method(s)'}<br>
+                We'll get back to you within 24 hours to confirm your session.
+            `;
+            
+            // Show success modal
+            document.getElementById('successModal').style.display = 'flex';
+            
+            // Reset form after submission
+            setTimeout(() => {
+                this.reset();
+                document.querySelectorAll('.contact-option').forEach(option => {
+                    option.classList.remove('selected');
+                });
+                document.getElementById('confirmationMessage').classList.remove('show');
+            }, 5000);
+        });
+
+        // Function to simulate email confirmation
+        function simulateEmailConfirmation(name, email, phone, department, level, course, tutor, message, formData) {
+            // In a real application, this would be handled by a backend service
+            console.log('Sending confirmation email to:', email);
+            console.log('Sending notification to academy email: academygeniuspoint@gmail.com');
+            console.log('Booking details:', {
+                name: name,
+                email: email,
+                phone: phone,
+                department: department,
+                level: level,
+                course: course,
+                tutor: tutor,
+                message: message,
+                contactMethods: Array.from(document.querySelectorAll('input[name="contactMethod"]:checked')).map(cb => cb.value)
+            });
+            
+            // In a real implementation, you would:
+            // 1. Send confirmation email to the student
+            // 2. Send notification to the academy email (academygeniuspoint@gmail.com)
+            // 3. Send notification to the selected tutor (if any)
+            // 4. Store the booking in a database
+        }
+
+        // WhatsApp direct message functionality
+        function sendWhatsAppMessage() {
+            const phone = '<!-- GPA WhatsApp number here -->'; // Replace with actual GPA WhatsApp number
+            const course = document.getElementById('course').value || 'a course';
+            const level = document.getElementById('level').value || 'your level';
+            const message = `Hello GPA! I'm interested in booking a tutor for ${course} (${level} Level).`;
+            const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
+            window.open(url, '_blank');
+        }
+
+        // Close modal
+        document.querySelector('.close-modal').addEventListener('click', function() {
+            document.getElementById('successModal').style.display = 'none';
+        });
+
+        document.getElementById('modalClose').addEventListener('click', function() {
+            document.getElementById('successModal').style.display = 'none';
+        });
+
+        // Close modal when clicking outside
+        window.addEventListener('click', function(e) {
+            const modal = document.getElementById('successModal');
+            if (e.target === modal) {
+                modal.style.display = 'none';
+            }
+        });
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                    
+                    // Close mobile menu if open
+                    document.querySelector('.nav-menu').classList.remove('active');
+                }
+            });
+        });
+    </script>
 </body>
 </html>
