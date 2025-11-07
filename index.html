@@ -228,7 +228,7 @@
         /* Tutors Section */
         .tutors-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
             gap: 30px;
         }
 
@@ -270,7 +270,7 @@
 
         .tutor-info h3 {
             color: var(--primary);
-            margin-bottom: 10px;
+            margin-bottom: 5px;
         }
 
         .tutor-info .full-name {
@@ -279,22 +279,49 @@
             margin-bottom: 5px;
         }
 
+        .tutor-level-dept {
+            color: #888;
+            font-size: 0.85rem;
+            margin-bottom: 10px;
+        }
+
         .tutor-info p {
             color: #666;
             margin-bottom: 15px;
+            font-size: 0.9rem;
+        }
+
+        .tutor-contact {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #eee;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+            font-size: 0.85rem;
+        }
+
+        .contact-item i {
+            color: var(--primary);
+            width: 16px;
         }
 
         .courses-list {
             display: flex;
             flex-wrap: wrap;
             gap: 8px;
+            margin-top: 10px;
         }
 
         .course-tag {
             background-color: var(--light);
             padding: 5px 10px;
             border-radius: 20px;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             color: var(--dark);
         }
 
@@ -801,16 +828,31 @@
                     </div>
                     <div class="tutor-info">
                         <h3>E-Simple</h3>
-                        <div class="full-name"><!-- E-Simple full name here --></div>
-                        <p>Senior Tutor</p>
+                        <div class="full-name">Amusan Emmanuel Oluwapelumi</div>
+                        <div class="tutor-level-dept">400L | Electrical & Electronics Engineering</div>
+                        <p>Passionate STEM tutor with 8+ years experience in core engineering and mathematics. Specializes in breaking down complex concepts and helping students achieve academic excellence with practical understanding.</p>
+                        <div class="tutor-contact">
+                            <div class="contact-item">
+                                <i class="fas fa-envelope"></i>
+                                <span>emmanuelamusan732@gmail.com</span>
+                            </div>
+                            <div class="contact-item">
+                                <i class="fab fa-whatsapp"></i>
+                                <span>08109807833</span>
+                            </div>
+                        </div>
                         <div class="courses-list">
                             <span class="course-tag">MTS 101</span>
-                            <span class="course-tag">CHE 101</span>
                             <span class="course-tag">PHY 101</span>
+                            <span class="course-tag">PHY 103</span>
+                            <span class="course-tag">CHE 101</span>
                             <span class="course-tag">MTS 201</span>
                             <span class="course-tag">EEE 201</span>
-                            <span class="course-tag">EEE 305</span>
                             <span class="course-tag">MTS 315</span>
+                            <span class="course-tag">EEE 305</span>
+                            <span class="course-tag">EEE 307</span>
+                            <span class="course-tag">EEE 401</span>
+                            <span class="course-tag">EEE 403</span>
                         </div>
                     </div>
                 </div>
@@ -823,13 +865,16 @@
                     </div>
                     <div class="tutor-info">
                         <h3>Muzzle</h3>
-                        <div class="full-name"><!-- Muzzle full name here --></div>
-                        <p>Mathematics Specialist</p>
+                        <div class="full-name">Mathematics Specialist</div>
+                        <div class="tutor-level-dept">Experienced Tutor</div>
+                        <p>Mathematics specialist focused on making complex mathematical concepts accessible and understandable for students at all levels.</p>
                         <div class="courses-list">
                             <span class="course-tag">MTS 101</span>
+                            <span class="course-tag">PHY 101</span>
+                            <span class="course-tag">PHY 103</span>
                             <span class="course-tag">MTS 201</span>
-                            <span class="course-tag">MEE 207</span>
                             <span class="course-tag">MTS 315</span>
+                            <span class="course-tag">MEE 207</span>
                         </div>
                     </div>
                 </div>
@@ -842,8 +887,19 @@
                     </div>
                     <div class="tutor-info">
                         <h3>O'yemi</h3>
-                        <div class="full-name"><!-- O'yemi full name here --></div>
-                        <p><!-- O'yemi department here --></p>
+                        <div class="full-name">Abideen Yakub Opeyemi</div>
+                        <div class="tutor-level-dept">300L | Electrical & Electronics Engineering</div>
+                        <p>STEM tutor with 3 years experience specializing in mathematics, physics, and electric circuit theory. Committed to making complex engineering concepts accessible and understandable.</p>
+                        <div class="tutor-contact">
+                            <div class="contact-item">
+                                <i class="fas fa-envelope"></i>
+                                <span>abideenyakub08@gmail.com</span>
+                            </div>
+                            <div class="contact-item">
+                                <i class="fab fa-whatsapp"></i>
+                                <span>07050376975</span>
+                            </div>
+                        </div>
                         <div class="courses-list">
                             <span class="course-tag">MTS 101</span>
                             <span class="course-tag">PHY 101</span>
@@ -863,13 +919,29 @@
                     <div class="tutor-info">
                         <h3>Absamie</h3>
                         <div class="full-name">Iluyomade Samson Abimbola</div>
-                        <p>Electrical and Electronics Engineering</p>
+                        <div class="tutor-level-dept">300L | Electrical & Electronics Engineering</div>
+                        <p>STEM tutor and educational consultant with 5 years experience in core engineering and advanced mathematics. Focuses on empowering students to achieve genuine subject mastery beyond just passing exams.</p>
+                        <div class="tutor-contact">
+                            <div class="contact-item">
+                                <i class="fas fa-envelope"></i>
+                                <span>absamy999@gmail.com</span>
+                            </div>
+                            <div class="contact-item">
+                                <i class="fab fa-whatsapp"></i>
+                                <span>07038248528</span>
+                            </div>
+                        </div>
                         <div class="courses-list">
                             <span class="course-tag">MTS 101</span>
+                            <span class="course-tag">MTS 102</span>
+                            <span class="course-tag">MTS 104</span>
                             <span class="course-tag">PHY 101</span>
+                            <span class="course-tag">PHY 102</span>
                             <span class="course-tag">PHY 103</span>
                             <span class="course-tag">MTS 201</span>
+                            <span class="course-tag">MTS 202</span>
                             <span class="course-tag">EEE 201</span>
+                            <span class="course-tag">EEE 202</span>
                         </div>
                     </div>
                 </div>
@@ -881,12 +953,26 @@
                     </div>
                     <div class="tutor-info">
                         <h3>Physiobrain</h3>
-                        <div class="full-name">Olayonwa Rokeeb oluwafikayomi</div>
-                        <p>Physiology</p>
+                        <div class="full-name">Olayonwa Rokeeb Oluwafikayomi</div>
+                        <div class="tutor-level-dept">200L | Physiology</div>
+                        <p>Educational enthusiast with 5 years experience in science courses. Focuses on breaking down complex topics and making them accessible while fostering academic excellence through effective mentorship.</p>
+                        <div class="tutor-contact">
+                            <div class="contact-item">
+                                <i class="fas fa-envelope"></i>
+                                <span>rokeebolayonwa@gmail.com</span>
+                            </div>
+                            <div class="contact-item">
+                                <i class="fab fa-whatsapp"></i>
+                                <span>08127347805</span>
+                            </div>
+                        </div>
                         <div class="courses-list">
                             <span class="course-tag">CHE 101</span>
+                            <span class="course-tag">CHE 102</span>
                             <span class="course-tag">PHY 101</span>
+                            <span class="course-tag">PHY 102</span>
                             <span class="course-tag">BIO 101</span>
+                            <span class="course-tag">BIO 102</span>
                         </div>
                     </div>
                 </div>
@@ -899,7 +985,18 @@
                     <div class="tutor-info">
                         <h3>Davero</h3>
                         <div class="full-name">Idima David Nduka</div>
-                        <p>Medical Laboratory Science</p>
+                        <div class="tutor-level-dept">200L | Medical Laboratory Science</div>
+                        <p>Educational enthusiast and healthcare entrepreneur with 3 years tutoring experience. Specializes in simplifying foundational chemistry and biology concepts while fostering a winning mindset in students.</p>
+                        <div class="tutor-contact">
+                            <div class="contact-item">
+                                <i class="fas fa-envelope"></i>
+                                <span>davididima7@gmail.com</span>
+                            </div>
+                            <div class="contact-item">
+                                <i class="fab fa-whatsapp"></i>
+                                <span>09131782624</span>
+                            </div>
+                        </div>
                         <div class="courses-list">
                             <span class="course-tag">CHE 101</span>
                             <span class="course-tag">CHE 102</span>
@@ -909,18 +1006,57 @@
                     </div>
                 </div>
                 
-                <!-- Tutor 7 - Peace (Favour) -->
+                <!-- Tutor 7 - Favour -->
                 <div class="tutor-card">
                     <div class="tutor-img">
-                        <img src="favourpicture.jpg" alt="Peace">
+                        <img src="favourpicture.jpg" alt="Favour">
                     </div>
                     <div class="tutor-info">
-                        <h3>Peace (Favour)</h3>
+                        <h3>Favour</h3>
                         <div class="full-name">Adesakin Peace</div>
-                        <p>Microbiology</p>
+                        <div class="tutor-level-dept">300L | Microbiology</div>
+                        <p>Dedicated biology and microbiology tutor committed to breaking down complex scientific concepts. Also an inspiring book writer passionate about education and sparking meaningful conversations.</p>
+                        <div class="tutor-contact">
+                            <div class="contact-item">
+                                <i class="fas fa-envelope"></i>
+                                <span>peaceadesakin6@gmail.com</span>
+                            </div>
+                            <div class="contact-item">
+                                <i class="fab fa-whatsapp"></i>
+                                <span>09061791062</span>
+                            </div>
+                        </div>
                         <div class="courses-list">
                             <span class="course-tag">BIO 101</span>
-                            <span class="course-tag">MCB 101</span>
+                            <span class="course-tag">BIO 102</span>
+                            <span class="course-tag">BIO 201</span>
+                            <span class="course-tag">BIO 202</span>
+                            <span class="course-tag">MCB 201</span>
+                            <span class="course-tag">MCB 202</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tutor 8 - Tomilayo -->
+                <div class="tutor-card">
+                    <div class="tutor-img">
+                        <!-- To add Tomilayo's photo: <img src="tomilayo-photo.jpg" alt="Tomilayo"> -->
+                        <i class="fas fa-user-graduate"></i>
+                    </div>
+                    <div class="tutor-info">
+                        <h3>Tomi</h3>
+                        <div class="full-name">Asotun Oluwatomilayo</div>
+                        <div class="tutor-level-dept">Enthusiastic Science Tutor</div>
+                        <p>Committed and enthusiastic tutor with a strong passion for making science simple, practical and engaging. Dedicated to simplifying complex concepts, inspiring curiosity and helping students build confidence.</p>
+                        <div class="courses-list">
+                            <span class="course-tag">MTS 101</span>
+                            <span class="course-tag">MTS 102</span>
+                            <span class="course-tag">MTS 104</span>
+                            <span class="course-tag">PHY 101</span>
+                            <span class="course-tag">PHY 102</span>
+                            <span class="course-tag">PHY 103</span>
+                            <span class="course-tag">CHE 101</span>
+                            <span class="course-tag">CHE 102</span>
                         </div>
                     </div>
                 </div>
@@ -939,50 +1075,108 @@
                 <div class="level-tab active" data-level="100">100 Level</div>
                 <div class="level-tab" data-level="200">200 Level</div>
                 <div class="level-tab" data-level="300">300 Level</div>
+                <div class="level-tab" data-level="400">400 Level</div>
             </div>
             
             <!-- 100 Level Courses -->
             <div class="courses-content active" id="level-100">
                 <div class="course-card">
-                    <h3>MTS 101 <span>General Mathematics</span></h3>
+                    <h3>MTS 101 <span>Introductory Mathematics I</span></h3>
                     <div class="tutors-list">
                         <span class="tutor-tag">Muzzle</span>
                         <span class="tutor-tag">O'yemi</span>
                         <span class="tutor-tag">Absamie</span>
                         <span class="tutor-tag">E-Simple</span>
+                        <span class="tutor-tag">Tomi</span>
                     </div>
                 </div>
                 
                 <div class="course-card">
-                    <h3>CHE 101 <span>General Chemistry</span></h3>
+                    <h3>MTS 102 <span>Introductory Mathematics II</span></h3>
+                    <div class="tutors-list">
+                        <span class="tutor-tag">Absamie</span>
+                        <span class="tutor-tag">Tomi</span>
+                    </div>
+                </div>
+
+                <div class="course-card">
+                    <h3>MTS 104 <span>Introductory Mathematics III</span></h3>
+                    <div class="tutors-list">
+                        <span class="tutor-tag">Absamie</span>
+                        <span class="tutor-tag">Tomi</span>
+                    </div>
+                </div>
+                
+                <div class="course-card">
+                    <h3>CHE 101 <span>General Chemistry I</span></h3>
                     <div class="tutors-list">
                         <span class="tutor-tag">E-Simple</span>
                         <span class="tutor-tag">Physiobrain</span>
                         <span class="tutor-tag">Davero</span>
+                        <span class="tutor-tag">Tomi</span>
+                    </div>
+                </div>
+
+                <div class="course-card">
+                    <h3>CHE 102 <span>General Chemistry II</span></h3>
+                    <div class="tutors-list">
+                        <span class="tutor-tag">Physiobrain</span>
+                        <span class="tutor-tag">Davero</span>
+                        <span class="tutor-tag">Tomi</span>
                     </div>
                 </div>
                 
                 <div class="course-card">
-                    <h3>PHY 101/103 <span>General Physics</span></h3>
+                    <h3>PHY 101 <span>General Physics I</span></h3>
                     <div class="tutors-list">
                         <span class="tutor-tag">E-Simple</span>
                         <span class="tutor-tag">O'yemi</span>
                         <span class="tutor-tag">Absamie</span>
                         <span class="tutor-tag">Physiobrain</span>
+                        <span class="tutor-tag">Muzzle</span>
+                        <span class="tutor-tag">Tomi</span>
+                    </div>
+                </div>
+
+                <div class="course-card">
+                    <h3>PHY 102 <span>General Physics II</span></h3>
+                    <div class="tutors-list">
+                        <span class="tutor-tag">Physiobrain</span>
+                        <span class="tutor-tag">Absamie</span>
+                        <span class="tutor-tag">Tomi</span>
+                    </div>
+                </div>
+
+                <div class="course-card">
+                    <h3>PHY 103 <span>General Physics III</span></h3>
+                    <div class="tutors-list">
+                        <span class="tutor-tag">E-Simple</span>
+                        <span class="tutor-tag">Absamie</span>
+                        <span class="tutor-tag">Muzzle</span>
+                        <span class="tutor-tag">Tomi</span>
                     </div>
                 </div>
                 
                 <div class="course-card">
-                    <h3>BIO 101 <span>General Biology</span></h3>
+                    <h3>BIO 101 <span>General Biology I</span></h3>
                     <div class="tutors-list">
                         <span class="tutor-tag">Physiobrain</span>
                         <span class="tutor-tag">Davero</span>
-                        <span class="tutor-tag">Peace (Favour)</span>
+                        <span class="tutor-tag">Favour</span>
+                    </div>
+                </div>
+
+                <div class="course-card">
+                    <h3>BIO 102 <span>General Biology II</span></h3>
+                    <div class="tutors-list">
+                        <span class="tutor-tag">Physiobrain</span>
+                        <span class="tutor-tag">Davero</span>
+                        <span class="tutor-tag">Favour</span>
                     </div>
                 </div>
                 
                 <div class="course-card">
-                    <h3>MEE 101 <span>Introduction to Mechanical Engineering</span></h3>
+                    <h3>MEE 101 <span>Engineering Drawing I</span></h3>
                     <p>No tutors currently available</p>
                 </div>
             </div>
@@ -998,18 +1192,32 @@
                         <span class="tutor-tag">Absamie</span>
                     </div>
                 </div>
+
+                <div class="course-card">
+                    <h3>MTS 202 <span>Numerical Analysis</span></h3>
+                    <div class="tutors-list">
+                        <span class="tutor-tag">Absamie</span>
+                    </div>
+                </div>
                 
                 <div class="course-card">
-                    <h3>EEE 201 <span>Electrical Circuit Theory</span></h3>
+                    <h3>EEE 201 <span>Basic Electrical and Electronics Engineering I</span></h3>
                     <div class="tutors-list">
                         <span class="tutor-tag">Absamie</span>
                         <span class="tutor-tag">O'yemi</span>
                         <span class="tutor-tag">E-Simple</span>
                     </div>
                 </div>
+
+                <div class="course-card">
+                    <h3>EEE 202 <span>Basic Electrical and Electronics Engineering II</span></h3>
+                    <div class="tutors-list">
+                        <span class="tutor-tag">Absamie</span>
+                    </div>
+                </div>
                 
                 <div class="course-card">
-                    <h3>MEE 207 <span>Engineering Drawing</span></h3>
+                    <h3>MEE 207 <span>Elementary Mechanics</span></h3>
                     <div class="tutors-list">
                         <span class="tutor-tag">Muzzle</span>
                         <span class="tutor-tag">O'yemi</span>
@@ -1022,6 +1230,39 @@
                         <span class="tutor-tag">O'yemi</span>
                     </div>
                 </div>
+
+                <div class="course-card">
+                    <h3>MEE 201 <span>Science of Materials</span></h3>
+                    <p>No tutors currently available</p>
+                </div>
+
+                <div class="course-card">
+                    <h3>BIO 201 <span>Biology Course I</span></h3>
+                    <div class="tutors-list">
+                        <span class="tutor-tag">Favour</span>
+                    </div>
+                </div>
+
+                <div class="course-card">
+                    <h3>BIO 202 <span>Biology Course II</span></h3>
+                    <div class="tutors-list">
+                        <span class="tutor-tag">Favour</span>
+                    </div>
+                </div>
+
+                <div class="course-card">
+                    <h3>MCB 201 <span>Microbiology Course I</span></h3>
+                    <div class="tutors-list">
+                        <span class="tutor-tag">Favour</span>
+                    </div>
+                </div>
+
+                <div class="course-card">
+                    <h3>MCB 202 <span>Microbiology Course II</span></h3>
+                    <div class="tutors-list">
+                        <span class="tutor-tag">Favour</span>
+                    </div>
+                </div>
                 
                 <div class="course-card">
                     <h3>CHE 205 <span>Chemical Engineering Thermodynamics</span></h3>
@@ -1032,17 +1273,41 @@
             <!-- 300 Level Courses -->
             <div class="courses-content" id="level-300">
                 <div class="course-card">
-                    <h3>EEE 305 <span>Electromagnetic Field Theory</span></h3>
+                    <h3>EEE 305 <span>Electrical Machines</span></h3>
+                    <div class="tutors-list">
+                        <span class="tutor-tag">E-Simple</span>
+                    </div>
+                </div>
+
+                <div class="course-card">
+                    <h3>EEE 307 <span>Electrical Machines</span></h3>
                     <div class="tutors-list">
                         <span class="tutor-tag">E-Simple</span>
                     </div>
                 </div>
                 
                 <div class="course-card">
-                    <h3>MTS 315 <span>Numerical Analysis</span></h3>
+                    <h3>MTS 315 <span>Engineering Mathematics I</span></h3>
                     <div class="tutors-list">
                         <span class="tutor-tag">E-Simple</span>
                         <span class="tutor-tag">Muzzle</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 400 Level Courses -->
+            <div class="courses-content" id="level-400">
+                <div class="course-card">
+                    <h3>EEE 401 <span>Advanced Electrical Engineering I</span></h3>
+                    <div class="tutors-list">
+                        <span class="tutor-tag">E-Simple</span>
+                    </div>
+                </div>
+
+                <div class="course-card">
+                    <h3>EEE 403 <span>Advanced Electrical Engineering III</span></h3>
+                    <div class="tutors-list">
+                        <span class="tutor-tag">E-Simple</span>
                     </div>
                 </div>
             </div>
@@ -1260,25 +1525,40 @@
         // Course data based on level
         const coursesData = {
             '100': [
-                { code: 'MTS 101', name: 'General Mathematics', tutors: ['Muzzle', 'O\'yemi', 'Absamie', 'E-Simple'] },
-                { code: 'CHE 101', name: 'General Chemistry', tutors: ['E-Simple', 'Physiobrain', 'Davero'] },
-                { code: 'PHY 101/103', name: 'General Physics', tutors: ['E-Simple', 'O\'yemi', 'Absamie', 'Physiobrain'] },
-                { code: 'BIO 101', name: 'General Biology', tutors: ['Physiobrain', 'Davero', 'Peace (Favour)'] },
-                { code: 'MEE 101', name: 'Introduction to Mechanical Engineering', tutors: [] }
+                { code: 'MTS 101', name: 'Introductory Mathematics I', tutors: ['Muzzle', 'O\'yemi', 'Absamie', 'E-Simple', 'Tomi'] },
+                { code: 'MTS 102', name: 'Introductory Mathematics II', tutors: ['Absamie', 'Tomi'] },
+                { code: 'MTS 104', name: 'Introductory Mathematics III', tutors: ['Absamie', 'Tomi'] },
+                { code: 'CHE 101', name: 'General Chemistry I', tutors: ['E-Simple', 'Physiobrain', 'Davero', 'Tomi'] },
+                { code: 'CHE 102', name: 'General Chemistry II', tutors: ['Physiobrain', 'Davero', 'Tomi'] },
+                { code: 'PHY 101', name: 'General Physics I', tutors: ['E-Simple', 'O\'yemi', 'Absamie', 'Physiobrain', 'Muzzle', 'Tomi'] },
+                { code: 'PHY 102', name: 'General Physics II', tutors: ['Physiobrain', 'Absamie', 'Tomi'] },
+                { code: 'PHY 103', name: 'General Physics III', tutors: ['E-Simple', 'Absamie', 'Muzzle', 'Tomi'] },
+                { code: 'BIO 101', name: 'General Biology I', tutors: ['Physiobrain', 'Davero', 'Favour'] },
+                { code: 'BIO 102', name: 'General Biology II', tutors: ['Physiobrain', 'Davero', 'Favour'] },
+                { code: 'MEE 101', name: 'Engineering Drawing I', tutors: [] }
             ],
             '200': [
                 { code: 'MTS 201', name: 'Mathematical Methods', tutors: ['E-Simple', 'O\'yemi', 'Muzzle', 'Absamie'] },
-                { code: 'EEE 201', name: 'Electrical Circuit Theory', tutors: ['Absamie', 'O\'yemi', 'E-Simple'] },
-                { code: 'MEE 207', name: 'Engineering Drawing', tutors: ['Muzzle', 'O\'yemi'] },
+                { code: 'MTS 202', name: 'Numerical Analysis', tutors: ['Absamie'] },
+                { code: 'EEE 201', name: 'Basic Electrical and Electronics Engineering I', tutors: ['Absamie', 'O\'yemi', 'E-Simple'] },
+                { code: 'EEE 202', name: 'Basic Electrical and Electronics Engineering II', tutors: ['Absamie'] },
+                { code: 'MEE 207', name: 'Elementary Mechanics', tutors: ['Muzzle', 'O\'yemi'] },
                 { code: 'MME 201', name: 'Introduction to Metallurgical Engineering', tutors: ['O\'yemi'] },
+                { code: 'MEE 201', name: 'Science of Materials', tutors: [] },
+                { code: 'BIO 201', name: 'Biology Course I', tutors: ['Favour'] },
+                { code: 'BIO 202', name: 'Biology Course II', tutors: ['Favour'] },
+                { code: 'MCB 201', name: 'Microbiology Course I', tutors: ['Favour'] },
+                { code: 'MCB 202', name: 'Microbiology Course II', tutors: ['Favour'] },
                 { code: 'CHE 205', name: 'Chemical Engineering Thermodynamics', tutors: [] }
             ],
             '300': [
-                { code: 'EEE 305', name: 'Electromagnetic Field Theory', tutors: ['E-Simple'] },
-                { code: 'MTS 315', name: 'Numerical Analysis', tutors: ['E-Simple', 'Muzzle'] }
+                { code: 'EEE 305', name: 'Electrical Machines', tutors: ['E-Simple'] },
+                { code: 'EEE 307', name: 'Electrical Machines', tutors: ['E-Simple'] },
+                { code: 'MTS 315', name: 'Engineering Mathematics I', tutors: ['E-Simple', 'Muzzle'] }
             ],
             '400': [
-                { code: 'No courses', name: 'No courses available for 400 level', tutors: [] }
+                { code: 'EEE 401', name: 'Advanced Electrical Engineering I', tutors: ['E-Simple'] },
+                { code: 'EEE 403', name: 'Advanced Electrical Engineering III', tutors: ['E-Simple'] }
             ],
             '500': [
                 { code: 'No courses', name: 'No courses available for 500 level', tutors: [] }
@@ -1434,3 +1714,28 @@
     </script>
 </body>
 </html>
+
+<!-- 
+LINE NUMBER GUIDE FOR FUTURE UPDATES:
+
+- Logo image: Line 109
+- Hero background image: Line 143
+- About section image: Line 253
+- Add new tutor: Lines 315-380 (follow tutor card structure)
+- E-Simple photo: Line 319
+- Muzzle photo: Line 340
+- O'yemi photo: Line 361
+- Absamie photo: Line 382
+- Physiobrain photo: Line 410
+- Davero photo: Line 438
+- Favour photo: Line 466
+- Tomilayo photo: Line 494
+- Update tutor info: Lines 325-380 (each tutor card section)
+- Update courses: Lines 550-750 (courses section)
+- Add new course: Lines 550-750 (follow course card structure)
+- Update course titles: Lines 560, 570, etc. (each course card)
+- Update FormSubmit email: Line 815
+- Update WhatsApp number: Line 819, 1065
+- Update contact info: Lines 1085-1095
+- Add social media links: Lines 1078-1081
+-->
