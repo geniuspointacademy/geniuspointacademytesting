@@ -197,28 +197,10 @@
             margin-bottom: 15px;
         }
 
-        .image-collage {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            grid-template-rows: 1fr 1fr;
-            gap: 10px;
-            height: 400px;
-        }
-
-        .collage-item {
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-        }
-
-        .collage-item img {
+        .about-image img {
             width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .collage-item-large {
-            grid-column: 1 / 3;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         }
 
         .mission-vision {
@@ -680,9 +662,8 @@
                 grid-template-columns: 1fr;
             }
 
-            .image-collage {
+            .about-image {
                 order: -1;
-                height: 300px;
             }
         }
 
@@ -733,16 +714,6 @@
 
             .section-title h2 {
                 font-size: 1.8rem;
-            }
-
-            .image-collage {
-                grid-template-columns: 1fr;
-                grid-template-rows: auto;
-                height: auto;
-            }
-
-            .collage-item-large {
-                grid-column: 1;
             }
         }
     </style>
@@ -835,16 +806,8 @@
                         <p style="margin-top: 20px; font-weight: bold;">Stop just going through the motions. Join the Genius Point Academy community and start transforming your academic effort into real, measurable results.</p>
                     </div>
                 </div>
-                <div class="image-collage">
-                    <div class="collage-item">
-                        <img src="studentstudyingimage.jpg" alt="Students studying together">
-                    </div>
-                    <div class="collage-item">
-                        <img src="tutorteaching.jpg" alt="Tutor teaching students">
-                    </div>
-                    <div class="collage-item collage-item-large">
-                        <img src="studentstudyingimage1.jpg" alt="Student focused on studies">
-                    </div>
+                <div class="about-image">
+                    <img src="collagepicture.jpg" alt="Genius Point Academy Students">
                 </div>
             </div>
         </div>
@@ -1747,3 +1710,28 @@
     </script>
 </body>
 </html>
+
+<!-- 
+LINE NUMBER GUIDE FOR FUTURE UPDATES:
+
+- Logo image: Line 109
+- Hero background image: Line 143
+- About section collage image: Line 253
+- Add new tutor: Lines 315-380 (follow tutor card structure)
+- E-Simple photo: Line 319
+- Muzzle photo: Line 340 (currently placeholder icon)
+- O'yemi photo: Line 361
+- Absamie photo: Line 382
+- Physiobrain photo: Line 410
+- Davero photo: Line 438
+- Favour photo: Line 466
+- Tomilayo photo: Line 494
+- Update tutor info: Lines 325-380 (each tutor card section)
+- Update courses: Lines 550-750 (courses section)
+- Add new course: Lines 550-750 (follow course card structure)
+- Update course titles: Lines 560, 570, etc. (each course card)
+- Update FormSubmit email: Line 815
+- Update WhatsApp number: Line 819, 1065
+- Update contact info: Lines 1085-1095
+- Add social media links: Lines 1078-1081
+-->
