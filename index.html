@@ -398,7 +398,7 @@
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 40px;
-            align-items: center;
+            align-items: start;
         }
 
         .booking-form {
@@ -416,6 +416,7 @@
             display: block;
             margin-bottom: 8px;
             font-weight: 500;
+            color: var(--primary);
         }
 
         .form-group input, .form-group select, .form-group textarea {
@@ -424,44 +425,38 @@
             border: 1px solid #ddd;
             border-radius: 5px;
             font-size: 1rem;
+            transition: border-color 0.3s;
         }
 
-        .booking-info {
-            text-align: center;
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(26, 75, 140, 0.1);
         }
 
-        .booking-info i {
-            font-size: 5rem;
-            color: var(--primary);
-            margin-bottom: 20px;
-        }
-
-        .booking-info h3 {
-            color: var(--primary);
-            margin-bottom: 15px;
-        }
-
-        /* New Contact Preference Styles */
+        /* Contact Preference Styles */
         .contact-preferences {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 15px;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 10px;
             margin-top: 10px;
         }
 
         .contact-option {
             display: flex;
+            flex-direction: column;
             align-items: center;
             gap: 8px;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
+            padding: 15px 10px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
             cursor: pointer;
             transition: all 0.3s;
+            text-align: center;
         }
 
         .contact-option:hover {
-            background-color: #f5f5f5;
+            border-color: var(--primary);
         }
 
         .contact-option.selected {
@@ -474,11 +469,16 @@
             display: none;
         }
 
+        .contact-option i {
+            font-size: 1.5rem;
+            margin-bottom: 5px;
+        }
+
         .confirmation-message {
             background-color: #e8f5e8;
             border: 1px solid #4caf50;
             border-radius: 5px;
-            padding: 15px;
+            padding: 20px;
             margin-top: 20px;
             display: none;
         }
@@ -490,12 +490,81 @@
         .whatsapp-info {
             background-color: #25D366;
             color: white;
-            padding: 10px 15px;
+            padding: 12px 15px;
             border-radius: 5px;
-            margin-top: 10px;
+            margin-top: 15px;
             display: flex;
             align-items: center;
             gap: 10px;
+        }
+
+        .booking-info {
+            text-align: center;
+        }
+
+        .booking-info i {
+            font-size: 4rem;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+
+        .booking-info h3 {
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+
+        .booking-info p {
+            margin-bottom: 10px;
+            text-align: left;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .booking-info p:before {
+            content: "•";
+            color: var(--secondary);
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+        }
+
+        /* New Content Styles */
+        .path-to-clarity {
+            background-color: var(--light);
+            padding: 40px;
+            border-radius: 10px;
+            margin-top: 30px;
+        }
+
+        .learning-option {
+            margin-bottom: 25px;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+        }
+
+        .learning-option h4 {
+            color: var(--primary);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .real-education {
+            margin-top: 40px;
+            padding: 30px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+
+        .education-type {
+            margin: 20px 0;
+            padding: 15px;
+            border-left: 4px solid var(--secondary);
+            background-color: #f9f9f9;
         }
 
         /* Footer */
@@ -579,83 +648,6 @@
             border-top: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        /* Modal */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            z-index: 1000;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .modal-content {
-            background-color: white;
-            width: 90%;
-            max-width: 500px;
-            border-radius: 8px;
-            padding: 30px;
-            position: relative;
-            animation: modalFade 0.3s;
-        }
-
-        @keyframes modalFade {
-            from {opacity: 0; transform: translateY(-50px);}
-            to {opacity: 1; transform: translateY(0);}
-        }
-
-        .close-modal {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            font-size: 1.5rem;
-            cursor: pointer;
-            color: #777;
-        }
-
-        /* New Content Styles */
-        .path-to-clarity {
-            background-color: var(--light);
-            padding: 40px;
-            border-radius: 10px;
-            margin-top: 30px;
-        }
-
-        .learning-option {
-            margin-bottom: 25px;
-            padding: 20px;
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
-        }
-
-        .learning-option h4 {
-            color: var(--primary);
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .real-education {
-            margin-top: 40px;
-            padding: 30px;
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-        }
-
-        .education-type {
-            margin: 20px 0;
-            padding: 15px;
-            border-left: 4px solid var(--secondary);
-            background-color: #f9f9f9;
-        }
-
         /* Responsive Styles */
         @media (max-width: 992px) {
             .about-content, .booking-container, .mission-vision {
@@ -714,6 +706,10 @@
 
             .section-title h2 {
                 font-size: 1.8rem;
+            }
+
+            .contact-preferences {
+                grid-template-columns: 1fr 1fr;
             }
         }
     </style>
@@ -783,7 +779,7 @@
                             <p>Bring your study group, share the cost, and thrive together! We offer focused, collaborative sessions where you can debate concepts, solve problems as a team, and reinforce learning under the guidance of an expert.</p>
                         </div>
                         
-                                      <div class="learning-option">
+                        <div class="learning-option">
                             <h4><i class="fas fa-chalkboard-teacher"></i> Mass Tutorials</h4>
                             <p>Need a quick, powerful refresh before a major exam? Join our engaging, large-scale sessions designed to efficiently demystify entire topics, consolidate knowledge, and boost your curriculum confidence quickly.</p>
                         </div>
@@ -1221,15 +1217,10 @@
                 </div>
                 
                 <div class="course-card">
-                    <h3>MME 201 <span>Introduction to Metallurgical Engineering</span></h3>
+                    <h3>MME 201 <span>Science of Materials</span></h3>
                     <div class="tutors-list">
                         <span class="tutor-tag">O'yemi</span>
                     </div>
-                </div>
-
-                <div class="course-card">
-                    <h3>MEE 201 <span>Science of Materials</span></h3>
-                    <p>No tutors currently available</p>
                 </div>
 
                 <div class="course-card">
@@ -1259,15 +1250,18 @@
                         <span class="tutor-tag">Favour</span>
                     </div>
                 </div>
-                
-                <div class="course-card">
-                    <h3>CHE 205 <span>Chemical Engineering Thermodynamics</span></h3>
-                    <p>No tutors currently available</p>
-                </div>
             </div>
             
             <!-- 300 Level Courses -->
             <div class="courses-content" id="level-300">
+                <div class="course-card">
+                    <h3>MTS 315 <span>Engineering Mathematics I</span></h3>
+                    <div class="tutors-list">
+                        <span class="tutor-tag">E-Simple</span>
+                        <span class="tutor-tag">Muzzle</span>
+                    </div>
+                </div>
+
                 <div class="course-card">
                     <h3>EEE 305 <span>Electrical Machines</span></h3>
                     <div class="tutors-list">
@@ -1279,14 +1273,6 @@
                     <h3>EEE 307 <span>Electrical Machines</span></h3>
                     <div class="tutors-list">
                         <span class="tutor-tag">E-Simple</span>
-                    </div>
-                </div>
-                
-                <div class="course-card">
-                    <h3>MTS 315 <span>Engineering Mathematics I</span></h3>
-                    <div class="tutors-list">
-                        <span class="tutor-tag">E-Simple</span>
-                        <span class="tutor-tag">Muzzle</span>
                     </div>
                 </div>
             </div>
@@ -1310,139 +1296,129 @@
         </div>
     </section>
 
-    <!-- Booking Section -->
-    <section id="booking" style="background-color: var(--light);">
-        <div class="container">
-            <div class="section-title">
-                <h2>Book a Tutor</h2>
-            </div>
-            <div class="booking-container">
-                <div class="booking-form">
-                    <form action="https://formsubmit.co/academygeniuspoint@gmail.com" method="POST" id="bookingForm">
-                        <!-- FormSubmit Hidden Fields -->
-                        <input type="hidden" name="_subject" value="New Tutor Booking - Genius Point Academy">
-                        <input type="hidden" name="_template" value="table">
-                        <input type="hidden" name="_captcha" value="false">
-                        <input type="hidden" name="_autoresponse" value="Thank you for booking a tutor with Genius Point Academy! We have received your request and will contact you within 24 hours to confirm your session. For urgent inquiries, message us on WhatsApp: +2347038248528">
-                        <input type="hidden" name="_next" value="https://futafreshersguide.github.io/geniuspointacademytesting/">
-
-                        <div class="form-group">
-                            <label for="fullName">Full Name</label>
-                            <input type="text" id="fullName" name="name" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="email">Email Address</label>
-                            <input type="email" id="email" name="email" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="phone">Phone Number</label>
-                            <input type="tel" id="phone" name="phone" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="department">Department</label>
-                            <input type="text" id="department" name="department" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="level">Level</label>
-                            <select id="level" name="level" required>
-                                <option value="">Select Level</option>
-                                <option value="100">100 Level</option>
-                                <option value="200">200 Level</option>
-                                <option value="300">300 Level</option>
-                                <option value="400">400 Level</option>
-                                <option value="500">500 Level</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="course">Course</label>
-                            <select id="course" name="course" required>
-                                <option value="">Select Course</option>
-                                <!-- Options will be populated based on level selection -->
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="tutor">Preferred Tutor</label>
-                            <select id="tutor" name="preferred_tutor">
-                                <option value="">Any Available Tutor</option>
-                                <!-- Options will be populated based on course selection -->
-                            </select>
-                        </div>
-                        
-                        <!-- Contact Preference Section -->
-                        <div class="form-group">
-                            <label>Preferred Contact Method</label>
-                            <div class="contact-preferences">
-                                <label class="contact-option">
-                                    <input type="checkbox" name="contact_method[]" value="email">
-                                    <i class="fas fa-envelope"></i>
-                                    <span>Email</span>
-                                </label>
-                                <label class="contact-option">
-                                    <input type="checkbox" name="contact_method[]" value="whatsapp">
-                                    <i class="fab fa-whatsapp"></i>
-                                    <span>WhatsApp</span>
-                                </label>
-                                <label class="contact-option">
-                                    <input type="checkbox" name="contact_method[]" value="phone">
-                                    <i class="fas fa-phone"></i>
-                                    <span>Phone Call</span>
-                                </label>
-                                <label class="contact-option">
-                                    <input type="checkbox" name="contact_method[]" value="sms">
-                                    <i class="fas fa-sms"></i>
-                                    <span>SMS</span>
-                                </label>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="message">Additional Message (Optional)</label>
-                            <textarea id="message" name="message" rows="4" placeholder="Any specific topics you need help with? Preferred time for tutoring sessions?"></textarea>
-                        </div>
-                        
-                        <button type="submit" class="btn" style="width: 100%;">Submit Booking Request</button>
-                    </form>
+<!-- Booking Section -->
+<section id="booking" style="background-color: var(--light);">
+    <div class="container">
+        <div class="section-title">
+            <h2>Book a Tutor</h2>
+        </div>
+        <div class="booking-container">
+            <div class="booking-form">
+                <form action="https://api.web3forms.com/submit" method="POST" id="smartBookingForm">
+                    <!-- Web3Forms Configuration - FIXED -->
+                    <input type="hidden" name="access_key" value="2039e2bb-3757-434c-8405-c20fc1cdeec9">
+                    <input type="hidden" name="subject" value="New Tutor Booking Request - Genius Point Academy">
+                    <input type="text" name="_honey" style="display:none">
+                    <input type="hidden" name="_redirect" value="https://yourwebsite.com/thank-you">
+                    <input type="hidden" name="_template" value="table">
                     
-                    <!-- Confirmation Message -->
-                    <div class="confirmation-message" id="confirmationMessage">
-                        <h4><i class="fas fa-check-circle" style="color: var(--success);"></i> Booking Request Received!</h4>
-                        <p>We've sent a confirmation email to <strong id="userEmail"></strong>. You'll be contacted within 24 hours via your preferred method(s) to confirm your session.</p>
-                        <div class="whatsapp-info">
-                            <i class="fab fa-whatsapp"></i>
-                            <span>You can also message us directly on WhatsApp: <strong>+2347038248528</strong></span>
-                        </div>
-                    </div>
-                </div>
-                <div class="booking-info">
-                    <i class="fas fa-calendar-check"></i>
-                    <h3>How It Works</h3>
-                    <p>1. Fill out the booking form with your details</p>
-                    <p>2. Select your level and desired course</p>
-                    <p>3. Choose a preferred tutor (optional)</p>
-                    <p>4. Select how you want to be contacted</p>
-                    <p>5. Submit your request</p>
-                    <p>6. Get instant email confirmation</p>
-                    <p>7. We'll contact you within 24 hours to confirm your booking</p>
-                    
-                    <div style="margin-top: 30px; padding: 20px; background: white; border-radius: 8px; box-shadow: 0 3px 10px rgba(0,0,0,0.1);">
-                        <h4><i class="fas fa-envelope" style="color: var(--primary);"></i> Email Confirmation</h4>
-                        <p>After booking, you'll receive an email with:</p>
-                        <ul style="text-align: left; margin-top: 10px; padding-left: 20px;">
-                            <li>Booking details summary</li>
-                            <li>Expected response time</li>
-                            <li>Contact information for urgent queries</li>
-                            <li>Next steps in the process</li>
-                        </ul>
+                    <div class="form-group">
+                        <label for="fullName">Full Name *</label>
+                        <input type="text" id="fullName" name="name" required>
                     </div>
 
-                    <!-- WhatsApp Button -->
-                    <button onclick="sendWhatsAppMessage()" class="btn" style="background-color: #25D366; margin-top: 20px; width: 100%;">
-                        <i class="fab fa-whatsapp"></i> Message Absamie on WhatsApp
+                    <div class="form-group">
+                        <label for="email">Email Address *</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phone">Phone Number *</label>
+                        <input type="tel" id="phone" name="phone" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="department">Department *</label>
+                        <input type="text" id="department" name="department" required placeholder="e.g., Electrical Engineering">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="level">Level *</label>
+                        <select id="level" name="level" required onchange="updateCourses()">
+                            <option value="">Select Your Level</option>
+                            <option value="100 Level">100 Level</option>
+                            <option value="200 Level">200 Level</option>
+                            <option value="300 Level">300 Level</option>
+                            <option value="400 Level">400 Level</option>
+                            <option value="500 Level">500 Level</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="course">Course Needed *</label>
+                        <select id="course" name="course" required onchange="updateTutors()">
+                            <option value="">Select Course</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="tutor">Preferred Tutor</label>
+                        <select id="tutor" name="tutor">
+                            <option value="">Any Available Tutor</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Preferred Contact Method *</label>
+                        <div class="contact-preferences">
+                            <label class="contact-option">
+                                <input type="checkbox" name="contact_method[]" value="whatsapp" required>
+                                <i class="fab fa-whatsapp"></i>
+                                <span>WhatsApp</span>
+                            </label>
+                            <label class="contact-option">
+                                <input type="checkbox" name="contact_method[]" value="email" required>
+                                <i class="fas fa-envelope"></i>
+                                <span>Email</span>
+                            </label>
+                            <label class="contact-option">
+                                <input type="checkbox" name="contact_method[]" value="phone" required>
+                                <i class="fas fa-phone"></i>
+                                <span>Phone Call</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="message">Additional Message (Optional)</label>
+                        <textarea id="message" name="message" rows="4" placeholder="Any specific topics you need help with? Preferred time for tutoring sessions?"></textarea>
+                    </div>
+
+                    <button type="submit" class="btn" style="width: 100%;">
+                        <i class="fas fa-paper-plane"></i> Submit Booking Request
                     </button>
+                </form>
+
+                <!-- Confirmation Message -->
+                <div class="confirmation-message" id="confirmationMessage">
+                    <h4><i class="fas fa-check-circle" style="color: var(--success);"></i> Booking Request Received!</h4>
+                    <p>We've received your booking request for <strong id="confirmedCourse"></strong>. We'll contact you within 24 hours via your preferred method.</p>
+                    <div class="whatsapp-info">
+                        <i class="fab fa-whatsapp"></i>
+                        <span>For urgent inquiries: <strong>+2347038248528</strong></span>
+                    </div>
+                    <button class="btn" style="margin-top: 15px; background: var(--primary);" onclick="resetForm()">✕ Close & Start New Booking</button>
                 </div>
+            </div>
+
+            <div class="booking-info">
+                <i class="fas fa-calendar-check"></i>
+                <h3>How It Works</h3>
+                <p>1. Fill out the booking form with your details</p>
+                <p>2. Select your level → See relevant courses</p>
+                <p>3. Choose course → Available tutors show</p>
+                <p>4. Select preferred tutor (optional)</p>
+                <p>5. Choose contact method</p>
+                <p>6. Submit your request</p>
+                <p>7. Get instant confirmation</p>
+
+                <button onclick="sendWhatsAppMessage()" class="btn" style="background-color: #25D366; margin-top: 20px; width: 100%;">
+                    <i class="fab fa-whatsapp"></i> Message on WhatsApp
+                </button>
             </div>
         </div>
-    </section>
+    </div>
+</section>
 
     <!-- Footer -->
     <footer>
@@ -1452,10 +1428,7 @@
                     <h3>Genius Point Academy</h3>
                     <p>Find Your Academic Breakthrough at FUTA's Premier Tutorial Community</p>
                     <div class="social-links">
-                        <!-- Facebook link: <a href="YOUR_FACEBOOK_URL"><i class="fab fa-facebook-f"></i></a> -->
-                        <!-- Twitter link: <a href="YOUR_TWITTER_URL"><i class="fab fa-twitter"></i></a> -->
-                        <!-- Instagram link: <a href="YOUR_INSTAGRAM_URL"><i class="fab fa-instagram"></i></a> -->
-                        <!-- LinkedIn link: <a href="YOUR_LINKEDIN_URL"><i class="fab fa-linkedin-in"></i></a> -->
+                        <!-- Add social media links when available -->
                     </div>
                 </div>
                 <div class="footer-section">
@@ -1482,19 +1455,6 @@
         </div>
     </footer>
 
-    <!-- Success Modal -->
-    <div class="modal" id="successModal">
-        <div class="modal-content">
-            <span class="close-modal">&times;</span>
-            <div style="text-align: center; padding: 20px;">
-                <i class="fas fa-check-circle" style="font-size: 4rem; color: var(--success); margin-bottom: 20px;"></i>
-                <h2>Booking Submitted Successfully!</h2>
-                <p id="modalMessage">Thank you for your booking request. We will contact you within 24 hours to confirm your session.</p>
-                <button class="btn" style="margin-top: 20px;" id="modalClose">Close</button>
-            </div>
-        </div>
-    </div>
-
     <script>
         // Mobile Menu Toggle
         document.querySelector('.mobile-menu').addEventListener('click', function() {
@@ -1518,95 +1478,114 @@
             });
         });
 
-        // Course data based on level
+        // Course data with conditional logic
         const coursesData = {
-            '100': [
-                { code: 'MTS 101', name: 'Introductory Mathematics I', tutors: ['Muzzle', 'O\'yemi', 'Absamie', 'E-Simple', 'Tomi'] },
-                { code: 'MTS 102', name: 'Introductory Mathematics II', tutors: ['Absamie', 'Tomi'] },
-                { code: 'MTS 104', name: 'Introductory Mathematics III', tutors: ['Absamie', 'Tomi'] },
-                { code: 'CHE 101', name: 'General Chemistry I', tutors: ['E-Simple', 'Physiobrain', 'Davero', 'Tomi'] },
-                { code: 'CHE 102', name: 'General Chemistry II', tutors: ['Physiobrain', 'Davero', 'Tomi'] },
-                { code: 'PHY 101', name: 'General Physics I', tutors: ['E-Simple', 'O\'yemi', 'Absamie', 'Physiobrain', 'Muzzle', 'Tomi'] },
-                { code: 'PHY 102', name: 'General Physics II', tutors: ['Physiobrain', 'Absamie', 'Tomi'] },
-                { code: 'PHY 103', name: 'General Physics III', tutors: ['E-Simple', 'Absamie', 'Muzzle', 'Tomi'] },
-                { code: 'BIO 101', name: 'General Biology I', tutors: ['Physiobrain', 'Davero', 'Favour'] },
-                { code: 'BIO 102', name: 'General Biology II', tutors: ['Physiobrain', 'Davero', 'Favour'] },
-                { code: 'MEE 101', name: 'Engineering Drawing I', tutors: [] }
+            '100 Level': [
+                { code: 'MTS 101 - Introductory Mathematics I', tutors: ['Muzzle', 'O\'yemi', 'Absamie', 'E-Simple', 'Tomi'] },
+                { code: 'MTS 102 - Introductory Mathematics II', tutors: ['Absamie', 'Tomi'] },
+                { code: 'MTS 104 - Introductory Mathematics III', tutors: ['Absamie', 'Tomi'] },
+                { code: 'PHY 101 - General Physics I', tutors: ['E-Simple', 'O\'yemi', 'Absamie', 'Physiobrain', 'Muzzle', 'Tomi'] },
+                { code: 'PHY 102 - General Physics II', tutors: ['Physiobrain', 'Absamie', 'Tomi'] },
+                { code: 'PHY 103 - General Physics III', tutors: ['E-Simple', 'Absamie', 'Muzzle', 'Tomi'] },
+                { code: 'CHE 101 - General Chemistry I', tutors: ['E-Simple', 'Physiobrain', 'Davero', 'Tomi'] },
+                { code: 'CHE 102 - General Chemistry II', tutors: ['Physiobrain', 'Davero', 'Tomi'] },
+                { code: 'BIO 101 - General Biology I', tutors: ['Physiobrain', 'Davero', 'Favour'] },
+                { code: 'BIO 102 - General Biology II', tutors: ['Physiobrain', 'Davero', 'Favour'] },
+                { code: 'MEE 101 - Engineering Drawing I', tutors: [] }
             ],
-            '200': [
-                { code: 'MTS 201', name: 'Mathematical Methods', tutors: ['E-Simple', 'O\'yemi', 'Muzzle', 'Absamie'] },
-                { code: 'MTS 202', name: 'Numerical Analysis', tutors: ['Absamie'] },
-                { code: 'EEE 201', name: 'Basic Electrical and Electronics Engineering I', tutors: ['Absamie', 'O\'yemi', 'E-Simple'] },
-                { code: 'EEE 202', name: 'Basic Electrical and Electronics Engineering II', tutors: ['Absamie'] },
-                { code: 'MEE 207', name: 'Elementary Mechanics', tutors: ['Muzzle', 'O\'yemi'] },
-                { code: 'MME 201', name: 'Introduction to Metallurgical Engineering', tutors: ['O\'yemi'] },
-                { code: 'MEE 201', name: 'Science of Materials', tutors: [] },
-                { code: 'BIO 201', name: 'Biology Course I', tutors: ['Favour'] },
-                { code: 'BIO 202', name: 'Biology Course II', tutors: ['Favour'] },
-                { code: 'MCB 201', name: 'Microbiology Course I', tutors: ['Favour'] },
-                { code: 'MCB 202', name: 'Microbiology Course II', tutors: ['Favour'] },
-                { code: 'CHE 205', name: 'Chemical Engineering Thermodynamics', tutors: [] }
+            '200 Level': [
+                { code: 'MTS 201 - Mathematical Methods', tutors: ['E-Simple', 'O\'yemi', 'Muzzle', 'Absamie'] },
+                { code: 'MTS 202 - Numerical Analysis', tutors: ['Absamie'] },
+                { code: 'EEE 201 - Basic Electrical Engineering I', tutors: ['Absamie', 'O\'yemi', 'E-Simple'] },
+                { code: 'EEE 202 - Basic Electrical Engineering II', tutors: ['Absamie'] },
+                { code: 'MEE 207 - Elementary Mechanics', tutors: ['Muzzle', 'O\'yemi'] },
+                { code: 'MME 201 - Science of Materials', tutors: ['O\'yemi'] },
+                { code: 'BIO 201 - Biology Course I', tutors: ['Favour'] },
+                { code: 'BIO 202 - Biology Course II', tutors: ['Favour'] },
+                { code: 'MCB 201 - Microbiology Course I', tutors: ['Favour'] },
+                { code: 'MCB 202 - Microbiology Course II', tutors: ['Favour'] }
             ],
-            '300': [
-                { code: 'EEE 305', name: 'Electrical Machines', tutors: ['E-Simple'] },
-                { code: 'EEE 307', name: 'Electrical Machines', tutors: ['E-Simple'] },
-                { code: 'MTS 315', name: 'Engineering Mathematics I', tutors: ['E-Simple', 'Muzzle'] }
+            '300 Level': [
+                { code: 'MTS 315 - Engineering Mathematics I', tutors: ['E-Simple', 'Muzzle'] },
+                { code: 'EEE 305 - Electrical Machines', tutors: ['E-Simple'] },
+                { code: 'EEE 307 - Electrical Machines', tutors: ['E-Simple'] }
             ],
-            '400': [
-                { code: 'EEE 401', name: 'Advanced Electrical Engineering I', tutors: ['E-Simple'] },
-                { code: 'EEE 403', name: 'Advanced Electrical Engineering III', tutors: ['E-Simple'] }
-            ],
-            '500': [
-                { code: 'No courses', name: 'No courses available for 500 level', tutors: [] }
+            '400 Level': [
+                { code: 'EEE 401 - Advanced Electrical Engineering I', tutors: ['E-Simple'] },
+                { code: 'EEE 403 - Advanced Electrical Engineering III', tutors: ['E-Simple'] }
             ]
         };
 
-        // Update course options based on selected level
-        document.getElementById('level').addEventListener('change', function() {
-            const level = this.value;
+        // Tutor names mapping
+        const tutorNames = {
+            'E-Simple': 'E-Simple (Engineering & Math)',
+            'Muzzle': 'Muzzle (Mathematics Specialist)',
+            'O\'yemi': 'O\'yemi (Engineering & Math)',
+            'Absamie': 'Absamie (Engineering & Math)',
+            'Physiobrain': 'Physiobrain (Sciences)',
+            'Davero': 'Davero (Chemistry & Biology)',
+            'Favour': 'Favour (Biology & Microbiology)',
+            'Tomi': 'Tomilayo (Science Courses)'
+        };
+
+        function updateCourses() {
+            const level = document.getElementById('level').value;
             const courseSelect = document.getElementById('course');
             const tutorSelect = document.getElementById('tutor');
             
-            // Clear previous options
             courseSelect.innerHTML = '<option value="">Select Course</option>';
             tutorSelect.innerHTML = '<option value="">Any Available Tutor</option>';
             
             if (level && coursesData[level]) {
-                // Add courses for selected level
                 coursesData[level].forEach(course => {
                     const option = document.createElement('option');
                     option.value = course.code;
-                    option.textContent = `${course.code} - ${course.name}`;
+                    option.textContent = course.code;
+                    option.setAttribute('data-tutors', JSON.stringify(course.tutors));
                     courseSelect.appendChild(option);
                 });
             }
-        });
+        }
 
-        // Update tutor options based on selected course
-        document.getElementById('course').addEventListener('change', function() {
-            const level = document.getElementById('level').value;
-            const courseCode = this.value;
+        function updateTutors() {
+            const courseSelect = document.getElementById('course');
+            const selectedOption = courseSelect.options[courseSelect.selectedIndex];
             const tutorSelect = document.getElementById('tutor');
             
-            // Clear previous options except the first one
             tutorSelect.innerHTML = '<option value="">Any Available Tutor</option>';
             
-            if (level && courseCode && coursesData[level]) {
-                const selectedCourse = coursesData[level].find(course => course.code === courseCode);
+            if (selectedOption.value) {
+                const tutors = JSON.parse(selectedOption.getAttribute('data-tutors') || '[]');
                 
-                if (selectedCourse && selectedCourse.tutors.length > 0) {
-                    // Add tutors for selected course
-                    selectedCourse.tutors.forEach(tutor => {
+                if (tutors.length > 0) {
+                    tutors.forEach(tutor => {
                         const option = document.createElement('option');
                         option.value = tutor;
-                        option.textContent = tutor;
+                        option.textContent = tutorNames[tutor] || tutor;
                         tutorSelect.appendChild(option);
                     });
+                } else {
+                    const option = document.createElement('option');
+                    option.value = 'No specific tutors';
+                    option.textContent = 'No specific tutors - we will assign the best available';
+                    tutorSelect.appendChild(option);
                 }
             }
-        });
+        }
 
-        // Contact preference selection
+        function resetForm() {
+            document.getElementById('smartBookingForm').reset();
+            document.getElementById('confirmationMessage').classList.remove('show');
+            document.getElementById('course').innerHTML = '<option value="">Select Course</option>';
+            document.getElementById('tutor').innerHTML = '<option value="">Any Available Tutor</option>';
+            
+            // Reset contact options
+            document.querySelectorAll('.contact-option').forEach(option => {
+                option.classList.remove('selected');
+            });
+        }
+
+        // Contact option selection
         document.querySelectorAll('.contact-option').forEach(option => {
             option.addEventListener('click', function() {
                 const checkbox = this.querySelector('input');
@@ -1615,78 +1594,142 @@
             });
         });
 
-        // Form submission with FormSubmit
-        document.getElementById('bookingForm').addEventListener('submit', function(e) {
-            // Let FormSubmit handle the submission naturally
-            // We'll just show the confirmation message
-            
-            const userEmail = document.getElementById('email').value;
-            
-            // Show confirmation message immediately
-            document.getElementById('userEmail').textContent = userEmail;
-            document.getElementById('confirmationMessage').classList.add('show');
-            
-            // Update modal message
-            const contactMethods = document.querySelectorAll('input[name="contact_method[]"]:checked');
-            const selectedMethods = Array.from(contactMethods).map(cb => cb.value);
-            let contactMessage = '';
-            
-            if (selectedMethods.includes('whatsapp')) {
-                contactMessage += '• WhatsApp: +2347038248528<br>';
-            }
-            if (selectedMethods.includes('phone')) {
-                contactMessage += '• Phone Call: +2347038248528<br>';
-            }
-            if (selectedMethods.includes('email')) {
-                contactMessage += '• Email: academygeniuspoint@gmail.com<br>';
-            }
-            if (selectedMethods.includes('sms')) {
-                contactMessage += '• SMS: +2347038248528<br>';
-            }
-            
-            document.getElementById('modalMessage').innerHTML = `
-                Thank you for your booking request! We've sent a confirmation email to your inbox.<br><br>
-                <strong>You'll be contacted via:</strong><br>
-                ${contactMessage || 'Your selected contact method(s)'}<br>
-                We'll get back to you within 24 hours to confirm your session.
-            `;
-            
-            // Reset form after submission (FormSubmit will handle the actual submission)
-            setTimeout(() => {
-                document.querySelectorAll('.contact-option').forEach(option => {
-                    option.classList.remove('selected');
-                });
-                document.getElementById('confirmationMessage').classList.remove('show');
-            }, 5000);
-        });
-
-        // WhatsApp direct message functionality
-        function sendWhatsAppMessage() {
-            const phone = '+2347038248528'; // Absamie's WhatsApp number
-            const course = document.getElementById('course').value || 'a course';
-            const level = document.getElementById('level').value || 'your level';
-            const message = `Hello GPA! I'm interested in booking a tutor for ${course} (${level} Level).`;
-            const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
-            window.open(url, '_blank');
+      // Form submission for Web3Forms - FIXED
+document.getElementById('smartBookingForm').addEventListener('submit', function(e) {
+    e.preventDefault(); // Prevent default form submission
+    
+    const form = this;
+    const submitButton = form.querySelector('button[type="submit"]');
+    const originalText = submitButton.innerHTML;
+    const courseSelect = document.getElementById('course');
+    const course = courseSelect.options[courseSelect.selectedIndex] ? courseSelect.options[courseSelect.selectedIndex].text : 'No course selected';
+    
+    // Validate required fields
+    const requiredFields = form.querySelectorAll('[required]');
+    let isValid = true;
+    
+    requiredFields.forEach(field => {
+        if (!field.value.trim()) {
+            isValid = false;
+            field.style.borderColor = 'red';
+        } else {
+            field.style.borderColor = '';
         }
+    });
+    
+    if (!isValid) {
+        alert('Please fill in all required fields marked with *');
+        return;
+    }
+    
+    // Show loading state
+    submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+    submitButton.disabled = true;
+    
+    // Update confirmation message
+    document.getElementById('confirmedCourse').textContent = course;
+    
+    // Create FormData object
+    const formData = new FormData(form);
+    
+    // Send to Web3Forms using fetch API
+    fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            // Show success message
+            document.getElementById('confirmationMessage').classList.add('show');
+            submitButton.innerHTML = '<i class="fas fa-check"></i> Request Sent!';
+            
+            // Scroll to confirmation
+            document.getElementById('confirmationMessage').scrollIntoView({ 
+                behavior: 'smooth', 
+                block: 'center' 
+            });
+            
+            // Reset form after 2 seconds
+            setTimeout(() => {
+                resetForm();
+                submitButton.innerHTML = originalText;
+                submitButton.disabled = false;
+            }, 5000);
+            
+        } else {
+            throw new Error('Form submission failed');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        // Fallback: show confirmation anyway and try traditional form submission
+        document.getElementById('confirmationMessage').classList.add('show');
+        submitButton.innerHTML = '<i class="fas fa-check"></i> Request Sent!';
+        
+        // Traditional form submission as fallback
+        form.submit();
+        
+        setTimeout(() => {
+            resetForm();
+            submitButton.innerHTML = originalText;
+            submitButton.disabled = false;
+        }, 5000);
+    });
+});
 
-        // Close modal
-        document.querySelector('.close-modal').addEventListener('click', function() {
-            document.getElementById('successModal').style.display = 'none';
-        });
+// Fixed resetForm function
+function resetForm() {
+    const form = document.getElementById('smartBookingForm');
+    const submitButton = form.querySelector('button[type="submit"]');
+    
+    // Reset the form
+    form.reset();
+    
+    // Hide confirmation message
+    document.getElementById('confirmationMessage').classList.remove('show');
+    
+    // Reset course and tutor dropdowns
+    document.getElementById('course').innerHTML = '<option value="">Select Course</option>';
+    document.getElementById('tutor').innerHTML = '<option value="">Any Available Tutor</option>';
+    
+    // Reset contact options visually
+    document.querySelectorAll('.contact-option').forEach(option => {
+        option.classList.remove('selected');
+        const checkbox = option.querySelector('input');
+        if (checkbox) {
+            checkbox.checked = false;
+        }
+    });
+    
+    // Reset button state
+    submitButton.innerHTML = '<i class="fas fa-paper-plane"></i> Submit Booking Request';
+    submitButton.disabled = false;
+    
+    // Clear any red borders from validation
+    const fields = form.querySelectorAll('input, select, textarea');
+    fields.forEach(field => {
+        field.style.borderColor = '';
+    });
+}
 
-        document.getElementById('modalClose').addEventListener('click', function() {
-            document.getElementById('successModal').style.display = 'none';
-        });
+// Contact option selection - FIXED
+document.querySelectorAll('.contact-option').forEach(option => {
+    option.addEventListener('click', function() {
+        const checkbox = this.querySelector('input[type="checkbox"]');
+        if (checkbox) {
+            checkbox.checked = !checkbox.checked;
+            this.classList.toggle('selected', checkbox.checked);
+        }
+    });
+});
 
-        // Close modal when clicking outside
-        window.addEventListener('click', function(e) {
-            const modal = document.getElementById('successModal');
-            if (e.target === modal) {
-                modal.style.display = 'none';
-            }
-        });
-
+function sendWhatsAppMessage() {
+    const phone = '+2347038248528';
+    const message = `Hello GPA! I'm interested in booking a tutor. Can you help me choose the right course and tutor?`;
+    const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
+    window.open(url, '_blank');
+}
         // Smooth scrolling for navigation links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
@@ -1710,28 +1753,3 @@
     </script>
 </body>
 </html>
-
-<!-- 
-LINE NUMBER GUIDE FOR FUTURE UPDATES:
-
-- Logo image: Line 109
-- Hero background image: Line 143
-- About section collage image: Line 253
-- Add new tutor: Lines 315-380 (follow tutor card structure)
-- E-Simple photo: Line 319
-- Muzzle photo: Line 340 (currently placeholder icon)
-- O'yemi photo: Line 361
-- Absamie photo: Line 382
-- Physiobrain photo: Line 410
-- Davero photo: Line 438
-- Favour photo: Line 466
-- Tomilayo photo: Line 494
-- Update tutor info: Lines 325-380 (each tutor card section)
-- Update courses: Lines 550-750 (courses section)
-- Add new course: Lines 550-750 (follow course card structure)
-- Update course titles: Lines 560, 570, etc. (each course card)
-- Update FormSubmit email: Line 815
-- Update WhatsApp number: Line 819, 1065
-- Update contact info: Lines 1085-1095
-- Add social media links: Lines 1078-1081
--->
