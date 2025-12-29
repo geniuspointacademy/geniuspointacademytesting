@@ -1,0 +1,1344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Genius Point Academy - Admin Portal</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a4b8c 0%, #0f2d5c 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .admin-container {
+            width: 100%;
+            max-width: 1200px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+        
+        .admin-header {
+            background: #1a4b8c;
+            color: white;
+            padding: 30px;
+            text-align: center;
+            border-bottom: 5px solid #f8b739;
+        }
+        
+        .admin-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .admin-header p {
+            opacity: 0.9;
+            font-size: 1.1rem;
+        }
+        
+        .login-section {
+            padding: 40px;
+            display: none;
+        }
+        
+        .login-section.active {
+            display: block;
+        }
+        
+        .login-form {
+            max-width: 400px;
+            margin: 0 auto;
+            background: #f8f9fa;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #1a4b8c;
+        }
+        
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+        
+        .form-group input:focus, .form-group select:focus {
+            border-color: #1a4b8c;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(26, 75, 140, 0.2);
+        }
+        
+        .btn {
+            display: inline-block;
+            background: #f8b739;
+            color: #333;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 50px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 100%;
+        }
+        
+        .btn:hover {
+            background: #e6a532;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+        }
+        
+        .dashboard-section {
+            padding: 40px;
+            display: none;
+        }
+        
+        .dashboard-section.active {
+            display: block;
+        }
+        
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #eee;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .user-avatar {
+            width: 50px;
+            height: 50px;
+            background: #1a4b8c;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        
+        .logout-btn {
+            background: #dc3545;
+            color: white;
+            padding: 10px 25px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        
+        .logout-btn:hover {
+            background: #c82333;
+            transform: translateY(-2px);
+        }
+        
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .dashboard-card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border-top: 5px solid #1a4b8c;
+            transition: all 0.3s;
+        }
+        
+        .dashboard-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+        }
+        
+        .dashboard-card h3 {
+            color: #1a4b8c;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .dashboard-card h3 i {
+            color: #f8b739;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        
+        .tutor-list {
+            max-height: 400px;
+            overflow-y: auto;
+            margin-top: 20px;
+        }
+        
+        .tutor-item {
+            background: #f8f9fa;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 10px;
+            border-left: 4px solid #f8b739;
+            position: relative;
+        }
+        
+        .tutor-item.editing {
+            border-left-color: #1a4b8c;
+            background: #e8f4ff;
+        }
+        
+        .tutor-item h4 {
+            color: #1a4b8c;
+            margin-bottom: 5px;
+        }
+        
+        .tutor-item p {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 5px;
+        }
+        
+        .tutor-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .edit-btn, .delete-btn, .save-btn, .cancel-btn {
+            padding: 5px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        .edit-btn {
+            background: #17a2b8;
+            color: white;
+        }
+        
+        .delete-btn {
+            background: #dc3545;
+            color: white;
+        }
+        
+        .save-btn {
+            background: #28a745;
+            color: white;
+        }
+        
+        .cancel-btn {
+            background: #6c757d;
+            color: white;
+        }
+        
+        .edit-btn:hover, .delete-btn:hover, .save-btn:hover, .cancel-btn:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+        
+        .courses-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .course-tag {
+            background: #e9ecef;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            color: #333;
+        }
+        
+        .update-form {
+            margin-top: 30px;
+            padding: 30px;
+            background: #f8f9fa;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+        }
+        
+        .update-form h4 {
+            color: #1a4b8c;
+            margin-bottom: 20px;
+        }
+        
+        .notification {
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: none;
+        }
+        
+        .notification.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+            display: block;
+        }
+        
+        .notification.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+            display: block;
+        }
+        
+        .email-notification {
+            background: #007bff;
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 30px;
+        }
+        
+        .email-notification i {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            display: block;
+        }
+        
+        .update-summary {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            border-left: 4px solid #1a4b8c;
+        }
+        
+        .update-summary h4 {
+            color: #1a4b8c;
+            margin-bottom: 15px;
+        }
+        
+        .update-summary ul {
+            padding-left: 20px;
+        }
+        
+        .update-summary li {
+            margin-bottom: 8px;
+        }
+        
+        .changes-list {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 15px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        
+        .change-item {
+            padding: 8px;
+            border-bottom: 1px dashed #ddd;
+            font-size: 0.9rem;
+        }
+        
+        .change-item:last-child {
+            border-bottom: none;
+        }
+        
+        .change-time {
+            color: #666;
+            font-size: 0.8rem;
+        }
+        
+        @media (max-width: 768px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .admin-header h1 {
+                font-size: 2rem;
+            }
+            
+            .dashboard-header {
+                flex-direction: column;
+                gap: 20px;
+                text-align: center;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="admin-container">
+        <div class="admin-header">
+            <h1><i class="fas fa-cogs"></i> Genius Point Academy Admin Portal</h1>
+            <p>Manage tutors, courses, and website content</p>
+        </div>
+        
+        <!-- Login Section -->
+        <div class="login-section active" id="loginSection">
+            <div class="login-form">
+                <h2 style="text-align: center; color: #1a4b8c; margin-bottom: 30px;">Admin/Tutor Login</h2>
+                <div class="notification error" id="loginError">Invalid username or password!</div>
+                
+                <div class="form-group">
+                    <label for="username"><i class="fas fa-user"></i> Username</label>
+                    <select id="username">
+                        <option value="">Select your name</option>
+                        <option value="E-Simple">E-Simple (Amusan Emmanuel)</option>
+                        <option value="Muzzle">Muzzle (Folorunsho Muhammed)</option>
+                        <option value="O'yemi">O'yemi (Abideen Yakub)</option>
+                        <option value="Absamie">Absamie (Iluyomade Samson)</option>
+                        <option value="Physiobrain">Physiobrain (Olayonwa Rokeeb)</option>
+                        <option value="Davero">Davero (Idima David)</option>
+                        <option value="Favour">Favour (Adesakin Peace)</option>
+                        <option value="Tomi">Tomi (Asotun Oluwatomilayo)</option>
+                        <option value="Admin">Main Admin</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="password"><i class="fas fa-lock"></i> Password</label>
+                    <input type="password" id="password" placeholder="Enter password">
+                </div>
+                
+                <button class="btn" onclick="login()">
+                    <i class="fas fa-sign-in-alt"></i> Login to Admin Portal
+                </button>
+                
+                <div style="margin-top: 20px; text-align: center; color: #666; font-size: 0.9rem;">
+                    <p><strong>Default Password:</strong> teamgpa</p>
+                    <p>Select your name from dropdown and enter password</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Dashboard Section -->
+        <div class="dashboard-section" id="dashboardSection">
+            <div class="dashboard-header">
+                <div class="user-info">
+                    <div class="user-avatar" id="userAvatar">U</div>
+                    <div>
+                        <h3 id="currentUser">User</h3>
+                        <p id="userRole">Administrator</p>
+                    </div>
+                </div>
+                <button class="logout-btn" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </div>
+            
+            <div class="notification success" id="successNotification">
+                <i class="fas fa-check-circle"></i> Changes saved successfully! Email notification sent to admin.
+            </div>
+            
+            <!-- Update Summary Section -->
+            <div class="update-summary" id="updateSummary" style="display: none;">
+                <h4><i class="fas fa-history"></i> Recent Changes</h4>
+                <div id="changesList" class="changes-list">
+                    <!-- Changes will appear here -->
+                </div>
+            </div>
+            
+            <div class="dashboard-grid">
+                <!-- Manage Tutors Card -->
+                <div class="dashboard-card">
+                    <h3><i class="fas fa-user-tie"></i> Manage Tutors</h3>
+                    <p>Add, edit, or remove tutors from the website.</p>
+                    
+                    <div class="tutor-list" id="tutorList">
+                        <!-- Tutors will be loaded here -->
+                    </div>
+                    
+                    <div class="update-form">
+                        <h4><i class="fas fa-plus-circle"></i> Add New Tutor</h4>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Tutor Name (Display)</label>
+                                <input type="text" id="tutorName" placeholder="E-Simple">
+                            </div>
+                            <div class="form-group">
+                                <label>Full Name</label>
+                                <input type="text" id="tutorFullName" placeholder="Amusan Emmanuel Oluwapelumi">
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Level & Department</label>
+                                <input type="text" id="tutorLevelDept" placeholder="400L | Electrical & Electronics Engineering">
+                            </div>
+                            <div class="form-group">
+                                <label>Email</label>
+                                <input type="email" id="tutorEmail" placeholder="emmanuelamusan732@gmail.com">
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>WhatsApp Number</label>
+                                <input type="text" id="tutorWhatsapp" placeholder="08109807833">
+                            </div>
+                            <div class="form-group">
+                                <label>Image File Name</label>
+                                <input type="text" id="tutorImage" placeholder="e-simple.png">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Courses (comma separated)</label>
+                            <input type="text" id="tutorCourses" placeholder="MTH 101, PHY 101, FCHE 101">
+                        </div>
+                        
+                        <button class="btn" onclick="addTutor()">
+                            <i class="fas fa-plus"></i> Add Tutor
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Manage Courses Card -->
+                <div class="dashboard-card">
+                    <h3><i class="fas fa-book"></i> Manage Courses</h3>
+                    <p>Update course offerings by level.</p>
+                    
+                    <div class="form-group">
+                        <label>Select Level</label>
+                        <select id="courseLevel" onchange="loadCoursesForLevel()">
+                            <option value="100">100 Level</option>
+                            <option value="200">200 Level</option>
+                            <option value="300">300 Level</option>
+                            <option value="400">400 Level</option>
+                            <option value="500">500 Level</option>
+                        </select>
+                    </div>
+                    
+                    <div id="courseList">
+                        <!-- Courses will be loaded here -->
+                    </div>
+                    
+                    <div class="update-form">
+                        <h4><i class="fas fa-plus-circle"></i> Add Course to Level</h4>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Course Code</label>
+                                <input type="text" id="courseCode" placeholder="MTH 101">
+                            </div>
+                            <div class="form-group">
+                                <label>Course Name</label>
+                                <input type="text" id="courseTitle" placeholder="Elementary Mathematics I">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Available Tutors (comma separated)</label>
+                            <input type="text" id="courseTutors" placeholder="E-Simple, Muzzle, Absamie">
+                        </div>
+                        
+                        <button class="btn" onclick="addCourse()">
+                            <i class="fas fa-plus"></i> Add Course
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Update Website Button -->
+            <div style="text-align: center; margin-top: 40px;">
+                <button class="btn" style="background: #1a4b8c; color: white; max-width: 400px;" onclick="updateWebsite()">
+                    <i class="fas fa-sync-alt"></i> Update Website & Send Email Notification
+                </button>
+            </div>
+            
+            <!-- Email Notification Info -->
+            <div class="email-notification">
+                <i class="fas fa-envelope"></i>
+                <h3>Email Notification System</h3>
+                <p>When you click "Update Website", an email will be sent to:</p>
+                <p><strong>helpinghandshallneverfall@gmail.com</strong></p>
+                <p>The email will include:</p>
+                <ul style="text-align: left; margin-top: 10px;">
+                    <li>Who made the changes (your name)</li>
+                    <li>Date and time of update</li>
+                    <li>Summary of all changes made</li>
+                    <li>Updated tutor and course data</li>
+                </ul>
+            </div>
+            
+            <!-- Activity Log -->
+            <div class="dashboard-card" style="margin-top: 40px;">
+                <h3><i class="fas fa-history"></i> Activity Log</h3>
+                <div class="form-group">
+                    <label>Recent Updates</label>
+                    <div id="activityLog" style="max-height: 300px; overflow-y: auto; padding: 15px; background: #f8f9fa; border-radius: 8px;">
+                        <!-- Activity log entries -->
+                    </div>
+                </div>
+                
+                <div style="display: flex; gap: 15px; margin-top: 20px;">
+                    <button class="btn" style="background: #17a2b8; flex: 1;" onclick="exportData()">
+                        <i class="fas fa-download"></i> Export All Data
+                    </button>
+                    <button class="btn" style="background: #28a745; flex: 1;" onclick="importData()">
+                        <i class="fas fa-upload"></i> Import Data
+                    </button>
+                    <button class="btn" style="background: #6c757d; flex: 1;" onclick="clearActivityLog()">
+                        <i class="fas fa-trash"></i> Clear Log
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Admin credentials - all users share the same password
+        const ADMIN_PASSWORD = "teamgpa";
+        
+        // Store current user info
+        let currentUser = null;
+        let changesMade = [];
+        let isEditingTutor = false;
+        let editingTutorIndex = -1;
+        
+        // Initialize data storage
+        let tutorsData = [];
+        let coursesData = {
+            '100': [],
+            '200': [],
+            '300': [],
+            '400': [],
+            '500': []
+        };
+        let activityLog = [];
+        
+        // Load data from localStorage on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            loadSavedData();
+            updateActivityLogDisplay();
+        });
+        
+        function loadSavedData() {
+            // Load tutors data
+            const savedTutors = localStorage.getItem('gpaTutors');
+            if (savedTutors) {
+                tutorsData = JSON.parse(savedTutors);
+            } else {
+                // Default tutors data
+                tutorsData = [
+                    {
+                        name: "E-Simple",
+                        fullName: "Amusan Emmanuel Oluwapelumi",
+                        levelDept: "400L | Electrical & Electronics Engineering",
+                        email: "emmanuelamusan732@gmail.com",
+                        whatsapp: "08109807833",
+                        courses: ["MTH 101", "PHY 101", "PHY 103", "FCHE 101", "MTS 201", "EEE 201", "MTS 315", "EEE 305", "EEE 307", "EEE 401", "EEE 403"],
+                        image: "e-simple.png"
+                    },
+                    {
+                        name: "Muzzle",
+                        fullName: "Folorunsho Muhammed Alamu",
+                        levelDept: "400L | Mechanical Engineering",
+                        email: "folorunshomuhammed9090@gmail.com",
+                        whatsapp: "08127064566",
+                        courses: ["MTH 101", "PHY 101", "PHY 103", "MTS 201", "MTS 315", "MEE 207"],
+                        image: "muzzle.jpg"
+                    },
+                    {
+                        name: "O'yemi",
+                        fullName: "Abideen Yakub Opeyemi",
+                        levelDept: "300L | Electrical & Electronics Engineering",
+                        email: "abideenyakub08@gmail.com",
+                        whatsapp: "07050376975",
+                        courses: ["MTH 101", "PHY 101", "MTS 201", "EEE 201", "MEE 207", "MME 201"],
+                        image: "o'yemi.jpg"
+                    }
+                ];
+            }
+            
+            // Load courses data
+            const savedCourses = localStorage.getItem('gpaCourses');
+            if (savedCourses) {
+                coursesData = JSON.parse(savedCourses);
+            }
+            
+            // Load activity log
+            const savedLog = localStorage.getItem('gpaActivityLog');
+            if (savedLog) {
+                activityLog = JSON.parse(savedLog);
+            }
+            
+            // Load tutors if on dashboard
+            if (document.getElementById('dashboardSection').classList.contains('active')) {
+                loadTutors();
+                loadCoursesForLevel();
+            }
+        }
+        
+        function login() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            if (!username) {
+                alert('Please select your name from the dropdown');
+                return;
+            }
+            
+            if (password === ADMIN_PASSWORD) {
+                currentUser = username;
+                
+                // Set user info display
+                document.getElementById('currentUser').textContent = username;
+                document.getElementById('userRole').textContent = username === 'Admin' ? 'Administrator' : 'Tutor';
+                
+                // Set avatar
+                const avatar = document.getElementById('userAvatar');
+                avatar.textContent = username.charAt(0);
+                avatar.style.background = username === 'Admin' ? '#dc3545' : '#1a4b8c';
+                
+                // Show dashboard
+                document.getElementById('loginSection').classList.remove('active');
+                document.getElementById('dashboardSection').classList.add('active');
+                document.getElementById('loginError').style.display = 'none';
+                
+                // Reset password field
+                document.getElementById('password').value = '';
+                
+                // Load data and display
+                loadTutors();
+                loadCoursesForLevel();
+                updateActivityLogDisplay();
+                
+                // Log login activity
+                logActivity(`${username} logged in`, 'login');
+                
+            } else {
+                document.getElementById('loginError').style.display = 'block';
+            }
+        }
+        
+        function logout() {
+            // Log logout activity
+            logActivity(`${currentUser} logged out`, 'logout');
+            
+            // Reset
+            currentUser = null;
+            document.getElementById('dashboardSection').classList.remove('active');
+            document.getElementById('loginSection').classList.add('active');
+            document.getElementById('username').value = '';
+            document.getElementById('password').value = '';
+            changesMade = [];
+            document.getElementById('updateSummary').style.display = 'none';
+        }
+        
+        function loadTutors() {
+            const tutorList = document.getElementById('tutorList');
+            tutorList.innerHTML = '';
+            
+            tutorsData.forEach((tutor, index) => {
+                const tutorDiv = document.createElement('div');
+                tutorDiv.className = 'tutor-item';
+                tutorDiv.id = `tutor-${index}`;
+                tutorDiv.innerHTML = `
+                    <h4>${tutor.name}</h4>
+                    <p><strong>${tutor.fullName}</strong></p>
+                    <p>${tutor.levelDept}</p>
+                    <p>📧 ${tutor.email} | 📱 ${tutor.whatsapp}</p>
+                    <div class="courses-list">
+                        ${tutor.courses.map(course => `<span class="course-tag">${course}</span>`).join('')}
+                    </div>
+                    <div class="tutor-actions">
+                        <button class="edit-btn" onclick="editTutor(${index})">
+                            <i class="fas fa-edit"></i> Edit
+                        </button>
+                        <button class="delete-btn" onclick="deleteTutor(${index})">
+                            <i class="fas fa-trash"></i> Remove
+                        </button>
+                    </div>
+                `;
+                tutorList.appendChild(tutorDiv);
+            });
+        }
+        
+        function editTutor(index) {
+            if (isEditingTutor) {
+                alert('Please finish editing the current tutor first');
+                return;
+            }
+            
+            const tutor = tutorsData[index];
+            isEditingTutor = true;
+            editingTutorIndex = index;
+            
+            // Update form fields with tutor data
+            document.getElementById('tutorName').value = tutor.name;
+            document.getElementById('tutorFullName').value = tutor.fullName;
+            document.getElementById('tutorLevelDept').value = tutor.levelDept;
+            document.getElementById('tutorEmail').value = tutor.email;
+            document.getElementById('tutorWhatsapp').value = tutor.whatsapp;
+            document.getElementById('tutorImage').value = tutor.image;
+            document.getElementById('tutorCourses').value = tutor.courses.join(', ');
+            
+            // Update button text
+            const addBtn = document.querySelector('.dashboard-card .btn[onclick="addTutor()"]');
+            addBtn.innerHTML = '<i class="fas fa-save"></i> Save Changes';
+            addBtn.setAttribute('onclick', 'saveTutorEdit()');
+            
+            // Highlight tutor being edited
+            document.getElementById(`tutor-${index}`).classList.add('editing');
+            
+            // Scroll to form
+            document.querySelector('.update-form').scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        function saveTutorEdit() {
+            const originalTutor = tutorsData[editingTutorIndex];
+            
+            const name = document.getElementById('tutorName').value.trim();
+            const fullName = document.getElementById('tutorFullName').value.trim();
+            const levelDept = document.getElementById('tutorLevelDept').value.trim();
+            const email = document.getElementById('tutorEmail').value.trim();
+            const whatsapp = document.getElementById('tutorWhatsapp').value.trim();
+            const image = document.getElementById('tutorImage').value.trim();
+            const courses = document.getElementById('tutorCourses').value.split(',').map(c => c.trim());
+            
+            if (!name || !fullName || !levelDept || !email || !whatsapp) {
+                alert('Please fill all required fields');
+                return;
+            }
+            
+            // Track changes
+            const changes = [];
+            if (originalTutor.name !== name) changes.push(`Name: ${originalTutor.name} → ${name}`);
+            if (originalTutor.fullName !== fullName) changes.push(`Full Name: ${originalTutor.fullName} → ${fullName}`);
+            if (originalTutor.levelDept !== levelDept) changes.push(`Level/Dept: ${originalTutor.levelDept} → ${levelDept}`);
+            if (originalTutor.email !== email) changes.push(`Email: ${originalTutor.email} → ${email}`);
+            if (originalTutor.whatsapp !== whatsapp) changes.push(`WhatsApp: ${originalTutor.whatsapp} → ${whatsapp}`);
+            if (originalTutor.image !== image) changes.push(`Image: ${originalTutor.image} → ${image}`);
+            
+            const originalCoursesStr = originalTutor.courses.sort().join(', ');
+            const newCoursesStr = courses.sort().join(', ');
+            if (originalCoursesStr !== newCoursesStr) {
+                changes.push(`Courses updated`);
+            }
+            
+            // Update tutor data
+            tutorsData[editingTutorIndex] = {
+                name,
+                fullName,
+                levelDept,
+                email,
+                whatsapp,
+                image: image || 'default-tutor.jpg',
+                courses: courses.filter(c => c)
+            };
+            
+            // Log the edit
+            if (changes.length > 0) {
+                const changeSummary = `Edited tutor "${originalTutor.name}": ${changes.join('; ')}`;
+                changesMade.push(changeSummary);
+                logActivity(changeSummary, 'edit');
+                showUpdateSummary();
+            }
+            
+            // Reset form
+            cancelTutorEdit();
+            saveData();
+            loadTutors();
+        }
+        
+        function cancelTutorEdit() {
+            isEditingTutor = false;
+            editingTutorIndex = -1;
+            
+            // Reset form fields
+            clearTutorForm();
+            
+            // Reset button
+            const addBtn = document.querySelector('.dashboard-card .btn[onclick="saveTutorEdit()"]');
+            if (addBtn) {
+                addBtn.innerHTML = '<i class="fas fa-plus"></i> Add Tutor';
+                addBtn.setAttribute('onclick', 'addTutor()');
+            }
+            
+            // Remove editing highlight
+            document.querySelectorAll('.tutor-item.editing').forEach(item => {
+                item.classList.remove('editing');
+            });
+        }
+        
+        function addTutor() {
+            const name = document.getElementById('tutorName').value.trim();
+            const fullName = document.getElementById('tutorFullName').value.trim();
+            const levelDept = document.getElementById('tutorLevelDept').value.trim();
+            const email = document.getElementById('tutorEmail').value.trim();
+            const whatsapp = document.getElementById('tutorWhatsapp').value.trim();
+            const image = document.getElementById('tutorImage').value.trim();
+            const courses = document.getElementById('tutorCourses').value.split(',').map(c => c.trim());
+            
+            if (!name || !fullName || !levelDept || !email || !whatsapp) {
+                alert('Please fill all required fields');
+                return;
+            }
+            
+            const newTutor = {
+                name,
+                fullName,
+                levelDept,
+                email,
+                whatsapp,
+                image: image || 'default-tutor.jpg',
+                courses: courses.filter(c => c)
+            };
+            
+            tutorsData.push(newTutor);
+            
+            // Log the addition
+            const changeSummary = `Added new tutor "${name}"`;
+            changesMade.push(changeSummary);
+            logActivity(changeSummary, 'add');
+            showUpdateSummary();
+            
+            saveData();
+            loadTutors();
+            clearTutorForm();
+            
+            // Update courses data with new tutor
+            updateCoursesWithTutor(name, courses);
+        }
+        
+        function deleteTutor(index) {
+            if (confirm('Are you sure you want to remove this tutor?')) {
+                const tutorName = tutorsData[index].name;
+                tutorsData.splice(index, 1);
+                
+                // Log the deletion
+                const changeSummary = `Removed tutor "${tutorName}"`;
+                changesMade.push(changeSummary);
+                logActivity(changeSummary, 'delete');
+                showUpdateSummary();
+                
+                saveData();
+                loadTutors();
+                
+                // Remove tutor from courses
+                removeTutorFromCourses(tutorName);
+            }
+        }
+        
+        function clearTutorForm() {
+            document.getElementById('tutorName').value = '';
+            document.getElementById('tutorFullName').value = '';
+            document.getElementById('tutorLevelDept').value = '';
+            document.getElementById('tutorEmail').value = '';
+            document.getElementById('tutorWhatsapp').value = '';
+            document.getElementById('tutorImage').value = '';
+            document.getElementById('tutorCourses').value = '';
+        }
+        
+        function loadCoursesForLevel() {
+            const level = document.getElementById('courseLevel').value;
+            const courseList = document.getElementById('courseList');
+            
+            courseList.innerHTML = '';
+            
+            if (coursesData[level] && coursesData[level].length > 0) {
+                coursesData[level].forEach((course, index) => {
+                    const courseDiv = document.createElement('div');
+                    courseDiv.className = 'tutor-item';
+                    courseDiv.innerHTML = `
+                        <h4>${course.code}</h4>
+                        <p><strong>${course.name}</strong></p>
+                        <div class="courses-list">
+                            ${course.tutors.map(tutor => `<span class="course-tag">${tutor}</span>`).join('')}
+                        </div>
+                        <div class="tutor-actions">
+                            <button class="delete-btn" onclick="deleteCourse('${level}', ${index})">
+                                <i class="fas fa-trash"></i> Remove
+                            </button>
+                        </div>
+                    `;
+                    courseList.appendChild(courseDiv);
+                });
+            } else {
+                courseList.innerHTML = '<p style="color: #666; text-align: center;">No courses found for this level.</p>';
+            }
+        }
+        
+        function addCourse() {
+            const level = document.getElementById('courseLevel').value;
+            const code = document.getElementById('courseCode').value.trim();
+            const name = document.getElementById('courseTitle').value.trim();
+            const tutors = document.getElementById('courseTutors').value.split(',').map(t => t.trim());
+            
+            if (!code || !name) {
+                alert('Please fill course code and name');
+                return;
+            }
+            
+            if (!coursesData[level]) {
+                coursesData[level] = [];
+            }
+            
+            const newCourse = {
+                code,
+                name,
+                tutors: tutors.filter(t => t)
+            };
+            
+            coursesData[level].push(newCourse);
+            
+            // Log the addition
+            const changeSummary = `Added course "${code} - ${name}" to ${level} Level`;
+            changesMade.push(changeSummary);
+            logActivity(changeSummary, 'add');
+            showUpdateSummary();
+            
+            saveData();
+            loadCoursesForLevel();
+            
+            // Clear form
+            document.getElementById('courseCode').value = '';
+            document.getElementById('courseTitle').value = '';
+            document.getElementById('courseTutors').value = '';
+        }
+        
+        function deleteCourse(level, index) {
+            if (confirm('Are you sure you want to remove this course?')) {
+                const course = coursesData[level][index];
+                coursesData[level].splice(index, 1);
+                
+                // Log the deletion
+                const changeSummary = `Removed course "${course.code} - ${course.name}" from ${level} Level`;
+                changesMade.push(changeSummary);
+                logActivity(changeSummary, 'delete');
+                showUpdateSummary();
+                
+                saveData();
+                loadCoursesForLevel();
+            }
+        }
+        
+        function updateCoursesWithTutor(tutorName, tutorCourses) {
+            Object.keys(coursesData).forEach(level => {
+                coursesData[level].forEach(course => {
+                    if (tutorCourses.includes(course.code) && !course.tutors.includes(tutorName)) {
+                        course.tutors.push(tutorName);
+                    }
+                });
+            });
+            saveData();
+        }
+        
+        function removeTutorFromCourses(tutorName) {
+            Object.keys(coursesData).forEach(level => {
+                coursesData[level].forEach(course => {
+                    const index = course.tutors.indexOf(tutorName);
+                    if (index > -1) {
+                        course.tutors.splice(index, 1);
+                    }
+                });
+            });
+            saveData();
+        }
+        
+        function logActivity(action, type = 'info') {
+            const activity = {
+                user: currentUser,
+                action: action,
+                type: type,
+                timestamp: new Date().toISOString(),
+                timeDisplay: new Date().toLocaleString()
+            };
+            
+            activityLog.unshift(activity); // Add to beginning
+            if (activityLog.length > 50) { // Keep only last 50 activities
+                activityLog = activityLog.slice(0, 50);
+            }
+            
+            localStorage.setItem('gpaActivityLog', JSON.stringify(activityLog));
+            updateActivityLogDisplay();
+        }
+        
+        function updateActivityLogDisplay() {
+            const logContainer = document.getElementById('activityLog');
+            if (!logContainer) return;
+            
+            logContainer.innerHTML = '';
+            
+            if (activityLog.length === 0) {
+                logContainer.innerHTML = '<p style="color: #666; text-align: center;">No activity yet</p>';
+                return;
+            }
+            
+            activityLog.forEach((activity, index) => {
+                const logEntry = document.createElement('div');
+                logEntry.className = 'change-item';
+                logEntry.style.borderLeft = `4px solid ${getActivityColor(activity.type)}`;
+                logEntry.style.marginBottom = '10px';
+                logEntry.style.padding = '10px';
+                logEntry.style.background = '#fff';
+                logEntry.style.borderRadius = '5px';
+                
+                logEntry.innerHTML = `
+                    <div style="display: flex; justify-content: space-between;">
+                        <strong>${activity.user}</strong>
+                        <span class="change-time">${activity.timeDisplay}</span>
+                    </div>
+                    <div style="margin-top: 5px; color: #555;">${activity.action}</div>
+                `;
+                
+                logContainer.appendChild(logEntry);
+            });
+        }
+        
+        function getActivityColor(type) {
+            switch(type) {
+                case 'add': return '#28a745';
+                case 'edit': return '#17a2b8';
+                case 'delete': return '#dc3545';
+                case 'login': return '#6f42c1';
+                case 'logout': return '#6c757d';
+                default: return '#007bff';
+            }
+        }
+        
+        function showUpdateSummary() {
+            const summarySection = document.getElementById('updateSummary');
+            const changesList = document.getElementById('changesList');
+            
+            if (changesMade.length > 0) {
+                summarySection.style.display = 'block';
+                changesList.innerHTML = '';
+                
+                changesMade.forEach((change, index) => {
+                    const changeItem = document.createElement('div');
+                    changeItem.className = 'change-item';
+                    changeItem.innerHTML = `
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <i class="fas fa-pen" style="color: #17a2b8;"></i>
+                            <span>${change}</span>
+                        </div>
+                    `;
+                    changesList.appendChild(changeItem);
+                });
+            }
+        }
+        
+        function saveData() {
+            localStorage.setItem('gpaTutors', JSON.stringify(tutorsData));
+            localStorage.setItem('gpaCourses', JSON.stringify(coursesData));
+        }
+        
+        async function updateWebsite() {
+            if (changesMade.length === 0) {
+                alert('No changes have been made to update.');
+                return;
+            }
+            
+            // Show loading
+            const updateBtn = document.querySelector('.btn[onclick="updateWebsite()"]');
+            const originalText = updateBtn.innerHTML;
+            updateBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending Update...';
+            updateBtn.disabled = true;
+            
+            try {
+                // 1. Save data to localStorage
+                saveData();
+                
+                // 2. Prepare detailed email message
+                const emailMessage = `
+Genius Point Academy Website Update Notification
+=================================================
+
+Updated by: ${currentUser}
+Date & Time: ${new Date().toLocaleString()}
+
+SUMMARY OF CHANGES:
+-------------------
+${changesMade.map((change, index) => `${index + 1}. ${change}`).join('\n')}
+
+UPDATED TUTORS DATA:
+--------------------
+Total Tutors: ${tutorsData.length}
+${tutorsData.map(t => `• ${t.name} (${t.fullName}) - ${t.levelDept}`).join('\n')}
+
+UPDATED COURSES DATA:
+---------------------
+${Object.keys(coursesData).map(level => {
+    const courses = coursesData[level];
+    if (courses.length === 0) return '';
+    return `${level} Level (${courses.length} courses):\n${courses.map(c => `  - ${c.code}: ${c.name}`).join('\n')}`;
+}).filter(text => text).join('\n\n')}
+
+CHANGE HISTORY:
+---------------
+Last 5 activities:
+${activityLog.slice(0, 5).map(a => `[${a.timeDisplay}] ${a.user}: ${a.action}`).join('\n')}
+
+---
+This update was made through the Genius Point Academy Admin Portal.
+Website URL: [Your Website URL]
+                `;
+                
+                // 3. Send email notification via FormSubmit
+                const formData = new FormData();
+                formData.append('_subject', `GPA Website Update by ${currentUser}`);
+                formData.append('message', emailMessage);
+                formData.append('_replyto', 'admin@geniuspointacademy.com');
+                formData.append('_cc', 'helpinghandshallneverfall@gmail.com');
+                formData.append('_template', 'table');
+                formData.append('_captcha', 'false');
+                
+                // Send to FormSubmit
+                const response = await fetch('https://formsubmit.co/ajax/helpinghandshallneverfall@gmail.com', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    // Show success message
+                    document.getElementById('successNotification').style.display = 'block';
+                    
+                    // Log the update
+                    logActivity(`Updated website and sent email notification (${changesMade.length} changes)`, 'info');
+                    
+                    // Reset changes
+                    changesMade = [];
+                    document.getElementById('updateSummary').style.display = 'none';
+                    
+                    // Create backup
+                    createBackup();
+                    
+                    setTimeout(() => {
+                        document.getElementById('successNotification').style.display = 'none';
+                    }, 5000);
+                    
+                } else {
+                    throw new Error('Email sending failed');
+                }
+                
+            } catch (error) {
+                console.error('Update error:', error);
+                alert('Error sending email notification. Please try again.');
+            } finally {
+                // Reset button
+                updateBtn.innerHTML = originalText;
+                updateBtn.disabled = false;
+            }
+        }
+        
+        function createBackup() {
+            const data = {
+                tutors: tutorsData,
+                courses: coursesData,
+                activityLog: activityLog,
+                lastUpdated: new Date().toISOString(),
+                updatedBy: currentUser
+            };
+            
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(data, null, 2));
+            const downloadAnchor = document.createElement('a');
+            downloadAnchor.setAttribute("href", dataStr);
+            downloadAnchor.setAttribute("download", `gpa-backup-${new Date().getTime()}.json`);
+            document.body.appendChild(downloadAnchor);
+            downloadAnchor.click();
+            document.body.removeChild(downloadAnchor);
+        }
+        
+        function exportData() {
+            const data = {
+                tutors: tutorsData,
+                courses: coursesData,
+                activityLog: activityLog,
+                exportDate: new Date().toISOString(),
+                exportedBy: currentUser
+            };
+            
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(data, null, 2));
+            const downloadAnchor = document.createElement('a');
+            downloadAnchor.setAttribute("href", dataStr);
+            downloadAnchor.setAttribute("download", `gpa-export-${new Date().getTime()}.json`);
+            document.body.appendChild(downloadAnchor);
+            downloadAnchor.click();
+            document.body.removeChild(downloadAnchor);
+            
+            logActivity('Exported all data', 'info');
+        }
+        
+        function importData() {
+            const jsonInput = document.getElementById('dataJson').value;
+            
+            try {
+                const data = JSON.parse(jsonInput);
+                
+                if (data.tutors && data.courses) {
+                    if (confirm('This will replace all current data. Continue?')) {
+                        tutorsData = data.tutors;
+                        coursesData = data.courses;
+                        if (data.activityLog) {
+                            activityLog = data.activityLog;
+                        }
+                        
+                        saveData();
+                        localStorage.setItem('gpaActivityLog', JSON.stringify(activityLog));
+                        
+                        loadTutors();
+                        loadCoursesForLevel();
+                        updateActivityLogDisplay();
+                        
+                        logActivity('Imported data from backup', 'info');
+                        alert('Data imported successfully!');
+                    }
+                } else {
+                    throw new Error('Invalid data structure');
+                }
+            } catch (error) {
+                alert('Invalid JSON data. Please check the format and try again.');
+            }
+        }
+        
+        function clearActivityLog() {
+            if (confirm('Clear all activity logs? This cannot be undone.')) {
+                activityLog = [];
+                localStorage.setItem('gpaActivityLog', JSON.stringify([]));
+                updateActivityLogDisplay();
+                logActivity('Cleared activity log', 'delete');
+            }
+        }
+    </script>
+</body>
+</html>
