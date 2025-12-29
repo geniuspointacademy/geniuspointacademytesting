@@ -1707,6 +1707,106 @@
                 }
             });
         });
+// Load admin data from localStorage and update website
+function loadAdminData() {
+    const savedTutors = localStorage.getItem('gpaTutors');
+    const savedCourses = localStorage.getItem('gpaCourses');
+    
+    if (savedTutors) {
+        updateTutorsDisplay(JSON.parse(savedTutors));
+    }
+    
+    if (savedCourses) {
+        updateCoursesDisplay(JSON.parse(savedCourses));
+    }
+}
+
+// Function to update tutors on main website
+function updateTutorsDisplay(tutors) {
+    const tutorsGrid = document.querySelector('.tutors-grid');
+    if (!tutorsGrid) return;
+    
+    // Clear existing tutors (except first one as template)
+    tutorsGrid.innerHTML = '';
+    
+    // Add each tutor
+    tutors.forEach(tutor => {
+        const tutorCard = document.createElement('div');
+        tutorCard.className = 'tutor-card';
+        tutorCard.innerHTML = `
+            <div class="tutor-img">
+                <img src="${tutor.image}" alt="${tutor.name}" onerror="this.src='default-tutor.jpg'">
+            </div>
+            <div class="tutor-info">
+                <h3>${tutor.name}</h3>
+                <div class="full-name">${tutor.fullName}</div>
+                <div class="tutor-level-dept">${tutor.levelDept}</div>
+                <p>${tutor.description || 'Passionate tutor dedicated to student success.'}</p>
+                <div class="tutor-contact">
+                    <div class="contact-item">
+                        <i class="fas fa-envelope"></i>
+                        <span>${tutor.email}</span>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fab fa-whatsapp"></i>
+                        <span>${tutor.whatsapp}</span>
+                    </div>
+                </div>
+                <div class="courses-list">
+                    ${tutor.courses.map(course => `<span class="course-tag">${course}</span>`).join('')}
+                </div>
+            </div>
+        `;
+        tutorsGrid.appendChild(tutorCard);
+    });
+    
+    console.log('Tutors updated from admin data');
+}
+
+// Function to update courses on main website
+function updateCoursesDisplay(courses) {
+    // Update each level's courses
+    Object.keys(courses).forEach(level => {
+        const levelSection = document.getElementById(`level-${level}`);
+        if (!levelSection) return;
+        
+        levelSection.innerHTML = '';
+        
+        courses[level].forEach(course => {
+            const courseCard = document.createElement('div');
+            courseCard.className = 'course-card';
+            courseCard.innerHTML = `
+                <h3>${course.code} <span>${course.name}</span></h3>
+                <div class="tutors-list">
+                    ${course.tutors.map(tutor => `<span class="tutor-tag">${tutor}</span>`).join('')}
+                </div>
+            `;
+            levelSection.appendChild(courseCard);
+        });
+    });
+    
+    console.log('Courses updated from admin data');
+}
+
+// Check for admin updates every minute
+setInterval(loadAdminData, 60000);
+
+// Load data on page load
+document.addEventListener('DOMContentLoaded', function() {
+    loadAdminData();
+    
+    // Also check if there's a message about recent updates
+    const lastUpdate = localStorage.getItem('gpaLastUpdate');
+    if (lastUpdate) {
+        const updateTime = new Date(lastUpdate);
+        const now = new Date();
+        const diffHours = (now - updateTime) / (1000 * 60 * 60);
+        
+        if (diffHours < 24) { // If updated within last 24 hours
+            console.log('Website was recently updated by admin');
+        }
+    }
+});
     </script>
 </body>
 </html>
