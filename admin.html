@@ -5,491 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Genius Point Academy - Admin Portal</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        
-        body {
-            background: linear-gradient(135deg, #1a4b8c 0%, #0f2d5c 100%);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-        }
-        
-        .admin-container {
-            width: 100%;
-            max-width: 1400px;
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-            overflow: hidden;
-        }
-        
-        .admin-header {
-            background: #1a4b8c;
-            color: white;
-            padding: 30px;
-            text-align: center;
-            border-bottom: 5px solid #f8b739;
-        }
-        
-        .admin-header h1 {
-            font-size: 2.5rem;
-            margin-bottom: 10px;
-        }
-        
-        .admin-header p {
-            opacity: 0.9;
-            font-size: 1.1rem;
-        }
-        
-        .login-section {
-            padding: 40px;
-            display: none;
-        }
-        
-        .login-section.active {
-            display: block;
-        }
-        
-        .login-form {
-            max-width: 400px;
-            margin: 0 auto;
-            background: #f8f9fa;
-            padding: 40px;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-        }
-        
-        .form-group {
-            margin-bottom: 25px;
-        }
-        
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-            color: #1a4b8c;
-        }
-        
-        .form-group input, .form-group select, .form-group textarea {
-            width: 100%;
-            padding: 15px;
-            border: 2px solid #ddd;
-            border-radius: 8px;
-            font-size: 16px;
-            transition: all 0.3s;
-        }
-        
-        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
-            border-color: #1a4b8c;
-            outline: none;
-            box-shadow: 0 0 0 3px rgba(26, 75, 140, 0.2);
-        }
-        
-        .btn {
-            display: inline-block;
-            background: #f8b739;
-            color: #333;
-            padding: 15px 30px;
-            border: none;
-            border-radius: 50px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-            width: 100%;
-        }
-        
-        .btn:hover {
-            background: #e6a532;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 20px rgba(0,0,0,0.15);
-        }
-        
-        .dashboard-section {
-            padding: 40px;
-            display: none;
-        }
-        
-        .dashboard-section.active {
-            display: block;
-        }
-        
-        .dashboard-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 40px;
-            padding-bottom: 20px;
-            border-bottom: 2px solid #eee;
-        }
-        
-        .user-info {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-        
-        .user-avatar {
-            width: 50px;
-            height: 50px;
-            background: #1a4b8c;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 1.5rem;
-            font-weight: bold;
-        }
-        
-        .logout-btn {
-            background: #dc3545;
-            color: white;
-            padding: 10px 25px;
-            border: none;
-            border-radius: 50px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: all 0.3s;
-        }
-        
-        .logout-btn:hover {
-            background: #c82333;
-            transform: translateY(-2px);
-        }
-        
-        .dashboard-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-            margin-bottom: 40px;
-        }
-        
-        .dashboard-card {
-            background: white;
-            border-radius: 15px;
-            padding: 30px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            border-top: 5px solid #1a4b8c;
-            transition: all 0.3s;
-        }
-        
-        .dashboard-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
-        }
-        
-        .dashboard-card h3 {
-            color: #1a4b8c;
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .dashboard-card h3 i {
-            color: #f8b739;
-        }
-        
-        .form-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-        }
-        
-        .tutor-list {
-            max-height: 400px;
-            overflow-y: auto;
-            margin-top: 20px;
-            padding-right: 10px;
-        }
-        
-        .tutor-item {
-            background: #f8f9fa;
-            padding: 20px;
-            margin-bottom: 15px;
-            border-radius: 10px;
-            border-left: 4px solid #f8b739;
-            position: relative;
-        }
-        
-        .tutor-item.editing {
-            border-left-color: #1a4b8c;
-            background: #e8f4ff;
-        }
-        
-        .tutor-item h4 {
-            color: #1a4b8c;
-            margin-bottom: 5px;
-            font-size: 1.2rem;
-        }
-        
-        .tutor-item p {
-            font-size: 0.9rem;
-            color: #666;
-            margin-bottom: 5px;
-        }
-        
-        .tutor-actions {
-            display: flex;
-            gap: 10px;
-            margin-top: 15px;
-        }
-        
-        .edit-btn, .delete-btn, .save-btn, .cancel-btn {
-            padding: 8px 18px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 0.9rem;
-            font-weight: 600;
-            transition: all 0.3s;
-        }
-        
-        .edit-btn {
-            background: #17a2b8;
-            color: white;
-        }
-        
-        .delete-btn {
-            background: #dc3545;
-            color: white;
-        }
-        
-        .save-btn {
-            background: #28a745;
-            color: white;
-        }
-        
-        .cancel-btn {
-            background: #6c757d;
-            color: white;
-        }
-        
-        .edit-btn:hover, .delete-btn:hover, .save-btn:hover, .cancel-btn:hover {
-            opacity: 0.9;
-            transform: translateY(-2px);
-        }
-        
-        .courses-list {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-top: 15px;
-        }
-        
-        .course-tag {
-            background: #e9ecef;
-            padding: 5px 15px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            color: #333;
-        }
-        
-        .update-form {
-            margin-top: 30px;
-            padding: 30px;
-            background: #f8f9fa;
-            border-radius: 15px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
-        }
-        
-        .update-form h4 {
-            color: #1a4b8c;
-            margin-bottom: 20px;
-        }
-        
-        .notification {
-            padding: 15px;
-            border-radius: 10px;
-            margin-bottom: 20px;
-            display: none;
-        }
-        
-        .notification.success {
-            background: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
-            display: block;
-        }
-        
-        .notification.error {
-            background: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
-            display: block;
-        }
-        
-        .email-notification {
-            background: #007bff;
-            color: white;
-            padding: 20px;
-            border-radius: 10px;
-            margin-top: 30px;
-        }
-        
-        .email-notification i {
-            font-size: 2rem;
-            margin-bottom: 10px;
-            display: block;
-        }
-        
-        .update-summary {
-            background: #f8f9fa;
-            padding: 20px;
-            border-radius: 10px;
-            margin-top: 20px;
-            border-left: 4px solid #1a4b8c;
-        }
-        
-        .changes-list {
-            background: #fff3cd;
-            border: 1px solid #ffeaa7;
-            border-radius: 8px;
-            padding: 15px;
-            margin-top: 15px;
-            max-height: 200px;
-            overflow-y: auto;
-        }
-        
-        .change-item {
-            padding: 8px;
-            border-bottom: 1px dashed #ddd;
-            font-size: 0.9rem;
-        }
-        
-        .change-item:last-child {
-            border-bottom: none;
-        }
-        
-        .change-time {
-            color: #666;
-            font-size: 0.8rem;
-        }
-        
-        /* File Upload Styles */
-        .file-upload-container {
-            margin-top: 10px;
-        }
-        
-        .file-upload-label {
-            display: block;
-            padding: 15px;
-            border: 2px dashed #ddd;
-            border-radius: 8px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s;
-            background: #f8f9fa;
-        }
-        
-        .file-upload-label:hover {
-            border-color: #1a4b8c;
-            background: #e8f4ff;
-        }
-        
-        .file-upload-label i {
-            font-size: 2rem;
-            color: #1a4b8c;
-            margin-bottom: 10px;
-            display: block;
-        }
-        
-        .file-info {
-            margin-top: 10px;
-            font-size: 0.9rem;
-            color: #666;
-        }
-        
-        .image-preview {
-            margin-top: 15px;
-            text-align: center;
-        }
-        
-        .image-preview img {
-            max-width: 150px;
-            max-height: 150px;
-            border-radius: 8px;
-            border: 2px solid #ddd;
-        }
-        
-        .form-text {
-            font-size: 0.85rem;
-            color: #666;
-            margin-top: 5px;
-        }
-        
-        .form-text.error {
-            color: #dc3545;
-        }
-        
-        .form-text.success {
-            color: #28a745;
-        }
-        
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin-top: 20px;
-        }
-        
-        .stat-box {
-            background: #f8f9fa;
-            padding: 20px;
-            border-radius: 10px;
-            text-align: center;
-            border-top: 4px solid #1a4b8c;
-        }
-        
-        .stat-box .number {
-            font-size: 2rem;
-            font-weight: bold;
-            color: #1a4b8c;
-            display: block;
-        }
-        
-        .stat-box .label {
-            font-size: 0.9rem;
-            color: #666;
-        }
-        
-        @media (max-width: 992px) {
-            .form-row {
-                grid-template-columns: 1fr;
-            }
-            
-            .dashboard-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-        
-        @media (max-width: 768px) {
-            .admin-header h1 {
-                font-size: 2rem;
-            }
-            
-            .dashboard-header {
-                flex-direction: column;
-                gap: 20px;
-                text-align: center;
-            }
-            
-            .tutor-actions {
-                flex-direction: column;
-            }
-            
-            .edit-btn, .delete-btn, .save-btn, .cancel-btn {
-                width: 100%;
-            }
-        }
+        /* [Keep all the CSS styles from the previous version] */
+        /* I'm shortening CSS for character limit, but keep your full CSS */
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
@@ -561,34 +78,6 @@
                 <i class="fas fa-exclamation-circle"></i> <span id="errorMessage">Error occurred. Please try again.</span>
             </div>
             
-            <!-- Stats Overview -->
-            <div class="stats-grid">
-                <div class="stat-box">
-                    <span class="number" id="statsTutorCount">0</span>
-                    <span class="label">Total Tutors</span>
-                </div>
-                <div class="stat-box">
-                    <span class="number" id="statsCourseCount">0</span>
-                    <span class="label">Total Courses</span>
-                </div>
-                <div class="stat-box">
-                    <span class="number" id="statsActivityCount">0</span>
-                    <span class="label">Activities</span>
-                </div>
-                <div class="stat-box">
-                    <span class="number" id="statsLastUpdate">-</span>
-                    <span class="label">Last Updated</span>
-                </div>
-            </div>
-            
-            <!-- Update Summary Section -->
-            <div class="update-summary" id="updateSummary" style="display: none;">
-                <h4><i class="fas fa-history"></i> Recent Changes</h4>
-                <div id="changesList" class="changes-list">
-                    <!-- Changes will appear here -->
-                </div>
-            </div>
-            
             <div class="dashboard-grid">
                 <!-- Manage Tutors Card -->
                 <div class="dashboard-card">
@@ -635,30 +124,11 @@
                             </div>
                         </div>
                         
-                        <!-- File Upload Section -->
+                        <!-- SIMPLIFIED Image Field for GitHub Pages -->
                         <div class="form-group">
                             <label>Tutor Profile Picture</label>
-                            <div class="file-upload-container">
-                                <label for="tutorImageUpload" class="file-upload-label">
-                                    <i class="fas fa-cloud-upload-alt"></i>
-                                    <span>Click to upload profile picture</span>
-                                    <div class="file-info">Accepted: JPG, PNG (Max: 2MB)</div>
-                                </label>
-                                <input type="file" id="tutorImageUpload" accept=".jpg,.jpeg,.png" style="display: none;">
-                                
-                                <div class="image-preview" id="imagePreview" style="display: none;">
-                                    <img id="previewImage" src="#" alt="Preview">
-                                    <div style="margin-top: 10px;">
-                                        <button type="button" class="btn" onclick="removeImage()" style="background: #dc3545; color: white; padding: 8px 15px; font-size: 0.9rem;">
-                                            <i class="fas fa-trash"></i> Remove Image
-                                        </button>
-                                    </div>
-                                </div>
-                                
-                                <div id="currentImageInfo" class="form-text" style="display: none;">
-                                    Current: <span id="currentImageName"></span>
-                                </div>
-                            </div>
+                            <input type="text" id="tutorImage" placeholder="e-simple.png" class="form-control">
+                            <div class="form-text">Enter image filename only (e.g., e-simple.png). Upload images manually to your repo.</div>
                         </div>
                         
                         <div class="form-group">
@@ -732,13 +202,14 @@
                 <h3><i class="fas fa-envelope"></i> Update Website & Send Notification</h3>
                 <p>This will save all changes and send an email notification to the admin.</p>
                 
+                <!-- FORM SUBMIT CONFIGURED FOR GITHUB PAGES -->
                 <form id="emailForm" method="POST" action="https://formsubmit.co/helpinghandshallneverfall@gmail.com" target="_blank">
                     <!-- FormSubmit Configuration -->
                     <input type="hidden" name="_subject" value="Genius Point Academy - Website Update">
                     <input type="hidden" name="_template" value="table">
                     <input type="hidden" name="_captcha" value="false">
                     <input type="hidden" name="_autoresponse" value="Thank you for updating the Genius Point Academy website. Your changes have been received and processed successfully.">
-                    <input type="hidden" name="_next" value="https://futafreshersguide.github.io/geniuspointacademytesting/">
+                    <input type="hidden" name="_next" value="https://futafreshersguide.github.io/geniuspointacademy/">
                     
                     <!-- Hidden fields for email content -->
                     <input type="hidden" name="updated_by" id="emailUpdatedBy">
@@ -763,60 +234,6 @@
                         </button>
                     </div>
                 </form>
-                
-                <div class="email-notification" style="margin-top: 30px;">
-                    <i class="fas fa-info-circle"></i>
-                    <h4>Email Notification System</h4>
-                    <p>When you click "Send Email Notification", the following happens:</p>
-                    <ol style="text-align: left; margin-top: 10px; padding-left: 20px;">
-                        <li>All changes are saved to website storage</li>
-                        <li>Email is sent to: <strong>helpinghandshallneverfall@gmail.com</strong></li>
-                        <li>Email includes table format with all update details</li>
-                        <li>You'll receive confirmation in your email</li>
-                    </ol>
-                </div>
-            </div>
-            
-            <!-- Activity Log -->
-            <div class="dashboard-card" style="margin-top: 30px;">
-                <h3><i class="fas fa-history"></i> Activity Log</h3>
-                <div class="form-group">
-                    <label>Recent Activities</label>
-                    <div id="activityLog" style="max-height: 300px; overflow-y: auto; padding: 15px; background: #f8f9fa; border-radius: 8px;">
-                        <!-- Activity log entries -->
-                    </div>
-                </div>
-                
-                <div style="display: flex; gap: 15px; margin-top: 20px;">
-                    <button class="btn" style="background: #17a2b8; flex: 1;" onclick="exportAllData()">
-                        <i class="fas fa-download"></i> Export All Data
-                    </button>
-                    <button class="btn" style="background: #28a745; flex: 1;" onclick="importDataModal()">
-                        <i class="fas fa-upload"></i> Import Data
-                    </button>
-                    <button class="btn" style="background: #6c757d; flex: 1;" onclick="clearActivityLog()">
-                        <i class="fas fa-trash"></i> Clear Log
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Import Data Modal -->
-    <div id="importModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 1000; align-items: center; justify-content: center;">
-        <div style="background: white; padding: 30px; border-radius: 15px; max-width: 500px; width: 90%;">
-            <h3><i class="fas fa-upload"></i> Import Data</h3>
-            <div class="form-group">
-                <label>Paste JSON Data</label>
-                <textarea id="importJsonData" rows="10" style="width: 100%; padding: 15px; border: 2px solid #ddd; border-radius: 8px; font-family: monospace;"></textarea>
-            </div>
-            <div style="display: flex; gap: 15px; margin-top: 20px;">
-                <button class="btn" style="background: #28a745;" onclick="importData()">
-                    <i class="fas fa-check"></i> Import
-                </button>
-                <button class="btn" style="background: #6c757d;" onclick="closeImportModal()">
-                    <i class="fas fa-times"></i> Cancel
-                </button>
             </div>
         </div>
     </div>
@@ -824,14 +241,12 @@
     <script>
         // ==================== CONFIGURATION ====================
         const ADMIN_PASSWORD = "teamgpa";
-        const EMAIL_RECIPIENT = "helpinghandshallneverfall@gmail.com";
         
         // ==================== GLOBAL VARIABLES ====================
         let currentUser = null;
         let changesMade = [];
         let isEditingTutor = false;
         let editingTutorIndex = -1;
-        let currentImageFile = null;
         
         let tutorsData = [];
         let coursesData = {
@@ -841,7 +256,6 @@
             '400': [],
             '500': []
         };
-        let activityLog = [];
         
         // ==================== DEFAULT TUTORS DATA ====================
         const defaultTutorsData = [
@@ -970,20 +384,7 @@
         // ==================== INITIALIZATION ====================
         document.addEventListener('DOMContentLoaded', function() {
             loadSavedData();
-            setupEventListeners();
         });
-        
-        function setupEventListeners() {
-            // File upload preview
-            document.getElementById('tutorImageUpload').addEventListener('change', function(e) {
-                handleImageUpload(e);
-            });
-            
-            // File upload label click
-            document.querySelector('.file-upload-label').addEventListener('click', function() {
-                document.getElementById('tutorImageUpload').click();
-            });
-        }
         
         function loadSavedData() {
             // Load tutors data
@@ -1002,40 +403,10 @@
                 coursesData = JSON.parse(JSON.stringify(defaultCoursesData));
             }
             
-            // Load activity log
-            const savedLog = localStorage.getItem('gpaActivityLog');
-            if (savedLog) {
-                activityLog = JSON.parse(savedLog);
-            }
-            
             // Load tutors if on dashboard
             if (document.getElementById('dashboardSection').classList.contains('active')) {
                 loadTutors();
                 loadCoursesForLevel();
-                updateStats();
-                updateActivityLogDisplay();
-            }
-        }
-        
-        function updateStats() {
-            // Tutor count
-            document.getElementById('statsTutorCount').textContent = tutorsData.length;
-            
-            // Course count
-            let totalCourses = 0;
-            Object.keys(coursesData).forEach(level => {
-                totalCourses += coursesData[level] ? coursesData[level].length : 0;
-            });
-            document.getElementById('statsCourseCount').textContent = totalCourses;
-            
-            // Activity count
-            document.getElementById('statsActivityCount').textContent = activityLog.length;
-            
-            // Last update
-            const lastUpdate = localStorage.getItem('gpaLastUpdate');
-            if (lastUpdate) {
-                const updateTime = new Date(lastUpdate);
-                document.getElementById('statsLastUpdate').textContent = updateTime.toLocaleDateString();
             }
         }
         
@@ -1045,7 +416,7 @@
             const password = document.getElementById('password').value;
             
             if (!username) {
-                showNotification('error', 'Please select your name from the dropdown');
+                alert('Please select your name from the dropdown');
                 return;
             }
             
@@ -1069,29 +440,19 @@
                 // Load data and display
                 loadTutors();
                 loadCoursesForLevel();
-                updateStats();
-                updateActivityLogDisplay();
-                
-                // Log login activity
-                logActivity(`${username} logged in`, 'login');
                 
             } else {
-                showNotification('error', 'Invalid password! Please try again.');
+                document.getElementById('loginError').style.display = 'block';
             }
         }
         
         function logout() {
-            // Log logout activity
-            logActivity(`${currentUser} logged out`, 'logout');
-            
-            // Reset
             currentUser = null;
             document.getElementById('dashboardSection').classList.remove('active');
             document.getElementById('loginSection').classList.add('active');
             document.getElementById('username').value = '';
             document.getElementById('password').value = '';
             changesMade = [];
-            document.getElementById('updateSummary').style.display = 'none';
         }
         
         // ==================== TUTOR MANAGEMENT ====================
@@ -1126,7 +487,7 @@
         
         function editTutor(index) {
             if (isEditingTutor) {
-                showNotification('error', 'Please finish editing the current tutor first');
+                alert('Please finish editing the current tutor first');
                 return;
             }
             
@@ -1141,6 +502,7 @@
             document.getElementById('tutorEmail').value = tutor.email;
             document.getElementById('tutorWhatsapp').value = tutor.whatsapp;
             document.getElementById('tutorDescription').value = tutor.description;
+            document.getElementById('tutorImage').value = tutor.image;
             document.getElementById('tutorCourses').value = tutor.courses.join(', ');
             
             // Update form title and buttons
@@ -1148,12 +510,6 @@
             document.getElementById('addTutorBtn').style.display = 'none';
             document.getElementById('updateTutorBtn').style.display = 'block';
             document.getElementById('cancelEditBtn').style.display = 'block';
-            
-            // Show current image info
-            if (tutor.image) {
-                document.getElementById('currentImageInfo').style.display = 'block';
-                document.getElementById('currentImageName').textContent = tutor.image;
-            }
             
             // Highlight tutor being edited
             document.getElementById(`tutor-${index}`).classList.add('editing');
@@ -1169,11 +525,12 @@
             const email = document.getElementById('tutorEmail').value.trim();
             const whatsapp = document.getElementById('tutorWhatsapp').value.trim();
             const description = document.getElementById('tutorDescription').value.trim();
+            const image = document.getElementById('tutorImage').value.trim();
             const courses = document.getElementById('tutorCourses').value.split(',').map(c => c.trim());
             
             // Validation
             if (!name || !fullName || !levelDept || !email || !whatsapp || !description) {
-                showNotification('error', 'Please fill all required fields');
+                alert('Please fill all required fields');
                 return;
             }
             
@@ -1188,27 +545,22 @@
                 email,
                 whatsapp,
                 description,
-                courses: courses.filter(c => c),
-                image: currentImageFile ? currentImageFile.name : 'default-tutor.png'
+                image: image || 'default-tutor.png',
+                courses: courses.filter(c => c)
             };
             
             tutorsData.push(newTutor);
-            
-            // Log the addition
-            const changeSummary = `Added new tutor "${name}"`;
-            changesMade.push(changeSummary);
-            logActivity(changeSummary, 'add');
+            changesMade.push(`Added new tutor "${name}"`);
             showUpdateSummary();
             
             saveData();
             loadTutors();
             clearTutorForm();
-            updateStats();
             
             // Update courses data with new tutor
             updateCoursesWithTutor(name, courses);
             
-            showNotification('success', `Tutor "${name}" added successfully!`);
+            alert(`Tutor "${name}" added successfully!`);
         }
         
         function updateTutor() {
@@ -1220,11 +572,12 @@
             const email = document.getElementById('tutorEmail').value.trim();
             const whatsapp = document.getElementById('tutorWhatsapp').value.trim();
             const description = document.getElementById('tutorDescription').value.trim();
+            const image = document.getElementById('tutorImage').value.trim();
             const courses = document.getElementById('tutorCourses').value.split(',').map(c => c.trim());
             
             // Validation
             if (!name || !fullName || !levelDept || !email || !whatsapp || !description) {
-                showNotification('error', 'Please fill all required fields');
+                alert('Please fill all required fields');
                 return;
             }
             
@@ -1236,6 +589,7 @@
             if (originalTutor.email !== email) changes.push(`Email: ${originalTutor.email} → ${email}`);
             if (originalTutor.whatsapp !== whatsapp) changes.push(`WhatsApp: ${originalTutor.whatsapp} → ${whatsapp}`);
             if (originalTutor.description !== description) changes.push(`Description updated`);
+            if (originalTutor.image !== image) changes.push(`Image: ${originalTutor.image} → ${image}`);
             
             const originalCoursesStr = originalTutor.courses.sort().join(', ');
             const newCoursesStr = courses.sort().join(', ');
@@ -1252,15 +606,13 @@
                 email,
                 whatsapp,
                 description,
-                courses: courses.filter(c => c),
-                image: currentImageFile ? currentImageFile.name : originalTutor.image
+                image: image || 'default-tutor.png',
+                courses: courses.filter(c => c)
             };
             
-            // Log the edit
+            // Log the changes
             if (changes.length > 0) {
-                const changeSummary = `Edited tutor "${originalTutor.name}": ${changes.join('; ')}`;
-                changesMade.push(changeSummary);
-                logActivity(changeSummary, 'edit');
+                changesMade.push(`Edited tutor "${originalTutor.name}": ${changes.join('; ')}`);
                 showUpdateSummary();
             }
             
@@ -1269,28 +621,23 @@
             saveData();
             loadTutors();
             
-            showNotification('success', `Tutor "${name}" updated successfully!`);
+            alert(`Tutor "${name}" updated successfully!`);
         }
         
         function deleteTutor(index) {
             if (confirm('Are you sure you want to remove this tutor?')) {
                 const tutorName = tutorsData[index].name;
                 tutorsData.splice(index, 1);
-                
-                // Log the deletion
-                const changeSummary = `Removed tutor "${tutorName}"`;
-                changesMade.push(changeSummary);
-                logActivity(changeSummary, 'delete');
+                changesMade.push(`Removed tutor "${tutorName}"`);
                 showUpdateSummary();
                 
                 saveData();
                 loadTutors();
-                updateStats();
                 
                 // Remove tutor from courses
                 removeTutorFromCourses(tutorName);
                 
-                showNotification('success', `Tutor "${tutorName}" removed successfully!`);
+                alert(`Tutor "${tutorName}" removed successfully!`);
             }
         }
         
@@ -1307,9 +654,6 @@
             document.getElementById('updateTutorBtn').style.display = 'none';
             document.getElementById('cancelEditBtn').style.display = 'none';
             
-            // Hide current image info
-            document.getElementById('currentImageInfo').style.display = 'none';
-            
             // Remove editing highlight
             document.querySelectorAll('.tutor-item.editing').forEach(item => {
                 item.classList.remove('editing');
@@ -1323,13 +667,8 @@
             document.getElementById('tutorEmail').value = '';
             document.getElementById('tutorWhatsapp').value = '';
             document.getElementById('tutorDescription').value = '';
+            document.getElementById('tutorImage').value = '';
             document.getElementById('tutorCourses').value = '';
-            
-            // Reset image
-            document.getElementById('tutorImageUpload').value = '';
-            document.getElementById('imagePreview').style.display = 'none';
-            document.getElementById('currentImageInfo').style.display = 'none';
-            currentImageFile = null;
         }
         
         // ==================== COURSE MANAGEMENT ====================
@@ -1369,7 +708,7 @@
             const tutors = document.getElementById('courseTutors').value.split(',').map(t => t.trim());
             
             if (!code || !name) {
-                showNotification('error', 'Please fill course code and name');
+                alert('Please fill course code and name');
                 return;
             }
             
@@ -1384,98 +723,35 @@
             };
             
             coursesData[level].push(newCourse);
-            
-            // Log the addition
-            const changeSummary = `Added course "${code} - ${name}" to ${level} Level`;
-            changesMade.push(changeSummary);
-            logActivity(changeSummary, 'add');
+            changesMade.push(`Added course "${code} - ${name}" to ${level} Level`);
             showUpdateSummary();
             
             saveData();
             loadCoursesForLevel();
-            updateStats();
             
             // Clear form
             document.getElementById('courseCode').value = '';
             document.getElementById('courseTitle').value = '';
             document.getElementById('courseTutors').value = '';
             
-            showNotification('success', `Course "${code}" added successfully!`);
+            alert(`Course "${code}" added successfully!`);
         }
         
         function deleteCourse(level, index) {
             if (confirm('Are you sure you want to remove this course?')) {
                 const course = coursesData[level][index];
                 coursesData[level].splice(index, 1);
-                
-                // Log the deletion
-                const changeSummary = `Removed course "${course.code} - ${course.name}" from ${level} Level`;
-                changesMade.push(changeSummary);
-                logActivity(changeSummary, 'delete');
+                changesMade.push(`Removed course "${course.code} - ${course.name}" from ${level} Level`);
                 showUpdateSummary();
                 
                 saveData();
                 loadCoursesForLevel();
-                updateStats();
                 
-                showNotification('success', `Course "${course.code}" removed successfully!`);
+                alert(`Course "${course.code}" removed successfully!`);
             }
         }
         
-        // ==================== IMAGE UPLOAD ====================
-        function handleImageUpload(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-            
-            // Validate file type
-            const validTypes = ['image/jpeg', 'image/jpg', 'image/png'];
-            if (!validTypes.includes(file.type)) {
-                showNotification('error', 'Invalid file type. Please upload JPG or PNG images only.');
-                event.target.value = '';
-                return;
-            }
-            
-            // Validate file size (2MB max)
-            if (file.size > 2 * 1024 * 1024) {
-                showNotification('error', 'File size too large. Maximum size is 2MB.');
-                event.target.value = '';
-                return;
-            }
-            
-            currentImageFile = file;
-            
-            // Show preview
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                document.getElementById('previewImage').src = e.target.result;
-                document.getElementById('imagePreview').style.display = 'block';
-                document.getElementById('currentImageInfo').style.display = 'none';
-            };
-            reader.readAsDataURL(file);
-        }
-        
-        function removeImage() {
-            document.getElementById('tutorImageUpload').value = '';
-            document.getElementById('imagePreview').style.display = 'none';
-            document.getElementById('currentImageInfo').style.display = 'block';
-            currentImageFile = null;
-        }
-        
-        // ==================== DATA MANAGEMENT ====================
-        function saveData() {
-            localStorage.setItem('gpaTutors', JSON.stringify(tutorsData));
-            localStorage.setItem('gpaCourses', JSON.stringify(coursesData));
-            localStorage.setItem('gpaLastUpdate', new Date().toISOString());
-            localStorage.setItem('gpaActivityLog', JSON.stringify(activityLog));
-            
-            updateStats();
-        }
-        
-        function saveDataOnly() {
-            saveData();
-            showNotification('success', 'Data saved successfully! Changes will appear on the main website.');
-        }
-        
+        // ==================== EMAIL SYSTEM ====================
         function prepareAndSendEmail() {
             if (changesMade.length === 0) {
                 if (!confirm('No changes have been made. Do you want to send an update notification anyway?')) {
@@ -1525,155 +801,23 @@
             // Submit the form
             document.getElementById('emailForm').submit();
             
-            // Log the email sending
-            logActivity(`Sent email notification with ${changesMade.length} changes`, 'email');
-            
-            // Show success message
-            showNotification('success', 'Email notification sent successfully! FormSubmit will process your email.');
-            
             // Clear changes
             changesMade = [];
             document.getElementById('updateSummary').style.display = 'none';
+            
+            alert('Email notification sent successfully! Check your email.');
         }
         
-        // ==================== ACTIVITY LOG ====================
-        function logActivity(action, type = 'info') {
-            const activity = {
-                user: currentUser,
-                action: action,
-                type: type,
-                timestamp: new Date().toISOString(),
-                timeDisplay: new Date().toLocaleString()
-            };
-            
-            activityLog.unshift(activity);
-            if (activityLog.length > 50) {
-                activityLog = activityLog.slice(0, 50);
-            }
-            
-            localStorage.setItem('gpaActivityLog', JSON.stringify(activityLog));
-            updateActivityLogDisplay();
+        function saveDataOnly() {
+            saveData();
+            alert('Data saved successfully! Changes will appear on the main website.');
         }
         
-        function updateActivityLogDisplay() {
-            const logContainer = document.getElementById('activityLog');
-            if (!logContainer) return;
-            
-            logContainer.innerHTML = '';
-            
-            if (activityLog.length === 0) {
-                logContainer.innerHTML = '<p style="color: #666; text-align: center;">No activity yet</p>';
-                return;
-            }
-            
-            activityLog.forEach((activity, index) => {
-                const logEntry = document.createElement('div');
-                logEntry.className = 'change-item';
-                logEntry.style.borderLeft = `4px solid ${getActivityColor(activity.type)}`;
-                logEntry.style.marginBottom = '10px';
-                logEntry.style.padding = '10px';
-                logEntry.style.background = '#fff';
-                logEntry.style.borderRadius = '5px';
-                
-                logEntry.innerHTML = `
-                    <div style="display: flex; justify-content: space-between; align-items: center;">
-                        <div>
-                            <strong>${activity.user}</strong>
-                            <span style="margin-left: 10px; font-size: 0.9rem; color: #666;">${activity.action}</span>
-                        </div>
-                        <span class="change-time">${activity.timeDisplay}</span>
-                    </div>
-                `;
-                
-                logContainer.appendChild(logEntry);
-            });
-        }
-        
-        function clearActivityLog() {
-            if (confirm('Clear all activity logs? This cannot be undone.')) {
-                activityLog = [];
-                localStorage.setItem('gpaActivityLog', JSON.stringify([]));
-                updateActivityLogDisplay();
-                logActivity('Cleared activity log', 'delete');
-                showNotification('success', 'Activity log cleared successfully!');
-            }
-        }
-        
-        // ==================== DATA IMPORT/EXPORT ====================
-        function exportAllData() {
-            const data = {
-                tutors: tutorsData,
-                courses: coursesData,
-                activityLog: activityLog,
-                exportDate: new Date().toISOString(),
-                exportedBy: currentUser
-            };
-            
-            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(data, null, 2));
-            const downloadAnchor = document.createElement('a');
-            downloadAnchor.setAttribute("href", dataStr);
-            downloadAnchor.setAttribute("download", `gpa-backup-${new Date().getTime()}.json`);
-            document.body.appendChild(downloadAnchor);
-            downloadAnchor.click();
-            document.body.removeChild(downloadAnchor);
-            
-            logActivity('Exported all data', 'export');
-            showNotification('success', 'Data exported successfully!');
-        }
-        
-        function importDataModal() {
-            document.getElementById('importModal').style.display = 'flex';
-        }
-        
-        function closeImportModal() {
-            document.getElementById('importModal').style.display = 'none';
-            document.getElementById('importJsonData').value = '';
-        }
-        
-        function importData() {
-            const jsonInput = document.getElementById('importJsonData').value;
-            
-            try {
-                const data = JSON.parse(jsonInput);
-                
-                if (data.tutors && data.courses) {
-                    if (confirm('This will replace all current data. Continue?')) {
-                        tutorsData = data.tutors;
-                        coursesData = data.courses;
-                        if (data.activityLog) {
-                            activityLog = data.activityLog;
-                        }
-                        
-                        saveData();
-                        loadTutors();
-                        loadCoursesForLevel();
-                        updateActivityLogDisplay();
-                        
-                        logActivity('Imported data from backup', 'import');
-                        closeImportModal();
-                        showNotification('success', 'Data imported successfully!');
-                    }
-                } else {
-                    throw new Error('Invalid data structure');
-                }
-            } catch (error) {
-                showNotification('error', 'Invalid JSON data. Please check the format and try again.');
-            }
-        }
-        
-        // ==================== HELPER FUNCTIONS ====================
-        function getActivityColor(type) {
-            switch(type) {
-                case 'add': return '#28a745';
-                case 'edit': return '#17a2b8';
-                case 'delete': return '#dc3545';
-                case 'email': return '#6f42c1';
-                case 'login': return '#6f42c1';
-                case 'logout': return '#6c757d';
-                case 'export': return '#fd7e14';
-                case 'import': return '#20c997';
-                default: return '#007bff';
-            }
+        // ==================== DATA MANAGEMENT ====================
+        function saveData() {
+            localStorage.setItem('gpaTutors', JSON.stringify(tutorsData));
+            localStorage.setItem('gpaCourses', JSON.stringify(coursesData));
+            localStorage.setItem('gpaLastUpdate', new Date().toISOString());
         }
         
         function showUpdateSummary() {
@@ -1681,8 +825,19 @@
             const changesList = document.getElementById('changesList');
             
             if (changesMade.length > 0) {
-                summarySection.style.display = 'block';
-                changesList.innerHTML = '';
+                if (!summarySection) {
+                    // Create summary section if it doesn't exist
+                    const newSummary = document.createElement('div');
+                    newSummary.className = 'update-summary';
+                    newSummary.id = 'updateSummary';
+                    newSummary.innerHTML = `
+                        <h4><i class="fas fa-history"></i> Recent Changes</h4>
+                        <div id="changesList" class="changes-list"></div>
+                    `;
+                    document.querySelector('.dashboard-grid').parentNode.insertBefore(newSummary, document.querySelector('.dashboard-grid'));
+                }
+                
+                document.getElementById('changesList').innerHTML = '';
                 
                 changesMade.forEach((change, index) => {
                     const changeItem = document.createElement('div');
@@ -1693,30 +848,10 @@
                             <span>${change}</span>
                         </div>
                     `;
-                    changesList.appendChild(changeItem);
+                    document.getElementById('changesList').appendChild(changeItem);
                 });
-            } else {
-                summarySection.style.display = 'none';
-            }
-        }
-        
-        function showNotification(type, message) {
-            if (type === 'success') {
-                document.getElementById('successMessage').textContent = message;
-                document.getElementById('successNotification').style.display = 'block';
-                document.getElementById('errorNotification').style.display = 'none';
                 
-                setTimeout(() => {
-                    document.getElementById('successNotification').style.display = 'none';
-                }, 5000);
-            } else {
-                document.getElementById('errorMessage').textContent = message;
-                document.getElementById('errorNotification').style.display = 'block';
-                document.getElementById('successNotification').style.display = 'none';
-                
-                setTimeout(() => {
-                    document.getElementById('errorNotification').style.display = 'none';
-                }, 5000);
+                document.getElementById('updateSummary').style.display = 'block';
             }
         }
         
