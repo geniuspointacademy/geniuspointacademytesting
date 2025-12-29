@@ -23,7 +23,7 @@
         
         .admin-container {
             width: 100%;
-            max-width: 1200px;
+            max-width: 1400px;
             background: white;
             border-radius: 20px;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
@@ -77,7 +77,7 @@
             color: #1a4b8c;
         }
         
-        .form-group input, .form-group select {
+        .form-group input, .form-group select, .form-group textarea {
             width: 100%;
             padding: 15px;
             border: 2px solid #ddd;
@@ -86,7 +86,7 @@
             transition: all 0.3s;
         }
         
-        .form-group input:focus, .form-group select:focus {
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
             border-color: #1a4b8c;
             outline: none;
             box-shadow: 0 0 0 3px rgba(26, 75, 140, 0.2);
@@ -208,12 +208,13 @@
             max-height: 400px;
             overflow-y: auto;
             margin-top: 20px;
+            padding-right: 10px;
         }
         
         .tutor-item {
             background: #f8f9fa;
-            padding: 15px;
-            margin-bottom: 10px;
+            padding: 20px;
+            margin-bottom: 15px;
             border-radius: 10px;
             border-left: 4px solid #f8b739;
             position: relative;
@@ -227,6 +228,7 @@
         .tutor-item h4 {
             color: #1a4b8c;
             margin-bottom: 5px;
+            font-size: 1.2rem;
         }
         
         .tutor-item p {
@@ -238,16 +240,17 @@
         .tutor-actions {
             display: flex;
             gap: 10px;
-            margin-top: 10px;
+            margin-top: 15px;
         }
         
         .edit-btn, .delete-btn, .save-btn, .cancel-btn {
-            padding: 5px 15px;
+            padding: 8px 18px;
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            font-size: 0.8rem;
+            font-size: 0.9rem;
             font-weight: 600;
+            transition: all 0.3s;
         }
         
         .edit-btn {
@@ -272,7 +275,7 @@
         
         .edit-btn:hover, .delete-btn:hover, .save-btn:hover, .cancel-btn:hover {
             opacity: 0.9;
-            transform: translateY(-1px);
+            transform: translateY(-2px);
         }
         
         .courses-list {
@@ -346,19 +349,6 @@
             border-left: 4px solid #1a4b8c;
         }
         
-        .update-summary h4 {
-            color: #1a4b8c;
-            margin-bottom: 15px;
-        }
-        
-        .update-summary ul {
-            padding-left: 20px;
-        }
-        
-        .update-summary li {
-            margin-bottom: 8px;
-        }
-        
         .changes-list {
             background: #fff3cd;
             border: 1px solid #ffeaa7;
@@ -384,11 +374,104 @@
             font-size: 0.8rem;
         }
         
-        @media (max-width: 768px) {
+        /* File Upload Styles */
+        .file-upload-container {
+            margin-top: 10px;
+        }
+        
+        .file-upload-label {
+            display: block;
+            padding: 15px;
+            border: 2px dashed #ddd;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: #f8f9fa;
+        }
+        
+        .file-upload-label:hover {
+            border-color: #1a4b8c;
+            background: #e8f4ff;
+        }
+        
+        .file-upload-label i {
+            font-size: 2rem;
+            color: #1a4b8c;
+            margin-bottom: 10px;
+            display: block;
+        }
+        
+        .file-info {
+            margin-top: 10px;
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        .image-preview {
+            margin-top: 15px;
+            text-align: center;
+        }
+        
+        .image-preview img {
+            max-width: 150px;
+            max-height: 150px;
+            border-radius: 8px;
+            border: 2px solid #ddd;
+        }
+        
+        .form-text {
+            font-size: 0.85rem;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .form-text.error {
+            color: #dc3545;
+        }
+        
+        .form-text.success {
+            color: #28a745;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .stat-box {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            border-top: 4px solid #1a4b8c;
+        }
+        
+        .stat-box .number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #1a4b8c;
+            display: block;
+        }
+        
+        .stat-box .label {
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        @media (max-width: 992px) {
             .form-row {
                 grid-template-columns: 1fr;
             }
             
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 768px) {
             .admin-header h1 {
                 font-size: 2rem;
             }
@@ -397,6 +480,14 @@
                 flex-direction: column;
                 gap: 20px;
                 text-align: center;
+            }
+            
+            .tutor-actions {
+                flex-direction: column;
+            }
+            
+            .edit-btn, .delete-btn, .save-btn, .cancel-btn {
+                width: 100%;
             }
         }
     </style>
@@ -413,11 +504,11 @@
         <div class="login-section active" id="loginSection">
             <div class="login-form">
                 <h2 style="text-align: center; color: #1a4b8c; margin-bottom: 30px;">Admin/Tutor Login</h2>
-                <div class="notification error" id="loginError">Invalid username or password!</div>
+                <div class="notification error" id="loginError" style="display: none;">Invalid username or password!</div>
                 
                 <div class="form-group">
                     <label for="username"><i class="fas fa-user"></i> Username</label>
-                    <select id="username">
+                    <select id="username" class="form-control">
                         <option value="">Select your name</option>
                         <option value="E-Simple">E-Simple (Amusan Emmanuel)</option>
                         <option value="Muzzle">Muzzle (Folorunsho Muhammed)</option>
@@ -433,7 +524,7 @@
                 
                 <div class="form-group">
                     <label for="password"><i class="fas fa-lock"></i> Password</label>
-                    <input type="password" id="password" placeholder="Enter password">
+                    <input type="password" id="password" class="form-control" placeholder="Enter password">
                 </div>
                 
                 <button class="btn" onclick="login()">
@@ -462,8 +553,32 @@
                 </button>
             </div>
             
-            <div class="notification success" id="successNotification">
-                <i class="fas fa-check-circle"></i> Changes saved successfully! Email notification sent to admin.
+            <div class="notification success" id="successNotification" style="display: none;">
+                <i class="fas fa-check-circle"></i> <span id="successMessage">Changes saved successfully! Email notification sent to admin.</span>
+            </div>
+            
+            <div class="notification error" id="errorNotification" style="display: none;">
+                <i class="fas fa-exclamation-circle"></i> <span id="errorMessage">Error occurred. Please try again.</span>
+            </div>
+            
+            <!-- Stats Overview -->
+            <div class="stats-grid">
+                <div class="stat-box">
+                    <span class="number" id="statsTutorCount">0</span>
+                    <span class="label">Total Tutors</span>
+                </div>
+                <div class="stat-box">
+                    <span class="number" id="statsCourseCount">0</span>
+                    <span class="label">Total Courses</span>
+                </div>
+                <div class="stat-box">
+                    <span class="number" id="statsActivityCount">0</span>
+                    <span class="label">Activities</span>
+                </div>
+                <div class="stat-box">
+                    <span class="number" id="statsLastUpdate">-</span>
+                    <span class="label">Last Updated</span>
+                </div>
             </div>
             
             <!-- Update Summary Section -->
@@ -485,48 +600,84 @@
                     </div>
                     
                     <div class="update-form">
-                        <h4><i class="fas fa-plus-circle"></i> Add New Tutor</h4>
+                        <h4 id="tutorFormTitle"><i class="fas fa-plus-circle"></i> Add New Tutor</h4>
+                        
                         <div class="form-row">
                             <div class="form-group">
                                 <label>Tutor Name (Display)</label>
-                                <input type="text" id="tutorName" placeholder="E-Simple">
+                                <input type="text" id="tutorName" placeholder="E-Simple" class="form-control">
                             </div>
                             <div class="form-group">
                                 <label>Full Name</label>
-                                <input type="text" id="tutorFullName" placeholder="Amusan Emmanuel Oluwapelumi">
+                                <input type="text" id="tutorFullName" placeholder="Amusan Emmanuel Oluwapelumi" class="form-control">
                             </div>
                         </div>
                         
                         <div class="form-row">
                             <div class="form-group">
                                 <label>Level & Department</label>
-                                <input type="text" id="tutorLevelDept" placeholder="400L | Electrical & Electronics Engineering">
+                                <input type="text" id="tutorLevelDept" placeholder="400L | Electrical & Electronics Engineering" class="form-control">
                             </div>
                             <div class="form-group">
                                 <label>Email</label>
-                                <input type="email" id="tutorEmail" placeholder="emmanuelamusan732@gmail.com">
+                                <input type="email" id="tutorEmail" placeholder="emmanuelamusan732@gmail.com" class="form-control">
                             </div>
                         </div>
                         
                         <div class="form-row">
                             <div class="form-group">
                                 <label>WhatsApp Number</label>
-                                <input type="text" id="tutorWhatsapp" placeholder="08109807833">
+                                <input type="text" id="tutorWhatsapp" placeholder="08109807833" class="form-control">
                             </div>
                             <div class="form-group">
-                                <label>Image File Name</label>
-                                <input type="text" id="tutorImage" placeholder="e-simple.png">
+                                <label>Tutor Description</label>
+                                <textarea id="tutorDescription" rows="3" placeholder="Passionate tutor with years of experience..." class="form-control"></textarea>
+                            </div>
+                        </div>
+                        
+                        <!-- File Upload Section -->
+                        <div class="form-group">
+                            <label>Tutor Profile Picture</label>
+                            <div class="file-upload-container">
+                                <label for="tutorImageUpload" class="file-upload-label">
+                                    <i class="fas fa-cloud-upload-alt"></i>
+                                    <span>Click to upload profile picture</span>
+                                    <div class="file-info">Accepted: JPG, PNG (Max: 2MB)</div>
+                                </label>
+                                <input type="file" id="tutorImageUpload" accept=".jpg,.jpeg,.png" style="display: none;">
+                                
+                                <div class="image-preview" id="imagePreview" style="display: none;">
+                                    <img id="previewImage" src="#" alt="Preview">
+                                    <div style="margin-top: 10px;">
+                                        <button type="button" class="btn" onclick="removeImage()" style="background: #dc3545; color: white; padding: 8px 15px; font-size: 0.9rem;">
+                                            <i class="fas fa-trash"></i> Remove Image
+                                        </button>
+                                    </div>
+                                </div>
+                                
+                                <div id="currentImageInfo" class="form-text" style="display: none;">
+                                    Current: <span id="currentImageName"></span>
+                                </div>
                             </div>
                         </div>
                         
                         <div class="form-group">
                             <label>Courses (comma separated)</label>
-                            <input type="text" id="tutorCourses" placeholder="MTH 101, PHY 101, FCHE 101">
+                            <input type="text" id="tutorCourses" placeholder="MTH 101, PHY 101, FCHE 101" class="form-control">
+                            <div class="form-text">Enter course codes separated by commas</div>
                         </div>
                         
-                        <button class="btn" onclick="addTutor()">
-                            <i class="fas fa-plus"></i> Add Tutor
-                        </button>
+                        <div class="form-row">
+                            <button class="btn" id="addTutorBtn" onclick="addTutor()">
+                                <i class="fas fa-plus"></i> Add Tutor
+                            </button>
+                            <button class="btn" id="updateTutorBtn" onclick="updateTutor()" style="background: #28a745; display: none;">
+                                <i class="fas fa-save"></i> Save Changes
+                            </button>
+                            <button class="btn" id="cancelEditBtn" onclick="cancelEdit()" style="background: #6c757d; display: none;">
+                                <i class="fas fa-times"></i> Cancel
+                            </button>
+                        </div>
                     </div>
                 </div>
                 
@@ -537,7 +688,7 @@
                     
                     <div class="form-group">
                         <label>Select Level</label>
-                        <select id="courseLevel" onchange="loadCoursesForLevel()">
+                        <select id="courseLevel" class="form-control" onchange="loadCoursesForLevel()">
                             <option value="100">100 Level</option>
                             <option value="200">200 Level</option>
                             <option value="300">300 Level</option>
@@ -546,7 +697,7 @@
                         </select>
                     </div>
                     
-                    <div id="courseList">
+                    <div id="courseList" class="tutor-list">
                         <!-- Courses will be loaded here -->
                     </div>
                     
@@ -555,17 +706,18 @@
                         <div class="form-row">
                             <div class="form-group">
                                 <label>Course Code</label>
-                                <input type="text" id="courseCode" placeholder="MTH 101">
+                                <input type="text" id="courseCode" placeholder="MTH 101" class="form-control">
                             </div>
                             <div class="form-group">
                                 <label>Course Name</label>
-                                <input type="text" id="courseTitle" placeholder="Elementary Mathematics I">
+                                <input type="text" id="courseTitle" placeholder="Elementary Mathematics I" class="form-control">
                             </div>
                         </div>
                         
                         <div class="form-group">
                             <label>Available Tutors (comma separated)</label>
-                            <input type="text" id="courseTutors" placeholder="E-Simple, Muzzle, Absamie">
+                            <input type="text" id="courseTutors" placeholder="E-Simple, Muzzle, Absamie" class="form-control">
+                            <div class="form-text">Enter tutor names as shown in the system</div>
                         </div>
                         
                         <button class="btn" onclick="addCourse()">
@@ -575,43 +727,71 @@
                 </div>
             </div>
             
-            <!-- Update Website Button -->
-            <div style="text-align: center; margin-top: 40px;">
-                <button class="btn" style="background: #1a4b8c; color: white; max-width: 400px;" onclick="updateWebsite()">
-                    <i class="fas fa-sync-alt"></i> Update Website & Send Email Notification
-                </button>
-            </div>
-            
-            <!-- Email Notification Info -->
-            <div class="email-notification">
-                <i class="fas fa-envelope"></i>
-                <h3>Email Notification System</h3>
-                <p>When you click "Update Website", an email will be sent to:</p>
-                <p><strong>helpinghandshallneverfall@gmail.com</strong></p>
-                <p>The email will include:</p>
-                <ul style="text-align: left; margin-top: 10px;">
-                    <li>Who made the changes (your name)</li>
-                    <li>Date and time of update</li>
-                    <li>Summary of all changes made</li>
-                    <li>Updated tutor and course data</li>
-                </ul>
+            <!-- Email Notification Form -->
+            <div class="dashboard-card" style="margin-top: 30px;">
+                <h3><i class="fas fa-envelope"></i> Update Website & Send Notification</h3>
+                <p>This will save all changes and send an email notification to the admin.</p>
+                
+                <form id="emailForm" method="POST" action="https://formsubmit.co/helpinghandshallneverfall@gmail.com" target="_blank">
+                    <!-- FormSubmit Configuration -->
+                    <input type="hidden" name="_subject" value="Genius Point Academy - Website Update">
+                    <input type="hidden" name="_template" value="table">
+                    <input type="hidden" name="_captcha" value="false">
+                    <input type="hidden" name="_autoresponse" value="Thank you for updating the Genius Point Academy website. Your changes have been received and processed successfully.">
+                    <input type="hidden" name="_next" value="https://futafreshersguide.github.io/geniuspointacademytesting/">
+                    
+                    <!-- Hidden fields for email content -->
+                    <input type="hidden" name="updated_by" id="emailUpdatedBy">
+                    <input type="hidden" name="update_time" id="emailUpdateTime">
+                    <input type="hidden" name="tutor_count" id="emailTutorCount">
+                    <input type="hidden" name="course_count" id="emailCourseCount">
+                    <input type="hidden" name="changes_made" id="emailChanges">
+                    <input type="hidden" name="tutors_list" id="emailTutorsList">
+                    <input type="hidden" name="courses_summary" id="emailCoursesSummary">
+                    
+                    <div class="form-group">
+                        <label>Additional Message (Optional)</label>
+                        <textarea id="emailMessage" name="message" rows="4" placeholder="Add any additional notes about this update..." class="form-control"></textarea>
+                    </div>
+                    
+                    <div style="display: flex; gap: 15px; margin-top: 20px;">
+                        <button type="button" class="btn" style="background: #1a4b8c; color: white; flex: 2;" onclick="prepareAndSendEmail()">
+                            <i class="fas fa-paper-plane"></i> Send Email Notification
+                        </button>
+                        <button type="button" class="btn" style="background: #17a2b8; flex: 1;" onclick="saveDataOnly()">
+                            <i class="fas fa-save"></i> Save Only
+                        </button>
+                    </div>
+                </form>
+                
+                <div class="email-notification" style="margin-top: 30px;">
+                    <i class="fas fa-info-circle"></i>
+                    <h4>Email Notification System</h4>
+                    <p>When you click "Send Email Notification", the following happens:</p>
+                    <ol style="text-align: left; margin-top: 10px; padding-left: 20px;">
+                        <li>All changes are saved to website storage</li>
+                        <li>Email is sent to: <strong>helpinghandshallneverfall@gmail.com</strong></li>
+                        <li>Email includes table format with all update details</li>
+                        <li>You'll receive confirmation in your email</li>
+                    </ol>
+                </div>
             </div>
             
             <!-- Activity Log -->
-            <div class="dashboard-card" style="margin-top: 40px;">
+            <div class="dashboard-card" style="margin-top: 30px;">
                 <h3><i class="fas fa-history"></i> Activity Log</h3>
                 <div class="form-group">
-                    <label>Recent Updates</label>
+                    <label>Recent Activities</label>
                     <div id="activityLog" style="max-height: 300px; overflow-y: auto; padding: 15px; background: #f8f9fa; border-radius: 8px;">
                         <!-- Activity log entries -->
                     </div>
                 </div>
                 
                 <div style="display: flex; gap: 15px; margin-top: 20px;">
-                    <button class="btn" style="background: #17a2b8; flex: 1;" onclick="exportData()">
+                    <button class="btn" style="background: #17a2b8; flex: 1;" onclick="exportAllData()">
                         <i class="fas fa-download"></i> Export All Data
                     </button>
-                    <button class="btn" style="background: #28a745; flex: 1;" onclick="importData()">
+                    <button class="btn" style="background: #28a745; flex: 1;" onclick="importDataModal()">
                         <i class="fas fa-upload"></i> Import Data
                     </button>
                     <button class="btn" style="background: #6c757d; flex: 1;" onclick="clearActivityLog()">
@@ -621,18 +801,38 @@
             </div>
         </div>
     </div>
-    
+
+    <!-- Import Data Modal -->
+    <div id="importModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 1000; align-items: center; justify-content: center;">
+        <div style="background: white; padding: 30px; border-radius: 15px; max-width: 500px; width: 90%;">
+            <h3><i class="fas fa-upload"></i> Import Data</h3>
+            <div class="form-group">
+                <label>Paste JSON Data</label>
+                <textarea id="importJsonData" rows="10" style="width: 100%; padding: 15px; border: 2px solid #ddd; border-radius: 8px; font-family: monospace;"></textarea>
+            </div>
+            <div style="display: flex; gap: 15px; margin-top: 20px;">
+                <button class="btn" style="background: #28a745;" onclick="importData()">
+                    <i class="fas fa-check"></i> Import
+                </button>
+                <button class="btn" style="background: #6c757d;" onclick="closeImportModal()">
+                    <i class="fas fa-times"></i> Cancel
+                </button>
+            </div>
+        </div>
+    </div>
+
     <script>
-        // Admin credentials - all users share the same password
+        // ==================== CONFIGURATION ====================
         const ADMIN_PASSWORD = "teamgpa";
+        const EMAIL_RECIPIENT = "helpinghandshallneverfall@gmail.com";
         
-        // Store current user info
+        // ==================== GLOBAL VARIABLES ====================
         let currentUser = null;
         let changesMade = [];
         let isEditingTutor = false;
         let editingTutorIndex = -1;
+        let currentImageFile = null;
         
-        // Initialize data storage
         let tutorsData = [];
         let coursesData = {
             '100': [],
@@ -643,11 +843,147 @@
         };
         let activityLog = [];
         
-        // Load data from localStorage on page load
+        // ==================== DEFAULT TUTORS DATA ====================
+        const defaultTutorsData = [
+            {
+                id: 1,
+                name: "E-Simple",
+                fullName: "Amusan Emmanuel Oluwapelumi",
+                levelDept: "400L | Electrical & Electronics Engineering",
+                email: "emmanuelamusan732@gmail.com",
+                whatsapp: "08109807833",
+                description: "Passionate STEM tutor with 8+ years experience in core engineering and mathematics. Specializes in breaking down complex concepts and helping students achieve academic excellence with practical understanding.",
+                courses: ["MTH 101", "PHY 101", "PHY 103", "FCHE 101", "MTS 201", "EEE 201", "MTS 315", "EEE 305", "EEE 307", "EEE 401", "EEE 403"],
+                image: "e-simple.png"
+            },
+            {
+                id: 2,
+                name: "Muzzle",
+                fullName: "Folorunsho Muhammed Alamu",
+                levelDept: "400L | Mechanical Engineering",
+                email: "folorunshomuhammed9090@gmail.com",
+                whatsapp: "08127064566",
+                description: "I am an experienced educator and founder of Impact Coaching Academy with over 7 years in teaching core engineering and advanced mathematics subjects. My area of expertise are Calculus, Algebra, Statistics, Numerical analysis, AP Physics, Fluid dynamics, Thermodynamics, and heat transfer. I am committed to transforming challenging academic contents into manageable steps.",
+                courses: ["MTH 101", "PHY 101", "PHY 103", "MTS 201", "MTS 315", "MEE 207"],
+                image: "muzzle.jpg"
+            },
+            {
+                id: 3,
+                name: "O'yemi",
+                fullName: "Abideen Yakub Opeyemi",
+                levelDept: "300L | Electrical & Electronics Engineering",
+                email: "abideenyakub08@gmail.com",
+                whatsapp: "07050376975",
+                description: "STEM tutor with 3 years experience specializing in mathematics, physics, and electric circuit theory. Committed to making complex engineering concepts accessible and understandable.",
+                courses: ["MTH 101", "PHY 101", "MTS 201", "EEE 201", "MEE 207", "MME 201"],
+                image: "o'yemi.jpg"
+            },
+            {
+                id: 4,
+                name: "Absamie",
+                fullName: "Iluyomade Samson Abimbola",
+                levelDept: "300L | Electrical & Electronics Engineering",
+                email: "absamy999@gmail.com",
+                whatsapp: "07038248528",
+                description: "STEM tutor and educational consultant with 5 years experience in core engineering and advanced mathematics. Focuses on empowering students to achieve genuine subject mastery beyond just passing exams.",
+                courses: ["MTH 101", "FMTH 103", "PHY 101", "PHY 103", "MTS 201", "EEE 201"],
+                image: "absamiepicture.jpg"
+            },
+            {
+                id: 5,
+                name: "Physiobrain",
+                fullName: "Olayonwa Rokeeb Oluwafikayomi",
+                levelDept: "200L | Physiology",
+                email: "rokeebolayonwa@gmail.com",
+                whatsapp: "08127347805",
+                description: "Educational enthusiast with 5 years experience in science courses. Focuses on breaking down complex topics and making them accessible while fostering academic excellence through effective mentorship.",
+                courses: ["FCHE 101", "PHY 101", "BIO 101"],
+                image: "roqeebpicture.png"
+            },
+            {
+                id: 6,
+                name: "Davero",
+                fullName: "Idima David Nduka",
+                levelDept: "200L | Medical Laboratory Science",
+                email: "davididima7@gmail.com",
+                whatsapp: "09131782624",
+                description: "Educational enthusiast and healthcare entrepreneur with 3 years tutoring experience. Specializes in simplifying foundational chemistry and biology concepts while fostering a winning mindset in students.",
+                courses: ["FCHE 101", "BIO 101"],
+                image: "davidpicture.jpg"
+            },
+            {
+                id: 7,
+                name: "Favour",
+                fullName: "Adesakin Peace",
+                levelDept: "300L | Microbiology",
+                email: "peaceadesakin6@gmail.com",
+                whatsapp: "09061791062",
+                description: "Dedicated biology and microbiology tutor committed to breaking down complex scientific concepts. Also an inspiring book writer passionate about education and sparking meaningful conversations.",
+                courses: ["BIO 101", "BIO 201", "MCB 201"],
+                image: "favourpicture.png"
+            },
+            {
+                id: 8,
+                name: "Tomi",
+                fullName: "Asotun Oluwatomilayo",
+                levelDept: "200L | Electrical & Electronics Engineering",
+                email: "asotunoluwatomilayo@gmail.com",
+                whatsapp: "09035610143",
+                description: "Committed and enthusiastic tutor with a strong passion for making science simple, practical and engaging. Dedicated to simplifying complex concepts, inspiring curiosity and helping students build confidence.",
+                courses: ["MTH 101", "FMTH 103", "PHY 101", "PHY 103", "FCHE 101"],
+                image: "tomipicture.png"
+            }
+        ];
+        
+        // ==================== DEFAULT COURSES DATA ====================
+        const defaultCoursesData = {
+            '100': [
+                { code: 'MTH 101', name: 'Introductory Mathematics I', tutors: ['Muzzle', 'O\'yemi', 'Absamie', 'E-Simple', 'Tomi'] },
+                { code: 'FMTH 103', name: 'Elementary Mathematics III', tutors: ['Absamie', 'Tomi'] },
+                { code: 'FCHE 101', name: 'General Chemistry I', tutors: ['E-Simple', 'Physiobrain', 'Davero', 'Tomi'] },
+                { code: 'PHY 101', name: 'General Physics I', tutors: ['E-Simple', 'O\'yemi', 'Absamie', 'Physiobrain', 'Muzzle', 'Tomi'] },
+                { code: 'PHY 103', name: 'General Physics III', tutors: ['E-Simple', 'Absamie', 'Muzzle', 'Tomi'] },
+                { code: 'BIO 101', name: 'General Biology I', tutors: ['Physiobrain', 'Davero', 'Favour'] },
+                { code: 'MEE 101', name: 'Engineering Drawing I', tutors: [] }
+            ],
+            '200': [
+                { code: 'MTS 201', name: 'Mathematical Methods', tutors: ['E-Simple', 'O\'yemi', 'Muzzle', 'Absamie'] },
+                { code: 'EEE 201', name: 'Basic Electrical and Electronics Engineering I', tutors: ['Absamie', 'O\'yemi', 'E-Simple'] },
+                { code: 'MEE 207', name: 'Elementary Mechanics', tutors: ['Muzzle', 'O\'yemi'] },
+                { code: 'MME 201', name: 'Science of Materials', tutors: ['O\'yemi'] },
+                { code: 'BIO 201', name: 'Introduction to Genetics I', tutors: ['Favour'] },
+                { code: 'MCB 201', name: 'General Microbiology I', tutors: ['Favour'] },
+                { code: 'CHE 205', name: 'Physical Chemistry I', tutors: [] }
+            ],
+            '300': [
+                { code: 'EEE 305', name: 'Electrical Machines', tutors: ['E-Simple'] },
+                { code: 'EEE 307', name: 'Electrical Machines', tutors: ['E-Simple'] },
+                { code: 'MTS 315', name: 'Engineering Mathematics I', tutors: ['E-Simple', 'Muzzle'] }
+            ],
+            '400': [
+                { code: 'EEE 401', name: 'Advanced Electrical Engineering I', tutors: ['E-Simple'] },
+                { code: 'EEE 403', name: 'Advanced Electrical Engineering III', tutors: ['E-Simple'] }
+            ],
+            '500': []
+        };
+        
+        // ==================== INITIALIZATION ====================
         document.addEventListener('DOMContentLoaded', function() {
             loadSavedData();
-            updateActivityLogDisplay();
+            setupEventListeners();
         });
+        
+        function setupEventListeners() {
+            // File upload preview
+            document.getElementById('tutorImageUpload').addEventListener('change', function(e) {
+                handleImageUpload(e);
+            });
+            
+            // File upload label click
+            document.querySelector('.file-upload-label').addEventListener('click', function() {
+                document.getElementById('tutorImageUpload').click();
+            });
+        }
         
         function loadSavedData() {
             // Load tutors data
@@ -655,42 +991,15 @@
             if (savedTutors) {
                 tutorsData = JSON.parse(savedTutors);
             } else {
-                // Default tutors data
-                tutorsData = [
-                    {
-                        name: "E-Simple",
-                        fullName: "Amusan Emmanuel Oluwapelumi",
-                        levelDept: "400L | Electrical & Electronics Engineering",
-                        email: "emmanuelamusan732@gmail.com",
-                        whatsapp: "08109807833",
-                        courses: ["MTH 101", "PHY 101", "PHY 103", "FCHE 101", "MTS 201", "EEE 201", "MTS 315", "EEE 305", "EEE 307", "EEE 401", "EEE 403"],
-                        image: "e-simple.png"
-                    },
-                    {
-                        name: "Muzzle",
-                        fullName: "Folorunsho Muhammed Alamu",
-                        levelDept: "400L | Mechanical Engineering",
-                        email: "folorunshomuhammed9090@gmail.com",
-                        whatsapp: "08127064566",
-                        courses: ["MTH 101", "PHY 101", "PHY 103", "MTS 201", "MTS 315", "MEE 207"],
-                        image: "muzzle.jpg"
-                    },
-                    {
-                        name: "O'yemi",
-                        fullName: "Abideen Yakub Opeyemi",
-                        levelDept: "300L | Electrical & Electronics Engineering",
-                        email: "abideenyakub08@gmail.com",
-                        whatsapp: "07050376975",
-                        courses: ["MTH 101", "PHY 101", "MTS 201", "EEE 201", "MEE 207", "MME 201"],
-                        image: "o'yemi.jpg"
-                    }
-                ];
+                tutorsData = JSON.parse(JSON.stringify(defaultTutorsData));
             }
             
             // Load courses data
             const savedCourses = localStorage.getItem('gpaCourses');
             if (savedCourses) {
                 coursesData = JSON.parse(savedCourses);
+            } else {
+                coursesData = JSON.parse(JSON.stringify(defaultCoursesData));
             }
             
             // Load activity log
@@ -703,15 +1012,40 @@
             if (document.getElementById('dashboardSection').classList.contains('active')) {
                 loadTutors();
                 loadCoursesForLevel();
+                updateStats();
+                updateActivityLogDisplay();
             }
         }
         
+        function updateStats() {
+            // Tutor count
+            document.getElementById('statsTutorCount').textContent = tutorsData.length;
+            
+            // Course count
+            let totalCourses = 0;
+            Object.keys(coursesData).forEach(level => {
+                totalCourses += coursesData[level] ? coursesData[level].length : 0;
+            });
+            document.getElementById('statsCourseCount').textContent = totalCourses;
+            
+            // Activity count
+            document.getElementById('statsActivityCount').textContent = activityLog.length;
+            
+            // Last update
+            const lastUpdate = localStorage.getItem('gpaLastUpdate');
+            if (lastUpdate) {
+                const updateTime = new Date(lastUpdate);
+                document.getElementById('statsLastUpdate').textContent = updateTime.toLocaleDateString();
+            }
+        }
+        
+        // ==================== LOGIN/LOGOUT ====================
         function login() {
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
             
             if (!username) {
-                alert('Please select your name from the dropdown');
+                showNotification('error', 'Please select your name from the dropdown');
                 return;
             }
             
@@ -721,11 +1055,8 @@
                 // Set user info display
                 document.getElementById('currentUser').textContent = username;
                 document.getElementById('userRole').textContent = username === 'Admin' ? 'Administrator' : 'Tutor';
-                
-                // Set avatar
-                const avatar = document.getElementById('userAvatar');
-                avatar.textContent = username.charAt(0);
-                avatar.style.background = username === 'Admin' ? '#dc3545' : '#1a4b8c';
+                document.getElementById('userAvatar').textContent = username.charAt(0);
+                document.getElementById('userAvatar').style.background = username === 'Admin' ? '#dc3545' : '#1a4b8c';
                 
                 // Show dashboard
                 document.getElementById('loginSection').classList.remove('active');
@@ -738,13 +1069,14 @@
                 // Load data and display
                 loadTutors();
                 loadCoursesForLevel();
+                updateStats();
                 updateActivityLogDisplay();
                 
                 // Log login activity
                 logActivity(`${username} logged in`, 'login');
                 
             } else {
-                document.getElementById('loginError').style.display = 'block';
+                showNotification('error', 'Invalid password! Please try again.');
             }
         }
         
@@ -762,6 +1094,7 @@
             document.getElementById('updateSummary').style.display = 'none';
         }
         
+        // ==================== TUTOR MANAGEMENT ====================
         function loadTutors() {
             const tutorList = document.getElementById('tutorList');
             tutorList.innerHTML = '';
@@ -771,10 +1104,10 @@
                 tutorDiv.className = 'tutor-item';
                 tutorDiv.id = `tutor-${index}`;
                 tutorDiv.innerHTML = `
-                    <h4>${tutor.name}</h4>
+                    <h4>${tutor.name} <span style="font-size: 0.9rem; color: #666; font-weight: normal;">(${tutor.levelDept})</span></h4>
                     <p><strong>${tutor.fullName}</strong></p>
-                    <p>${tutor.levelDept}</p>
                     <p>📧 ${tutor.email} | 📱 ${tutor.whatsapp}</p>
+                    <p style="font-size: 0.85rem; color: #555; margin-top: 10px;">${tutor.description.substring(0, 100)}...</p>
                     <div class="courses-list">
                         ${tutor.courses.map(course => `<span class="course-tag">${course}</span>`).join('')}
                     </div>
@@ -793,7 +1126,7 @@
         
         function editTutor(index) {
             if (isEditingTutor) {
-                alert('Please finish editing the current tutor first');
+                showNotification('error', 'Please finish editing the current tutor first');
                 return;
             }
             
@@ -807,13 +1140,20 @@
             document.getElementById('tutorLevelDept').value = tutor.levelDept;
             document.getElementById('tutorEmail').value = tutor.email;
             document.getElementById('tutorWhatsapp').value = tutor.whatsapp;
-            document.getElementById('tutorImage').value = tutor.image;
+            document.getElementById('tutorDescription').value = tutor.description;
             document.getElementById('tutorCourses').value = tutor.courses.join(', ');
             
-            // Update button text
-            const addBtn = document.querySelector('.dashboard-card .btn[onclick="addTutor()"]');
-            addBtn.innerHTML = '<i class="fas fa-save"></i> Save Changes';
-            addBtn.setAttribute('onclick', 'saveTutorEdit()');
+            // Update form title and buttons
+            document.getElementById('tutorFormTitle').innerHTML = '<i class="fas fa-edit"></i> Edit Tutor';
+            document.getElementById('addTutorBtn').style.display = 'none';
+            document.getElementById('updateTutorBtn').style.display = 'block';
+            document.getElementById('cancelEditBtn').style.display = 'block';
+            
+            // Show current image info
+            if (tutor.image) {
+                document.getElementById('currentImageInfo').style.display = 'block';
+                document.getElementById('currentImageName').textContent = tutor.image;
+            }
             
             // Highlight tutor being edited
             document.getElementById(`tutor-${index}`).classList.add('editing');
@@ -822,104 +1162,34 @@
             document.querySelector('.update-form').scrollIntoView({ behavior: 'smooth' });
         }
         
-        function saveTutorEdit() {
-            const originalTutor = tutorsData[editingTutorIndex];
-            
-            const name = document.getElementById('tutorName').value.trim();
-            const fullName = document.getElementById('tutorFullName').value.trim();
-            const levelDept = document.getElementById('tutorLevelDept').value.trim();
-            const email = document.getElementById('tutorEmail').value.trim();
-            const whatsapp = document.getElementById('tutorWhatsapp').value.trim();
-            const image = document.getElementById('tutorImage').value.trim();
-            const courses = document.getElementById('tutorCourses').value.split(',').map(c => c.trim());
-            
-            if (!name || !fullName || !levelDept || !email || !whatsapp) {
-                alert('Please fill all required fields');
-                return;
-            }
-            
-            // Track changes
-            const changes = [];
-            if (originalTutor.name !== name) changes.push(`Name: ${originalTutor.name} → ${name}`);
-            if (originalTutor.fullName !== fullName) changes.push(`Full Name: ${originalTutor.fullName} → ${fullName}`);
-            if (originalTutor.levelDept !== levelDept) changes.push(`Level/Dept: ${originalTutor.levelDept} → ${levelDept}`);
-            if (originalTutor.email !== email) changes.push(`Email: ${originalTutor.email} → ${email}`);
-            if (originalTutor.whatsapp !== whatsapp) changes.push(`WhatsApp: ${originalTutor.whatsapp} → ${whatsapp}`);
-            if (originalTutor.image !== image) changes.push(`Image: ${originalTutor.image} → ${image}`);
-            
-            const originalCoursesStr = originalTutor.courses.sort().join(', ');
-            const newCoursesStr = courses.sort().join(', ');
-            if (originalCoursesStr !== newCoursesStr) {
-                changes.push(`Courses updated`);
-            }
-            
-            // Update tutor data
-            tutorsData[editingTutorIndex] = {
-                name,
-                fullName,
-                levelDept,
-                email,
-                whatsapp,
-                image: image || 'default-tutor.jpg',
-                courses: courses.filter(c => c)
-            };
-            
-            // Log the edit
-            if (changes.length > 0) {
-                const changeSummary = `Edited tutor "${originalTutor.name}": ${changes.join('; ')}`;
-                changesMade.push(changeSummary);
-                logActivity(changeSummary, 'edit');
-                showUpdateSummary();
-            }
-            
-            // Reset form
-            cancelTutorEdit();
-            saveData();
-            loadTutors();
-        }
-        
-        function cancelTutorEdit() {
-            isEditingTutor = false;
-            editingTutorIndex = -1;
-            
-            // Reset form fields
-            clearTutorForm();
-            
-            // Reset button
-            const addBtn = document.querySelector('.dashboard-card .btn[onclick="saveTutorEdit()"]');
-            if (addBtn) {
-                addBtn.innerHTML = '<i class="fas fa-plus"></i> Add Tutor';
-                addBtn.setAttribute('onclick', 'addTutor()');
-            }
-            
-            // Remove editing highlight
-            document.querySelectorAll('.tutor-item.editing').forEach(item => {
-                item.classList.remove('editing');
-            });
-        }
-        
         function addTutor() {
             const name = document.getElementById('tutorName').value.trim();
             const fullName = document.getElementById('tutorFullName').value.trim();
             const levelDept = document.getElementById('tutorLevelDept').value.trim();
             const email = document.getElementById('tutorEmail').value.trim();
             const whatsapp = document.getElementById('tutorWhatsapp').value.trim();
-            const image = document.getElementById('tutorImage').value.trim();
+            const description = document.getElementById('tutorDescription').value.trim();
             const courses = document.getElementById('tutorCourses').value.split(',').map(c => c.trim());
             
-            if (!name || !fullName || !levelDept || !email || !whatsapp) {
-                alert('Please fill all required fields');
+            // Validation
+            if (!name || !fullName || !levelDept || !email || !whatsapp || !description) {
+                showNotification('error', 'Please fill all required fields');
                 return;
             }
             
+            // Generate new ID
+            const newId = tutorsData.length > 0 ? Math.max(...tutorsData.map(t => t.id)) + 1 : 1;
+            
             const newTutor = {
+                id: newId,
                 name,
                 fullName,
                 levelDept,
                 email,
                 whatsapp,
-                image: image || 'default-tutor.jpg',
-                courses: courses.filter(c => c)
+                description,
+                courses: courses.filter(c => c),
+                image: currentImageFile ? currentImageFile.name : 'default-tutor.png'
             };
             
             tutorsData.push(newTutor);
@@ -933,9 +1203,73 @@
             saveData();
             loadTutors();
             clearTutorForm();
+            updateStats();
             
             // Update courses data with new tutor
             updateCoursesWithTutor(name, courses);
+            
+            showNotification('success', `Tutor "${name}" added successfully!`);
+        }
+        
+        function updateTutor() {
+            const originalTutor = tutorsData[editingTutorIndex];
+            
+            const name = document.getElementById('tutorName').value.trim();
+            const fullName = document.getElementById('tutorFullName').value.trim();
+            const levelDept = document.getElementById('tutorLevelDept').value.trim();
+            const email = document.getElementById('tutorEmail').value.trim();
+            const whatsapp = document.getElementById('tutorWhatsapp').value.trim();
+            const description = document.getElementById('tutorDescription').value.trim();
+            const courses = document.getElementById('tutorCourses').value.split(',').map(c => c.trim());
+            
+            // Validation
+            if (!name || !fullName || !levelDept || !email || !whatsapp || !description) {
+                showNotification('error', 'Please fill all required fields');
+                return;
+            }
+            
+            // Track changes
+            const changes = [];
+            if (originalTutor.name !== name) changes.push(`Name: ${originalTutor.name} → ${name}`);
+            if (originalTutor.fullName !== fullName) changes.push(`Full Name: ${originalTutor.fullName} → ${fullName}`);
+            if (originalTutor.levelDept !== levelDept) changes.push(`Level/Dept: ${originalTutor.levelDept} → ${levelDept}`);
+            if (originalTutor.email !== email) changes.push(`Email: ${originalTutor.email} → ${email}`);
+            if (originalTutor.whatsapp !== whatsapp) changes.push(`WhatsApp: ${originalTutor.whatsapp} → ${whatsapp}`);
+            if (originalTutor.description !== description) changes.push(`Description updated`);
+            
+            const originalCoursesStr = originalTutor.courses.sort().join(', ');
+            const newCoursesStr = courses.sort().join(', ');
+            if (originalCoursesStr !== newCoursesStr) {
+                changes.push(`Courses updated`);
+            }
+            
+            // Update tutor data
+            tutorsData[editingTutorIndex] = {
+                ...originalTutor,
+                name,
+                fullName,
+                levelDept,
+                email,
+                whatsapp,
+                description,
+                courses: courses.filter(c => c),
+                image: currentImageFile ? currentImageFile.name : originalTutor.image
+            };
+            
+            // Log the edit
+            if (changes.length > 0) {
+                const changeSummary = `Edited tutor "${originalTutor.name}": ${changes.join('; ')}`;
+                changesMade.push(changeSummary);
+                logActivity(changeSummary, 'edit');
+                showUpdateSummary();
+            }
+            
+            // Reset form and save
+            cancelEdit();
+            saveData();
+            loadTutors();
+            
+            showNotification('success', `Tutor "${name}" updated successfully!`);
         }
         
         function deleteTutor(index) {
@@ -951,10 +1285,35 @@
                 
                 saveData();
                 loadTutors();
+                updateStats();
                 
                 // Remove tutor from courses
                 removeTutorFromCourses(tutorName);
+                
+                showNotification('success', `Tutor "${tutorName}" removed successfully!`);
             }
+        }
+        
+        function cancelEdit() {
+            isEditingTutor = false;
+            editingTutorIndex = -1;
+            
+            // Reset form
+            clearTutorForm();
+            
+            // Reset form title and buttons
+            document.getElementById('tutorFormTitle').innerHTML = '<i class="fas fa-plus-circle"></i> Add New Tutor';
+            document.getElementById('addTutorBtn').style.display = 'block';
+            document.getElementById('updateTutorBtn').style.display = 'none';
+            document.getElementById('cancelEditBtn').style.display = 'none';
+            
+            // Hide current image info
+            document.getElementById('currentImageInfo').style.display = 'none';
+            
+            // Remove editing highlight
+            document.querySelectorAll('.tutor-item.editing').forEach(item => {
+                item.classList.remove('editing');
+            });
         }
         
         function clearTutorForm() {
@@ -963,10 +1322,17 @@
             document.getElementById('tutorLevelDept').value = '';
             document.getElementById('tutorEmail').value = '';
             document.getElementById('tutorWhatsapp').value = '';
-            document.getElementById('tutorImage').value = '';
+            document.getElementById('tutorDescription').value = '';
             document.getElementById('tutorCourses').value = '';
+            
+            // Reset image
+            document.getElementById('tutorImageUpload').value = '';
+            document.getElementById('imagePreview').style.display = 'none';
+            document.getElementById('currentImageInfo').style.display = 'none';
+            currentImageFile = null;
         }
         
+        // ==================== COURSE MANAGEMENT ====================
         function loadCoursesForLevel() {
             const level = document.getElementById('courseLevel').value;
             const courseList = document.getElementById('courseList');
@@ -992,7 +1358,7 @@
                     courseList.appendChild(courseDiv);
                 });
             } else {
-                courseList.innerHTML = '<p style="color: #666; text-align: center;">No courses found for this level.</p>';
+                courseList.innerHTML = '<p style="color: #666; text-align: center; padding: 30px;">No courses found for this level.</p>';
             }
         }
         
@@ -1003,7 +1369,7 @@
             const tutors = document.getElementById('courseTutors').value.split(',').map(t => t.trim());
             
             if (!code || !name) {
-                alert('Please fill course code and name');
+                showNotification('error', 'Please fill course code and name');
                 return;
             }
             
@@ -1027,11 +1393,14 @@
             
             saveData();
             loadCoursesForLevel();
+            updateStats();
             
             // Clear form
             document.getElementById('courseCode').value = '';
             document.getElementById('courseTitle').value = '';
             document.getElementById('courseTutors').value = '';
+            
+            showNotification('success', `Course "${code}" added successfully!`);
         }
         
         function deleteCourse(level, index) {
@@ -1047,32 +1416,127 @@
                 
                 saveData();
                 loadCoursesForLevel();
+                updateStats();
+                
+                showNotification('success', `Course "${course.code}" removed successfully!`);
             }
         }
         
-        function updateCoursesWithTutor(tutorName, tutorCourses) {
-            Object.keys(coursesData).forEach(level => {
-                coursesData[level].forEach(course => {
-                    if (tutorCourses.includes(course.code) && !course.tutors.includes(tutorName)) {
-                        course.tutors.push(tutorName);
-                    }
-                });
-            });
-            saveData();
+        // ==================== IMAGE UPLOAD ====================
+        function handleImageUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            // Validate file type
+            const validTypes = ['image/jpeg', 'image/jpg', 'image/png'];
+            if (!validTypes.includes(file.type)) {
+                showNotification('error', 'Invalid file type. Please upload JPG or PNG images only.');
+                event.target.value = '';
+                return;
+            }
+            
+            // Validate file size (2MB max)
+            if (file.size > 2 * 1024 * 1024) {
+                showNotification('error', 'File size too large. Maximum size is 2MB.');
+                event.target.value = '';
+                return;
+            }
+            
+            currentImageFile = file;
+            
+            // Show preview
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById('previewImage').src = e.target.result;
+                document.getElementById('imagePreview').style.display = 'block';
+                document.getElementById('currentImageInfo').style.display = 'none';
+            };
+            reader.readAsDataURL(file);
         }
         
-        function removeTutorFromCourses(tutorName) {
-            Object.keys(coursesData).forEach(level => {
-                coursesData[level].forEach(course => {
-                    const index = course.tutors.indexOf(tutorName);
-                    if (index > -1) {
-                        course.tutors.splice(index, 1);
-                    }
-                });
-            });
-            saveData();
+        function removeImage() {
+            document.getElementById('tutorImageUpload').value = '';
+            document.getElementById('imagePreview').style.display = 'none';
+            document.getElementById('currentImageInfo').style.display = 'block';
+            currentImageFile = null;
         }
         
+        // ==================== DATA MANAGEMENT ====================
+        function saveData() {
+            localStorage.setItem('gpaTutors', JSON.stringify(tutorsData));
+            localStorage.setItem('gpaCourses', JSON.stringify(coursesData));
+            localStorage.setItem('gpaLastUpdate', new Date().toISOString());
+            localStorage.setItem('gpaActivityLog', JSON.stringify(activityLog));
+            
+            updateStats();
+        }
+        
+        function saveDataOnly() {
+            saveData();
+            showNotification('success', 'Data saved successfully! Changes will appear on the main website.');
+        }
+        
+        function prepareAndSendEmail() {
+            if (changesMade.length === 0) {
+                if (!confirm('No changes have been made. Do you want to send an update notification anyway?')) {
+                    return;
+                }
+            }
+            
+            // Save data first
+            saveData();
+            
+            // Prepare email data
+            const updateTime = new Date().toLocaleString();
+            const tutorCount = tutorsData.length;
+            
+            let totalCourses = 0;
+            Object.keys(coursesData).forEach(level => {
+                totalCourses += coursesData[level] ? coursesData[level].length : 0;
+            });
+            
+            // Build tutors list
+            const tutorsList = tutorsData.map(t => 
+                `${t.name} (${t.fullName}) - ${t.levelDept}\nEmail: ${t.email}\nWhatsApp: ${t.whatsapp}\nCourses: ${t.courses.join(', ')}\n`
+            ).join('\n');
+            
+            // Build courses summary
+            let coursesSummary = '';
+            Object.keys(coursesData).forEach(level => {
+                const courses = coursesData[level];
+                if (courses.length > 0) {
+                    coursesSummary += `${level} Level (${courses.length} courses):\n`;
+                    courses.forEach(c => {
+                        coursesSummary += `  - ${c.code}: ${c.name} (Tutors: ${c.tutors.join(', ')})\n`;
+                    });
+                    coursesSummary += '\n';
+                }
+            });
+            
+            // Fill email form fields
+            document.getElementById('emailUpdatedBy').value = currentUser;
+            document.getElementById('emailUpdateTime').value = updateTime;
+            document.getElementById('emailTutorCount').value = tutorCount;
+            document.getElementById('emailCourseCount').value = totalCourses;
+            document.getElementById('emailChanges').value = changesMade.join('\n');
+            document.getElementById('emailTutorsList').value = tutorsList;
+            document.getElementById('emailCoursesSummary').value = coursesSummary;
+            
+            // Submit the form
+            document.getElementById('emailForm').submit();
+            
+            // Log the email sending
+            logActivity(`Sent email notification with ${changesMade.length} changes`, 'email');
+            
+            // Show success message
+            showNotification('success', 'Email notification sent successfully! FormSubmit will process your email.');
+            
+            // Clear changes
+            changesMade = [];
+            document.getElementById('updateSummary').style.display = 'none';
+        }
+        
+        // ==================== ACTIVITY LOG ====================
         function logActivity(action, type = 'info') {
             const activity = {
                 user: currentUser,
@@ -1082,8 +1546,8 @@
                 timeDisplay: new Date().toLocaleString()
             };
             
-            activityLog.unshift(activity); // Add to beginning
-            if (activityLog.length > 50) { // Keep only last 50 activities
+            activityLog.unshift(activity);
+            if (activityLog.length > 50) {
                 activityLog = activityLog.slice(0, 50);
             }
             
@@ -1112,24 +1576,102 @@
                 logEntry.style.borderRadius = '5px';
                 
                 logEntry.innerHTML = `
-                    <div style="display: flex; justify-content: space-between;">
-                        <strong>${activity.user}</strong>
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <strong>${activity.user}</strong>
+                            <span style="margin-left: 10px; font-size: 0.9rem; color: #666;">${activity.action}</span>
+                        </div>
                         <span class="change-time">${activity.timeDisplay}</span>
                     </div>
-                    <div style="margin-top: 5px; color: #555;">${activity.action}</div>
                 `;
                 
                 logContainer.appendChild(logEntry);
             });
         }
         
+        function clearActivityLog() {
+            if (confirm('Clear all activity logs? This cannot be undone.')) {
+                activityLog = [];
+                localStorage.setItem('gpaActivityLog', JSON.stringify([]));
+                updateActivityLogDisplay();
+                logActivity('Cleared activity log', 'delete');
+                showNotification('success', 'Activity log cleared successfully!');
+            }
+        }
+        
+        // ==================== DATA IMPORT/EXPORT ====================
+        function exportAllData() {
+            const data = {
+                tutors: tutorsData,
+                courses: coursesData,
+                activityLog: activityLog,
+                exportDate: new Date().toISOString(),
+                exportedBy: currentUser
+            };
+            
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(data, null, 2));
+            const downloadAnchor = document.createElement('a');
+            downloadAnchor.setAttribute("href", dataStr);
+            downloadAnchor.setAttribute("download", `gpa-backup-${new Date().getTime()}.json`);
+            document.body.appendChild(downloadAnchor);
+            downloadAnchor.click();
+            document.body.removeChild(downloadAnchor);
+            
+            logActivity('Exported all data', 'export');
+            showNotification('success', 'Data exported successfully!');
+        }
+        
+        function importDataModal() {
+            document.getElementById('importModal').style.display = 'flex';
+        }
+        
+        function closeImportModal() {
+            document.getElementById('importModal').style.display = 'none';
+            document.getElementById('importJsonData').value = '';
+        }
+        
+        function importData() {
+            const jsonInput = document.getElementById('importJsonData').value;
+            
+            try {
+                const data = JSON.parse(jsonInput);
+                
+                if (data.tutors && data.courses) {
+                    if (confirm('This will replace all current data. Continue?')) {
+                        tutorsData = data.tutors;
+                        coursesData = data.courses;
+                        if (data.activityLog) {
+                            activityLog = data.activityLog;
+                        }
+                        
+                        saveData();
+                        loadTutors();
+                        loadCoursesForLevel();
+                        updateActivityLogDisplay();
+                        
+                        logActivity('Imported data from backup', 'import');
+                        closeImportModal();
+                        showNotification('success', 'Data imported successfully!');
+                    }
+                } else {
+                    throw new Error('Invalid data structure');
+                }
+            } catch (error) {
+                showNotification('error', 'Invalid JSON data. Please check the format and try again.');
+            }
+        }
+        
+        // ==================== HELPER FUNCTIONS ====================
         function getActivityColor(type) {
             switch(type) {
                 case 'add': return '#28a745';
                 case 'edit': return '#17a2b8';
                 case 'delete': return '#dc3545';
+                case 'email': return '#6f42c1';
                 case 'login': return '#6f42c1';
                 case 'logout': return '#6c757d';
+                case 'export': return '#fd7e14';
+                case 'import': return '#20c997';
                 default: return '#007bff';
             }
         }
@@ -1153,191 +1695,52 @@
                     `;
                     changesList.appendChild(changeItem);
                 });
+            } else {
+                summarySection.style.display = 'none';
             }
         }
         
-        function saveData() {
-            localStorage.setItem('gpaTutors', JSON.stringify(tutorsData));
-            localStorage.setItem('gpaCourses', JSON.stringify(coursesData));
-        }
-        
-        async function updateWebsite() {
-            if (changesMade.length === 0) {
-                alert('No changes have been made to update.');
-                return;
-            }
-            
-            // Show loading
-            const updateBtn = document.querySelector('.btn[onclick="updateWebsite()"]');
-            const originalText = updateBtn.innerHTML;
-            updateBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending Update...';
-            updateBtn.disabled = true;
-            
-            try {
-                // 1. Save data to localStorage
-                saveData();
+        function showNotification(type, message) {
+            if (type === 'success') {
+                document.getElementById('successMessage').textContent = message;
+                document.getElementById('successNotification').style.display = 'block';
+                document.getElementById('errorNotification').style.display = 'none';
                 
-                // 2. Prepare detailed email message
-                const emailMessage = `
-Genius Point Academy Website Update Notification
-=================================================
-
-Updated by: ${currentUser}
-Date & Time: ${new Date().toLocaleString()}
-
-SUMMARY OF CHANGES:
--------------------
-${changesMade.map((change, index) => `${index + 1}. ${change}`).join('\n')}
-
-UPDATED TUTORS DATA:
---------------------
-Total Tutors: ${tutorsData.length}
-${tutorsData.map(t => `• ${t.name} (${t.fullName}) - ${t.levelDept}`).join('\n')}
-
-UPDATED COURSES DATA:
----------------------
-${Object.keys(coursesData).map(level => {
-    const courses = coursesData[level];
-    if (courses.length === 0) return '';
-    return `${level} Level (${courses.length} courses):\n${courses.map(c => `  - ${c.code}: ${c.name}`).join('\n')}`;
-}).filter(text => text).join('\n\n')}
-
-CHANGE HISTORY:
----------------
-Last 5 activities:
-${activityLog.slice(0, 5).map(a => `[${a.timeDisplay}] ${a.user}: ${a.action}`).join('\n')}
-
----
-This update was made through the Genius Point Academy Admin Portal.
-Website URL: [Your Website URL]
-                `;
+                setTimeout(() => {
+                    document.getElementById('successNotification').style.display = 'none';
+                }, 5000);
+            } else {
+                document.getElementById('errorMessage').textContent = message;
+                document.getElementById('errorNotification').style.display = 'block';
+                document.getElementById('successNotification').style.display = 'none';
                 
-                // 3. Send email notification via FormSubmit
-                const formData = new FormData();
-                formData.append('_subject', `GPA Website Update by ${currentUser}`);
-                formData.append('message', emailMessage);
-                formData.append('_replyto', 'admin@geniuspointacademy.com');
-                formData.append('_cc', 'helpinghandshallneverfall@gmail.com');
-                formData.append('_template', 'table');
-                formData.append('_captcha', 'false');
-                
-                // Send to FormSubmit
-                const response = await fetch('https://formsubmit.co/ajax/helpinghandshallneverfall@gmail.com', {
-                    method: 'POST',
-                    body: formData
-                });
-                
-                const result = await response.json();
-                
-                if (result.success) {
-                    // Show success message
-                    document.getElementById('successNotification').style.display = 'block';
-                    
-                    // Log the update
-                    logActivity(`Updated website and sent email notification (${changesMade.length} changes)`, 'info');
-                    
-                    // Reset changes
-                    changesMade = [];
-                    document.getElementById('updateSummary').style.display = 'none';
-                    
-                    // Create backup
-                    createBackup();
-                    
-                    setTimeout(() => {
-                        document.getElementById('successNotification').style.display = 'none';
-                    }, 5000);
-                    
-                } else {
-                    throw new Error('Email sending failed');
-                }
-                
-            } catch (error) {
-                console.error('Update error:', error);
-                alert('Error sending email notification. Please try again.');
-            } finally {
-                // Reset button
-                updateBtn.innerHTML = originalText;
-                updateBtn.disabled = false;
+                setTimeout(() => {
+                    document.getElementById('errorNotification').style.display = 'none';
+                }, 5000);
             }
         }
         
-        function createBackup() {
-            const data = {
-                tutors: tutorsData,
-                courses: coursesData,
-                activityLog: activityLog,
-                lastUpdated: new Date().toISOString(),
-                updatedBy: currentUser
-            };
-            
-            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(data, null, 2));
-            const downloadAnchor = document.createElement('a');
-            downloadAnchor.setAttribute("href", dataStr);
-            downloadAnchor.setAttribute("download", `gpa-backup-${new Date().getTime()}.json`);
-            document.body.appendChild(downloadAnchor);
-            downloadAnchor.click();
-            document.body.removeChild(downloadAnchor);
-        }
-        
-        function exportData() {
-            const data = {
-                tutors: tutorsData,
-                courses: coursesData,
-                activityLog: activityLog,
-                exportDate: new Date().toISOString(),
-                exportedBy: currentUser
-            };
-            
-            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(data, null, 2));
-            const downloadAnchor = document.createElement('a');
-            downloadAnchor.setAttribute("href", dataStr);
-            downloadAnchor.setAttribute("download", `gpa-export-${new Date().getTime()}.json`);
-            document.body.appendChild(downloadAnchor);
-            downloadAnchor.click();
-            document.body.removeChild(downloadAnchor);
-            
-            logActivity('Exported all data', 'info');
-        }
-        
-        function importData() {
-            const jsonInput = document.getElementById('dataJson').value;
-            
-            try {
-                const data = JSON.parse(jsonInput);
-                
-                if (data.tutors && data.courses) {
-                    if (confirm('This will replace all current data. Continue?')) {
-                        tutorsData = data.tutors;
-                        coursesData = data.courses;
-                        if (data.activityLog) {
-                            activityLog = data.activityLog;
-                        }
-                        
-                        saveData();
-                        localStorage.setItem('gpaActivityLog', JSON.stringify(activityLog));
-                        
-                        loadTutors();
-                        loadCoursesForLevel();
-                        updateActivityLogDisplay();
-                        
-                        logActivity('Imported data from backup', 'info');
-                        alert('Data imported successfully!');
+        function updateCoursesWithTutor(tutorName, tutorCourses) {
+            Object.keys(coursesData).forEach(level => {
+                coursesData[level].forEach(course => {
+                    if (tutorCourses.includes(course.code) && !course.tutors.includes(tutorName)) {
+                        course.tutors.push(tutorName);
                     }
-                } else {
-                    throw new Error('Invalid data structure');
-                }
-            } catch (error) {
-                alert('Invalid JSON data. Please check the format and try again.');
-            }
+                });
+            });
+            saveData();
         }
         
-        function clearActivityLog() {
-            if (confirm('Clear all activity logs? This cannot be undone.')) {
-                activityLog = [];
-                localStorage.setItem('gpaActivityLog', JSON.stringify([]));
-                updateActivityLogDisplay();
-                logActivity('Cleared activity log', 'delete');
-            }
+        function removeTutorFromCourses(tutorName) {
+            Object.keys(coursesData).forEach(level => {
+                coursesData[level].forEach(course => {
+                    const index = course.tutors.indexOf(tutorName);
+                    if (index > -1) {
+                        course.tutors.splice(index, 1);
+                    }
+                });
+            });
+            saveData();
         }
     </script>
 </body>
