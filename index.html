@@ -1479,6 +1479,15 @@
             <div class="footer-bottom">
                 <p>&copy; 2023 Genius Point Academy. All Rights Reserved.</p>
             </div>
+            <div class="admin-update-notice" id="adminUpdateNotice">
+    <i class="fas fa-sync-alt"></i>
+    <div>
+        <strong>Website Updated!</strong>
+        <p id="updateMessage">New changes have been loaded from admin.</p>
+    </div>
+    <button onclick="refreshPage()">Refresh</button>
+    <button onclick="hideNotice()">Dismiss</button>
+</div>
         </div>
     </footer>
 
@@ -1720,7 +1729,8 @@ function loadAdminData() {
         updateCoursesDisplay(JSON.parse(savedCourses));
     }
 }
-
+// Auto-check for updates every 2 minutes
+setInterval(loadAdminData, 120000);
 // Function to update tutors on main website
 function updateTutorsDisplay(tutors) {
     const tutorsGrid = document.querySelector('.tutors-grid');
