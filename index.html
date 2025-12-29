@@ -1479,14 +1479,6 @@
             <div class="footer-bottom">
                 <p>&copy; 2023 Genius Point Academy. All Rights Reserved.</p>
             </div>
-            <div class="admin-update-notice" id="adminUpdateNotice">
-    <i class="fas fa-sync-alt"></i>
-    <div>
-        <strong>Website Updated!</strong>
-        <p id="updateMessage">New changes have been loaded from admin.</p>
-    </div>
-    <button onclick="refreshPage()">Refresh</button>
-    <button onclick="hideNotice()">Dismiss</button>
 </div>
         </div>
     </footer>
@@ -1817,7 +1809,63 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 });
-    </script>
+
+    <!-- Admin Update Notification -->
+<div class="admin-update-notice" id="adminUpdateNotice" style="display: none;">
+    <i class="fas fa-sync-alt"></i>
+    <div>
+        <strong>Website Updated!</strong>
+        <p id="updateMessage">New changes loaded from admin.</p>
+    </div>
+    <button onclick="window.location.reload()">Refresh</button>
+    <button onclick="document.getElementById('adminUpdateNotice').style.display='none'">Dismiss</button>
+</div>
+
+<script>
+// Load admin data from localStorage
+function loadAdminData() {
+    const savedTutors = localStorage.getItem('gpaTutors');
+    const savedCourses = localStorage.getItem('gpaCourses');
+    
+    if (savedTutors) {
+        try {
+            const tutors = JSON.parse(savedTutors);
+            updateTutorsDisplay(tutors);
+        } catch(e) {
+            console.error('Error loading tutors:', e);
+        }
+    }
+    
+    if (savedCourses) {
+        try {
+            const courses = JSON.parse(savedCourses);
+            updateCoursesDisplay(courses);
+        } catch(e) {
+            console.error('Error loading courses:', e);
+        }
+    }
+}
+
+// Check for updates every 30 seconds
+setInterval(loadAdminData, 30000);
+
+// Load on page load
+document.addEventListener('DOMContentLoaded', function() {
+    loadAdminData();
+    
+    // Check if admin just updated
+    const lastUpdate = localStorage.getItem('gpaLastUpdate');
+    if (lastUpdate) {
+        const updateTime = new Date(lastUpdate);
+        const now = new Date();
+        const diffMinutes = (now - updateTime) / (1000 * 60);
+        
+        if (diffMinutes < 5) { // Updated within last 5 minutes
+            document.getElementById('adminUpdateNotice').style.display = 'flex';
+        }
+    }
+});
+</script>
 </body>
 </html>
 
