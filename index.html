@@ -3,28 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Genius Point Academy - FUTA</title>
+    <title>Genius Point Academy - FUTA | Premier Tutorial Services</title>
+    <meta name="description" content="Find Your Academic Breakthrough at FUTA's Premier Tutorial Community. Expert tutors for STEM courses, personalized learning, and academic excellence.">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
         :root {
             --primary: #1a4b8c;
+            --primary-dark: #0f2d5c;
+            --primary-light: #2a6bc5;
             --secondary: #f8b739;
-            --light: #f5f5f5;
-            --dark: #333;
+            --secondary-dark: #e6a532;
+            --light: #f8f9fa;
+            --dark: #2d3748;
             --success: #28a745;
+            --warning: #ffc107;
+            --gradient: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            --shadow-hover: 0 15px 40px rgba(0, 0, 0, 0.15);
         }
 
         body {
             background-color: #f9f9f9;
             color: var(--dark);
-            line-height: 1.6;
+            line-height: 1.7;
+            overflow-x: hidden;
         }
 
         .container {
@@ -39,10 +49,16 @@
             background-color: var(--primary);
             color: white;
             padding: 1rem 0;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            box-shadow: var(--shadow);
             position: sticky;
             top: 0;
-            z-index: 100;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        header.scrolled {
+            padding: 0.7rem 0;
+            background-color: var(--primary-dark);
         }
 
         .header-content {
@@ -61,10 +77,15 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            background-color: white;
-            border-radius: 8px;
-            padding: 5px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            background: white;
+            border-radius: 12px;
+            padding: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .logo-img:hover {
+            transform: scale(1.05);
         }
 
         .logo-img img {
@@ -75,11 +96,13 @@
         .logo-text h1 {
             font-size: 1.8rem;
             margin-bottom: 5px;
+            font-weight: 700;
         }
 
         .logo-text p {
             font-size: 0.9rem;
-            opacity: 0.8;
+            opacity: 0.9;
+            font-weight: 300;
         }
 
         nav ul {
@@ -88,84 +111,162 @@
         }
 
         nav ul li {
-            margin-left: 20px;
+            margin-left: 25px;
+            position: relative;
         }
 
         nav ul li a {
             color: white;
             text-decoration: none;
             font-weight: 500;
-            transition: color 0.3s;
-            padding: 5px 10px;
-            border-radius: 4px;
+            transition: all 0.3s;
+            padding: 8px 12px;
+            border-radius: 6px;
+            position: relative;
         }
 
-        nav ul li a:hover {
+        nav ul li a:not(.btn):hover {
             color: var(--secondary);
+        }
+
+        nav ul li a:not(.btn)::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background-color: var(--secondary);
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+
+        nav ul li a:not(.btn):hover::after {
+            width: 80%;
         }
 
         .mobile-menu {
             display: none;
             font-size: 1.5rem;
             cursor: pointer;
+            color: white;
+            transition: color 0.3s;
+        }
+
+        .mobile-menu:hover {
+            color: var(--secondary);
         }
 
         /* Hero Section */
         .hero {
-            background: linear-gradient(rgba(26, 75, 140, 0.8), rgba(26, 75, 140, 0.9)), url('studentstudyingimage1.jpg');
+            background: var(--gradient), url('studentstudyingimage1.jpg');
             background-size: cover;
             background-position: center;
+            background-attachment: fixed;
             color: white;
-            padding: 5rem 0;
+            padding: 8rem 0;
             text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.3);
+            z-index: 1;
+        }
+
+        .hero .container {
+            position: relative;
+            z-index: 2;
         }
 
         .hero h2 {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
+            font-size: 3.2rem;
+            margin-bottom: 1.5rem;
+            font-weight: 700;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            animation: fadeInUp 1s ease;
         }
 
         .hero p {
-            font-size: 1.2rem;
+            font-size: 1.3rem;
             max-width: 700px;
-            margin: 0 auto 2rem;
+            margin: 0 auto 2.5rem;
+            font-weight: 300;
+            animation: fadeInUp 1s ease 0.2s both;
         }
 
         .btn {
             display: inline-block;
             background-color: var(--secondary);
             color: var(--dark);
-            padding: 12px 30px;
-            border-radius: 5px;
+            padding: 14px 35px;
+            border-radius: 50px;
             text-decoration: none;
             font-weight: 600;
             transition: all 0.3s;
             border: none;
             cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: all 0.6s;
         }
 
         .btn:hover {
-            background-color: #e6a532;
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            background-color: var(--secondary-dark);
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn-secondary {
+            background-color: transparent;
+            color: white;
+            border: 2px solid white;
+        }
+
+        .btn-secondary:hover {
+            background-color: white;
+            color: var(--primary);
         }
 
         /* Section Styles */
         section {
-            padding: 5rem 0;
+            padding: 6rem 0;
         }
 
         .section-title {
             text-align: center;
-            margin-bottom: 3rem;
+            margin-bottom: 4rem;
         }
 
         .section-title h2 {
-            font-size: 2.2rem;
+            font-size: 2.5rem;
             color: var(--primary);
             position: relative;
             display: inline-block;
-            padding-bottom: 10px;
+            padding-bottom: 15px;
+            font-weight: 700;
         }
 
         .section-title h2::after {
@@ -174,47 +275,69 @@
             bottom: 0;
             left: 50%;
             transform: translateX(-50%);
-            width: 80px;
-            height: 3px;
+            width: 100px;
+            height: 4px;
             background-color: var(--secondary);
+            border-radius: 2px;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto 3rem;
+            color: #666;
+            font-size: 1.1rem;
         }
 
         /* About Section */
         .about-content {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 40px;
+            gap: 50px;
             align-items: center;
         }
 
         .about-text h3 {
-            font-size: 1.8rem;
+            font-size: 2rem;
             margin-bottom: 20px;
             color: var(--primary);
+            font-weight: 600;
         }
 
         .about-text p {
-            margin-bottom: 15px;
+            margin-bottom: 20px;
+            color: #555;
+        }
+
+        .about-image {
+            position: relative;
         }
 
         .about-image img {
             width: 100%;
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+            transition: transform 0.5s ease;
         }
 
         .mission-vision {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 30px;
-            margin-top: 30px;
+            margin-top: 40px;
         }
 
         .mission, .vision {
             background-color: white;
-            padding: 25px;
-            border-radius: 8px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s ease;
+            border-top: 4px solid var(--primary);
+        }
+
+        .mission:hover, .vision:hover {
+            transform: translateY(-10px);
         }
 
         .mission h3, .vision h3 {
@@ -223,54 +346,314 @@
             display: flex;
             align-items: center;
             gap: 10px;
+            font-weight: 600;
+        }
+
+        .mission h3 i, .vision h3 i {
+            color: var(--secondary);
+        }
+
+        /* Pricing Banner */
+        .pricing-banner {
+            background: linear-gradient(135deg, var(--secondary) 0%, var(--warning) 100%);
+            color: var(--dark);
+            padding: 25px;
+            border-radius: 15px;
+            margin: 40px 0;
+            text-align: center;
+            box-shadow: var(--shadow);
+            animation: pulse-banner 3s infinite;
+        }
+
+        @keyframes pulse-banner {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+            100% { transform: scale(1); }
+        }
+
+        .pricing-banner h3 {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        .pricing-banner p {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+        }
+
+        .price-tag {
+            background: white;
+            color: var(--primary);
+            padding: 8px 20px;
+            border-radius: 30px;
+            font-weight: 700;
+            font-size: 1.4rem;
+            display: inline-block;
+            margin: 5px 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .pricing-card {
+            background: white;
+            border-radius: 15px;
+            padding: 40px 30px;
+            text-align: center;
+            box-shadow: var(--shadow);
+            transition: all 0.3s ease;
+            border-top: 5px solid var(--primary);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .pricing-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .pricing-card.popular {
+            border-top: 5px solid var(--secondary);
+            transform: scale(1.05);
+        }
+
+        .pricing-card.popular:hover {
+            transform: scale(1.05) translateY(-10px);
+        }
+
+        .pricing-card .popular-badge {
+            position: absolute;
+            top: 15px;
+            right: -30px;
+            background: var(--secondary);
+            color: var(--dark);
+            padding: 5px 40px;
+            font-weight: 600;
+            transform: rotate(45deg);
+            font-size: 0.8rem;
+        }
+
+        .pricing-icon {
+            font-size: 3rem;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+
+        .pricing-card h3 {
+            font-size: 1.8rem;
+            color: var(--primary);
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .pricing-amount {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+
+        .pricing-amount span {
+            font-size: 1.2rem;
+            color: #666;
+        }
+
+        .pricing-features {
+            list-style: none;
+            margin: 25px 0;
+            text-align: left;
+        }
+
+        .pricing-features li {
+            margin-bottom: 15px;
+            padding-left: 30px;
+            position: relative;
+        }
+
+        .pricing-features li i {
+            position: absolute;
+            left: 0;
+            top: 2px;
+            color: var(--success);
+        }
+
+        /* Path to Clarity Section */
+        .path-to-clarity {
+            background-color: var(--light);
+            padding: 50px;
+            border-radius: 15px;
+            margin-top: 40px;
+            box-shadow: var(--shadow);
+        }
+
+        .path-to-clarity h3 {
+            color: var(--primary);
+            margin-bottom: 25px;
+            font-size: 1.8rem;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .learning-option {
+            margin-bottom: 30px;
+            padding: 25px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            transition: transform 0.3s ease;
+            border-left: 4px solid var(--primary);
+        }
+
+        .learning-option:hover {
+            transform: translateY(-5px);
+        }
+
+        .learning-option h4 {
+            color: var(--primary);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 600;
+        }
+
+        .learning-option h4 i {
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-size: 1.5rem;
+        }
+
+        .learning-price {
+            background: var(--light);
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-weight: 600;
+            color: var(--primary);
+            margin-top: 10px;
+            display: inline-block;
+        }
+
+        /* Real Education Section */
+        .real-education {
+            margin-top: 50px;
+            padding: 40px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+            border-top: 4px solid var(--secondary);
+        }
+
+        .real-education h3 {
+            color: var(--primary);
+            margin-bottom: 25px;
+            font-size: 1.8rem;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .education-type {
+            margin: 25px 0;
+            padding: 20px;
+            border-left: 4px solid var(--secondary);
+            background-color: var(--light);
+            border-radius: 8px;
+            transition: transform 0.3s ease;
+        }
+
+        .education-type:hover {
+            transform: translateX(10px);
+        }
+
+        .education-type h4 {
+            color: var(--primary);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 600;
+        }
+
+        .education-type h4 i {
+            color: var(--secondary);
         }
 
         /* Tutors Section */
+        .tutors-section {
+            background: linear-gradient(to bottom, var(--light) 0%, white 100%);
+        }
+
         .tutors-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
             gap: 30px;
         }
 
         .tutor-card {
             background-color: white;
-            border-radius: 8px;
+            border-radius: 15px;
             overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-            transition: transform 0.3s;
+            box-shadow: var(--shadow);
+            transition: all 0.4s ease;
+            position: relative;
         }
 
         .tutor-card:hover {
-            transform: translateY(-10px);
+            transform: translateY(-15px);
+            box-shadow: var(--shadow-hover);
         }
 
         .tutor-img {
-            height: 200px;
-            background-color: #e0e0e0;
+            height: 220px;
+            background: var(--gradient);
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #777;
+            color: white;
             overflow: hidden;
+            position: relative;
+        }
+
+        .tutor-img::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.1);
         }
 
         .tutor-img img {
             width: 100%;
             height: 100%;
             object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .tutor-card:hover .tutor-img img {
+            transform: scale(1.1);
         }
 
         .tutor-img i {
             font-size: 4rem;
+            opacity: 0.8;
         }
 
         .tutor-info {
-            padding: 20px;
+            padding: 25px;
         }
 
         .tutor-info h3 {
             color: var(--primary);
             margin-bottom: 5px;
+            font-weight: 600;
         }
 
         .tutor-info .full-name {
@@ -282,26 +665,27 @@
         .tutor-level-dept {
             color: #888;
             font-size: 0.85rem;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
+            font-weight: 500;
         }
 
         .tutor-info p {
             color: #666;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
             font-size: 0.9rem;
         }
 
         .tutor-contact {
-            margin-top: 15px;
-            padding-top: 15px;
+            margin-top: 20px;
+            padding-top: 20px;
             border-top: 1px solid #eee;
         }
 
         .contact-item {
             display: flex;
             align-items: center;
-            gap: 8px;
-            margin-bottom: 8px;
+            gap: 10px;
+            margin-bottom: 10px;
             font-size: 0.85rem;
         }
 
@@ -314,49 +698,58 @@
             display: flex;
             flex-wrap: wrap;
             gap: 8px;
-            margin-top: 10px;
+            margin-top: 15px;
         }
 
         .course-tag {
             background-color: var(--light);
-            padding: 5px 10px;
+            padding: 6px 12px;
             border-radius: 20px;
             font-size: 0.75rem;
             color: var(--dark);
+            font-weight: 500;
         }
 
         /* Courses Section */
+        .courses-section {
+            background-color: white;
+        }
+
         .level-tabs {
             display: flex;
             justify-content: center;
-            margin-bottom: 30px;
+            margin-bottom: 40px;
             flex-wrap: wrap;
+            background: white;
+            border-radius: 50px;
+            padding: 5px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
         }
 
         .level-tab {
-            padding: 10px 20px;
-            background-color: white;
-            border: 1px solid #ddd;
+            padding: 12px 25px;
+            background-color: transparent;
+            border: none;
             cursor: pointer;
             transition: all 0.3s;
+            font-weight: 500;
+            border-radius: 50px;
+            flex: 1;
+            text-align: center;
         }
 
         .level-tab.active {
             background-color: var(--primary);
             color: white;
-            border-color: var(--primary);
-        }
-
-        .level-tab:first-child {
-            border-radius: 5px 0 0 5px;
-        }
-
-        .level-tab:last-child {
-            border-radius: 0 5px 5px 0;
+            box-shadow: 0 4px 10px rgba(26, 75, 140, 0.3);
         }
 
         .courses-content {
             display: none;
+            animation: fadeIn 0.5s ease;
         }
 
         .courses-content.active {
@@ -365,10 +758,16 @@
 
         .course-card {
             background-color: white;
-            border-radius: 8px;
-            padding: 25px;
-            margin-bottom: 20px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 25px;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s ease;
+            border-left: 4px solid var(--primary);
+        }
+
+        .course-card:hover {
+            transform: translateY(-5px);
         }
 
         .course-card h3 {
@@ -377,71 +776,334 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            font-weight: 600;
+        }
+
+        .course-card h3 span {
+            font-weight: 400;
+            color: #666;
+            font-size: 1rem;
         }
 
         .tutors-list {
             display: flex;
             flex-wrap: wrap;
             gap: 10px;
-            margin-top: 10px;
+            margin-top: 15px;
         }
 
         .tutor-tag {
             background-color: var(--light);
-            padding: 5px 15px;
+            padding: 8px 18px;
             border-radius: 20px;
             font-size: 0.9rem;
-        }
-
-        /* Booking Section */
-        .booking-container {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 40px;
-            align-items: center;
-        }
-
-        .booking-form {
-            background-color: white;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
             font-weight: 500;
+            transition: all 0.3s;
         }
 
-        .form-group input, .form-group select, .form-group textarea {
-            width: 100%;
-            padding: 12px 15px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            font-size: 1rem;
+        .tutor-tag:hover {
+            background-color: var(--primary);
+            color: white;
+            transform: translateY(-2px);
         }
 
-        .booking-info {
-            text-align: center;
+        /* FAQ Section */
+        .faq-section {
+            background-color: var(--light);
         }
 
-        .booking-info i {
-            font-size: 5rem;
+        .faq-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .faq-item {
+            background: white;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: all 0.3s ease;
+        }
+
+        .faq-item.active {
+            box-shadow: var(--shadow-hover);
+        }
+
+        .faq-question {
+            padding: 25px 30px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
             color: var(--primary);
+            font-size: 1.1rem;
+        }
+
+        .faq-question:hover {
+            background-color: rgba(26, 75, 140, 0.05);
+        }
+
+        .faq-question i {
+            transition: transform 0.3s ease;
+        }
+
+        .faq-item.active .faq-question i {
+            transform: rotate(180deg);
+        }
+
+        .faq-answer {
+            padding: 0 30px;
+            max-height: 0;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .faq-item.active .faq-answer {
+            padding: 0 30px 25px;
+            max-height: 1000px;
+        }
+
+        /* Privacy Policy Section */
+        .privacy-section {
+            background-color: white;
+        }
+
+        .privacy-container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .privacy-content {
+            background: white;
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: var(--shadow);
+        }
+
+        .privacy-content h3 {
+            color: var(--primary);
+            margin: 25px 0 15px;
+            font-weight: 600;
+        }
+
+        .privacy-content ul {
+            margin-left: 20px;
             margin-bottom: 20px;
         }
 
-        .booking-info h3 {
+        .privacy-content li {
+            margin-bottom: 10px;
+        }
+
+        .pdf-download {
+            background: var(--light);
+            border: 2px dashed var(--primary);
+            border-radius: 12px;
+            padding: 30px;
+            text-align: center;
+            margin-top: 30px;
+            transition: all 0.3s ease;
+        }
+
+        .pdf-download:hover {
+            background: rgba(26, 75, 140, 0.05);
+            transform: translateY(-5px);
+        }
+
+        .pdf-download i {
+            font-size: 3rem;
             color: var(--primary);
             margin-bottom: 15px;
         }
 
-        /* New Contact Preference Styles */
+        .pdf-download h4 {
+            color: var(--primary);
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        /* Booking Section */
+        .booking-section {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+        }
+
+        .booking-section .section-title h2 {
+            color: white;
+        }
+
+        .booking-section .section-title h2::after {
+            background-color: var(--secondary);
+        }
+
+        .booking-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            align-items: start;
+        }
+
+        .booking-form {
+            background-color: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: var(--shadow-hover);
+            color: var(--dark);
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 14px 18px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s;
+            background-color: #f9f9f9;
+        }
+
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(26, 75, 140, 0.1);
+            outline: none;
+            background-color: white;
+        }
+
+        .booking-info {
+            text-align: center;
+            color: white;
+        }
+
+        .booking-info i {
+            font-size: 5rem;
+            color: var(--secondary);
+            margin-bottom: 25px;
+            display: block;
+        }
+
+        .booking-info h3 {
+            color: white;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .booking-info p {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .booking-info p i {
+            font-size: 1rem;
+            color: var(--secondary);
+            margin: 0;
+        }
+
+        /* Booking Type Options */
+        .booking-type-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .booking-type-option {
+            display: block;
+            cursor: pointer;
+        }
+
+        .booking-type-option input {
+            display: none;
+        }
+
+        .booking-type-option .option-content {
+            padding: 20px 15px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            text-align: center;
+            transition: all 0.3s;
+            background-color: white;
+        }
+
+        .booking-type-option .option-content i {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .booking-type-option .option-content span {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: var(--dark);
+        }
+
+        .booking-type-option .option-content small {
+            color: #666;
+            font-size: 0.8rem;
+        }
+
+        .booking-type-option .option-content .price-indicator {
+            color: var(--primary);
+            font-weight: 700;
+            margin-top: 5px;
+            font-size: 0.9rem;
+        }
+
+        .booking-type-option input:checked + .option-content {
+            border-color: var(--primary);
+            background-color: rgba(26, 75, 140, 0.05);
+            box-shadow: 0 0 0 2px rgba(26, 75, 140, 0.2);
+            transform: scale(1.05);
+        }
+
+        .booking-type-option:hover .option-content {
+            border-color: var(--primary);
+            transform: translateY(-5px);
+        }
+
+        /* Form Text Helper */
+        .form-text {
+            display: block;
+            margin-top: 5px;
+            color: #666;
+            font-size: 0.85rem;
+        }
+
+        /* Dynamic Form Elements */
+        .course-selection, .tutor-selection {
+            margin-bottom: 15px;
+        }
+
+        .course-selection label, .tutor-selection label {
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .dynamic-field-group {
+            margin-bottom: 20px;
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            border-left: 4px solid var(--primary);
+        }
+
+        /* Contact Preference Styles */
         .contact-preferences {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
@@ -452,16 +1114,17 @@
         .contact-option {
             display: flex;
             align-items: center;
-            gap: 8px;
-            padding: 10px;
+            gap: 10px;
+            padding: 12px 15px;
             border: 1px solid #ddd;
-            border-radius: 5px;
+            border-radius: 8px;
             cursor: pointer;
             transition: all 0.3s;
+            background-color: #f9f9f9;
         }
 
         .contact-option:hover {
-            background-color: #f5f5f5;
+            background-color: #f0f0f0;
         }
 
         .contact-option.selected {
@@ -477,10 +1140,11 @@
         .confirmation-message {
             background-color: #e8f5e8;
             border: 1px solid #4caf50;
-            border-radius: 5px;
-            padding: 15px;
-            margin-top: 20px;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 25px;
             display: none;
+            animation: fadeIn 0.5s ease;
         }
 
         .confirmation-message.show {
@@ -490,32 +1154,33 @@
         .whatsapp-info {
             background-color: #25D366;
             color: white;
-            padding: 10px 15px;
-            border-radius: 5px;
-            margin-top: 10px;
+            padding: 12px 18px;
+            border-radius: 8px;
+            margin-top: 15px;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
         }
 
         /* Footer */
         footer {
-            background-color: var(--primary);
+            background-color: var(--primary-dark);
             color: white;
-            padding: 3rem 0 1rem;
+            padding: 4rem 0 1.5rem;
         }
 
         .footer-content {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 30px;
-            margin-bottom: 2rem;
+            gap: 40px;
+            margin-bottom: 3rem;
         }
 
         .footer-section h3 {
-            margin-bottom: 20px;
+            margin-bottom: 25px;
             position: relative;
-            padding-bottom: 10px;
+            padding-bottom: 12px;
+            font-weight: 600;
         }
 
         .footer-section h3::after {
@@ -524,12 +1189,14 @@
             bottom: 0;
             left: 0;
             width: 50px;
-            height: 2px;
+            height: 3px;
             background-color: var(--secondary);
+            border-radius: 2px;
         }
 
         .footer-section p {
             margin-bottom: 15px;
+            opacity: 0.9;
         }
 
         .footer-section ul {
@@ -537,17 +1204,21 @@
         }
 
         .footer-section ul li {
-            margin-bottom: 10px;
+            margin-bottom: 12px;
         }
 
         .footer-section ul li a {
             color: #ddd;
             text-decoration: none;
-            transition: color 0.3s;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
         .footer-section ul li a:hover {
             color: var(--secondary);
+            transform: translateX(5px);
         }
 
         .social-links {
@@ -560,8 +1231,8 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            width: 40px;
-            height: 40px;
+            width: 42px;
+            height: 42px;
             background-color: rgba(255, 255, 255, 0.1);
             border-radius: 50%;
             color: white;
@@ -571,12 +1242,14 @@
         .social-links a:hover {
             background-color: var(--secondary);
             color: var(--dark);
+            transform: translateY(-5px);
         }
 
         .footer-bottom {
             text-align: center;
-            padding-top: 20px;
+            padding-top: 25px;
             border-top: 1px solid rgba(255, 255, 255, 0.1);
+            opacity: 0.8;
         }
 
         /* Modal */
@@ -587,20 +1260,22 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            z-index: 1000;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 2000;
             align-items: center;
             justify-content: center;
+            animation: fadeIn 0.3s ease;
         }
 
         .modal-content {
             background-color: white;
             width: 90%;
             max-width: 500px;
-            border-radius: 8px;
-            padding: 30px;
+            border-radius: 15px;
+            padding: 40px;
             position: relative;
-            animation: modalFade 0.3s;
+            animation: modalFade 0.4s ease;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
         }
 
         @keyframes modalFade {
@@ -608,62 +1283,150 @@
             to {opacity: 1; transform: translateY(0);}
         }
 
+        @keyframes fadeIn {
+            from {opacity: 0;}
+            to {opacity: 1;}
+        }
+
+        @keyframes fadeInUp {
+            from {opacity: 0; transform: translateY(30px);}
+            to {opacity: 1; transform: translateY(0);}
+        }
+
         .close-modal {
             position: absolute;
             top: 15px;
-            right: 15px;
-            font-size: 1.5rem;
+            right: 20px;
+            font-size: 1.8rem;
             cursor: pointer;
             color: #777;
+            transition: color 0.3s;
         }
 
-        /* New Content Styles */
-        .path-to-clarity {
-            background-color: var(--light);
-            padding: 40px;
-            border-radius: 10px;
-            margin-top: 30px;
-        }
-
-        .learning-option {
-            margin-bottom: 25px;
-            padding: 20px;
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
-        }
-
-        .learning-option h4 {
+        .close-modal:hover {
             color: var(--primary);
+        }
+
+        /* Stats Section */
+        .stats-section {
+            background: var(--gradient);
+            color: white;
+            padding: 4rem 0;
+        }
+
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 700;
             margin-bottom: 10px;
+            display: block;
+        }
+
+        .stat-text {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        /* Fixed Position Button */
+        .whatsapp-community-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+            background-color: #25D366;
+            color: white;
+            padding: 15px 20px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
             display: flex;
             align-items: center;
             gap: 10px;
+            transition: all 0.3s ease;
         }
 
-        .real-education {
-            margin-top: 40px;
-            padding: 30px;
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        /* Pulse Animation to Grab Attention */
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            70% { transform: scale(1.05); box-shadow: 0 0 0 10px rgba(37, 211, 102, 0); }
+            100% { transform: scale(1); box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); }
+        }
+        .whatsapp-community-btn {
+            animation: pulse 2s infinite;
         }
 
-        .education-type {
-            margin: 20px 0;
-            padding: 15px;
-            border-left: 4px solid var(--secondary);
-            background-color: #f9f9f9;
+        /* Button Icon */
+        .whatsapp-icon {
+            width: 24px;
+            height: 24px;
+            fill: currentColor;
+        }
+
+        /* Hover Effect */
+        .whatsapp-community-btn:hover {
+            background-color: #128C7E;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+            animation-play-state: paused;
+        }
+
+        /* Loading spinner */
+        .spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+            margin-right: 10px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
         }
 
         /* Responsive Styles */
+        @media (max-width: 1200px) {
+            .hero h2 {
+                font-size: 2.8rem;
+            }
+        }
+
         @media (max-width: 992px) {
-            .about-content, .booking-container, .mission-vision {
+            .about-content, .booking-container, .mission-vision, .pricing-grid {
                 grid-template-columns: 1fr;
+            }
+
+            .pricing-card.popular {
+                transform: scale(1);
+            }
+
+            .pricing-card.popular:hover {
+                transform: translateY(-10px);
             }
 
             .about-image {
                 order: -1;
+            }
+
+            .hero h2 {
+                font-size: 2.5rem;
+            }
+
+            .hero p {
+                font-size: 1.1rem;
             }
         }
 
@@ -704,8 +1467,12 @@
                 display: block;
             }
 
+            .hero {
+                padding: 6rem 0;
+            }
+
             .hero h2 {
-                font-size: 2rem;
+                font-size: 2.2rem;
             }
 
             .hero p {
@@ -713,19 +1480,84 @@
             }
 
             .section-title h2 {
+                font-size: 2rem;
+            }
+
+            .path-to-clarity, .real-education, .privacy-content {
+                padding: 30px 20px;
+            }
+
+            .booking-form {
+                padding: 25px;
+            }
+
+            .pricing-banner {
+                padding: 20px 15px;
+            }
+
+            .price-tag {
+                display: block;
+                margin: 10px auto;
+                max-width: 200px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .hero h2 {
                 font-size: 1.8rem;
+            }
+
+            .section-title h2 {
+                font-size: 1.7rem;
+            }
+
+            .tutors-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .level-tabs {
+                flex-direction: column;
+                border-radius: 12px;
+            }
+
+            .level-tab {
+                border-radius: 8px;
+                margin-bottom: 5px;
+            }
+
+            .booking-type-options {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-container {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .pricing-card {
+                padding: 30px 20px;
             }
         }
     </style>
 </head>
 <body>
+    <!-- The Animated WhatsApp Button -->
+    <a href="https://chat.whatsapp.com/EfRqG1ekcym0MflO4MiEFj" 
+       target="_blank" 
+       class="whatsapp-community-btn" 
+       aria-label="Join our WhatsApp community">
+        <svg class="whatsapp-icon" viewBox="0 0 24 24">
+            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.149-.67.15-.197.297-.767.967-.94 1.165-.173.199-.347.223-.644.075-.297-.15-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.521.149-.173.198-.298.298-.497.099-.198.05-.371-.025-.521-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.76.982.998-3.675-.236-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.9 6.994c-.004 5.45-4.438 9.88-9.888 9.88m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.333.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.304-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.333 11.893-11.893 0-3.18-1.24-6.162-3.495-8.411"/>
+        </svg>
+        Join Our Community
+    </a>
+
     <!-- Header -->
-    <header>
+    <header id="header">
         <div class="container">
             <div class="header-content">
                 <div class="logo">
                     <div class="logo-img">
-                        <img src="gpa logo.jpg" alt="Genius Point Academy Logo">
+                        <img src="gpa logo.png" alt="Genius Point Academy Logo">
                     </div>
                     <div class="logo-text">
                         <h1>Genius Point Academy</h1>
@@ -739,8 +1571,11 @@
                     <ul>
                         <li><a href="#home">Home</a></li>
                         <li><a href="#about">About</a></li>
+                        <li><a href="#pricing">Pricing</a></li>
                         <li><a href="#tutors">Tutors</a></li>
                         <li><a href="#courses">Courses</a></li>
+                        <li><a href="#faq">FAQ</a></li>
+                        <li><a href="#privacy">Privacy</a></li>
                         <li><a href="#booking" class="btn">Book a Tutor</a></li>
                     </ul>
                 </nav>
@@ -753,7 +1588,11 @@
         <div class="container">
             <h2>Welcome to Genius Point Academy</h2>
             <p>Find Your Academic Breakthrough at FUTA's Premier Tutorial Community</p>
-            <a href="#booking" class="btn">Book a Tutor Now</a>
+            <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                <a href="#courses" class ="btn">Courses</a>
+                <a href="#booking" class="btn">Book a Tutor Now</a>
+                <a href="#pricing" class="btn btn-secondary">View Pricing</a>
+            </div>
         </div>
     </section>
 
@@ -763,72 +1602,93 @@
             <div class="section-title">
                 <h2>About GPA</h2>
             </div>
+            <p class="section-subtitle">We are FUTA's premier tutorial community dedicated to helping students achieve academic excellence through personalized learning approaches.</p>
+            
             <div class="about-content">
                 <div class="about-text">
                     <h3>Who We Are</h3>
                     <p>We know what it feels like to hit a wall—when a concept just won't click, or a test date looms large. At Genius Point Academy, we built a community, not just a tutoring service, dedicated to helping students move past frustration and into genuine mastery and confidence.</p>
                     <p>Our mission is simple: To provide the precise support you need, when you need it, ensuring no student is left behind.</p>
                     
-                    <div class="path-to-clarity">
-                        <h3 style="color: var(--primary); margin-bottom: 20px;">Your Path to Clarity</h3>
-                        <p style="margin-bottom: 20px;">We understand that learning isn't one-size-fits-all, so we offer flexible, high-impact environments designed around you:</p>
-                        
-                        <div class="learning-option">
-                            <h4><i class="fas fa-user-graduate"></i> 1:1 Personalized Tutorials</h4>
-                            <p>This is where the magic happens. You work side-by-side with a dedicated mentor who digs into your specific struggles, custom-builds a strategy just for you, and focuses on true understanding—not just memorization.</p>
+                    <div class="mission-vision">
+                        <div class="mission">
+                            <h3><i class="fas fa-bullseye"></i> Our Mission</h3>
+                            <p>To empower students with personalized learning strategies that transform academic challenges into opportunities for growth and success.</p>
                         </div>
-                        
-                        <div class="learning-option">
-                            <h4><i class="fas fa-users"></i> Private Group Tutoring</h4>
-                            <p>Bring your study group, share the cost, and thrive together! We offer focused, collaborative sessions where you can debate concepts, solve problems as a team, and reinforce learning under the guidance of an expert.</p>
+                        <div class="vision">
+                            <h3><i class="fas fa-eye"></i> Our Vision</h3>
+                            <p>To become the leading academic support community where every student discovers their potential and achieves breakthrough results.</p>
                         </div>
-                        
-                                      <div class="learning-option">
-                            <h4><i class="fas fa-chalkboard-teacher"></i> Mass Tutorials</h4>
-                            <p>Need a quick, powerful refresh before a major exam? Join our engaging, large-scale sessions designed to efficiently demystify entire topics, consolidate knowledge, and boost your curriculum confidence quickly.</p>
-                        </div>
-                    </div>
-                    
-                    <div class="real-education">
-                        <h3 style="color: var(--primary); margin-bottom: 20px;">Real Education, Real Access</h3>
-                        <p>We believe expertise should be accessible to everyone. That's why we offer a blend of support to get you started and keep you going:</p>
-                        
-                        <div class="education-type">
-                            <h4><i class="fas fa-graduation-cap"></i> Free Classes</h4>
-                            <p>Jump in immediately! Access essential introductory workshops, foundational subject reviews, and large-scale concept previews to build momentum and get a feel for our community—no commitment necessary.</p>
-                        </div>
-                        
-                        <div class="education-type">
-                            <h4><i class="fas fa-star"></i> Paid Classes</h4>
-                            <p>Unlock premium resources, intensive exam prep bootcamps, and the dedicated time of our expert tutors through our specialized group and personalized programs.</p>
-                        </div>
-                        
-                        <p style="margin-top: 20px; font-weight: bold;">Stop just going through the motions. Join the Genius Point Academy community and start transforming your academic effort into real, measurable results.</p>
                     </div>
                 </div>
                 <div class="about-image">
                     <img src="collagepicture.jpg" alt="Genius Point Academy Students">
                 </div>
             </div>
+            
+            <div class="path-to-clarity">
+                <h3>Your Path to Clarity</h3>
+                <p style="text-align: center; margin-bottom: 30px;">We understand that learning isn't one-size-fits-all, so we offer flexible, high-impact environments designed around you:</p>
+                
+                <div class="learning-option">
+                    <h4><i class="fas fa-user-graduate"></i> 1:1 Personalized Tutorials</h4>
+                    <p>This is where the magic happens. You work side-by-side with a dedicated mentor who digs into your specific struggles, custom-builds a strategy just for you, and focuses on true understanding—not just memorization.</p>
+                    <div class="learning-price">Starting at ₦1,500 per session</div>
+                </div>
+                
+                <div class="learning-option">
+                    <h4><i class="fas fa-users"></i> Private Group Tutoring</h4>
+                    <p>Bring your study group, share the cost, and thrive together! We offer focused, collaborative sessions where you can debate concepts, solve problems as a team, and reinforce learning under the guidance of an expert.</p>
+                    <div class="learning-price">₦500 per student per session</div>
+                </div>
+                
+                <div class="learning-option">
+                    <h4><i class="fas fa-chalkboard-teacher"></i> Mass Tutorials</h4>
+                    <p>Need a quick, powerful refresh before a major exam? Join our engaging, large-scale sessions designed to efficiently demystify entire topics, consolidate knowledge, and boost your curriculum confidence quickly.</p>
+                    <div class="learning-price">Contact for mass tutorial pricing</div>
+                </div>
+            </div>
+            
+            <div class="real-education">
+                <h3>Real Education, Real Access</h3>
+                <p style="text-align: center; margin-bottom: 30px;">We believe expertise should be accessible to everyone. That's why we offer a blend of support to get you started and keep you going:</p>
+                
+                <div class="education-type">
+                    <h4><i class="fas fa-graduation-cap"></i> Free Introductory Classes</h4>
+                    <p>Jump in immediately! Access essential introductory workshops, foundational subject reviews, and large-scale concept previews to build momentum and get a feel for our community—no commitment necessary.</p>
+                </div>
+                
+                <div class="education-type">
+                    <h4><i class="fas fa-star"></i> Paid Premium Classes</h4>
+                    <p>Unlock premium resources, intensive exam prep bootcamps, and the dedicated time of our expert tutors through our specialized group and personalized programs.</p>
+                </div>
+                
+                <p style="margin-top: 30px; text-align: center; font-weight: bold; font-size: 1.1rem; color: var(--primary);">
+                    💰 <strong>Important:</strong> While we offer free introductory classes, regular tutor booking requires payment. Our prices are designed to be affordable while ensuring our tutors are fairly compensated for their expertise.
+                </p>
+            </div>
         </div>
     </section>
 
     <!-- Tutors Section -->
-    <section id="tutors" style="background-color: var(--light);">
+    <section id="tutors" class="tutors-section">
         <div class="container">
             <div class="section-title">
-                <h2>Our Tutors</h2>
+                <h2>Our Expert Tutors</h2>
             </div>
+            <p class="section-subtitle">Meet our team of dedicated and experienced tutors who are passionate about helping you succeed in your academic journey.</p>
+            
             <div class="tutors-grid">
                 <!-- Tutor 1 - E-Simple -->
                 <div class="tutor-card">
                     <div class="tutor-img">
-                        <img src="e-simple.jpg" alt="E-Simple">
+                        <img src="e-simple.png" alt="E-Simple">
                     </div>
                     <div class="tutor-info">
                         <h3>E-Simple</h3>
                         <div class="full-name">Amusan Emmanuel Oluwapelumi</div>
                         <div class="tutor-level-dept">400L | Electrical & Electronics Engineering</div>
+                        <div class="tutor-level-dept">Personal Tutorial: ₦2,000/session</div>
                         <p>Passionate STEM tutor with 8+ years experience in core engineering and mathematics. Specializes in breaking down complex concepts and helping students achieve academic excellence with practical understanding.</p>
                         <div class="tutor-contact">
                             <div class="contact-item">
@@ -841,10 +1701,10 @@
                             </div>
                         </div>
                         <div class="courses-list">
-                            <span class="course-tag">MTS 101</span>
+                            <span class="course-tag">MTH 101</span>
                             <span class="course-tag">PHY 101</span>
                             <span class="course-tag">PHY 103</span>
-                            <span class="course-tag">CHE 101</span>
+                            <span class="course-tag">FCHE 101</span>
                             <span class="course-tag">MTS 201</span>
                             <span class="course-tag">EEE 201</span>
                             <span class="course-tag">MTS 315</span>
@@ -859,15 +1719,26 @@
                 <!-- Tutor 2 - Muzzle -->
                 <div class="tutor-card">
                     <div class="tutor-img">
-                        <i class="fas fa-user-graduate"></i>
+                       <img src="muzzle.jpg" alt="Muzzle">
                     </div>
                     <div class="tutor-info">
                         <h3>Muzzle</h3>
-                        <div class="full-name">Mathematics Specialist</div>
-                        <div class="tutor-level-dept">Experienced Tutor</div>
-                        <p>Mathematics specialist focused on making complex mathematical concepts accessible and understandable for students at all levels.</p>
-                        <div class="courses-list">
-                            <span class="course-tag">MTS 101</span>
+                        <div class="full-name">Folorunsho Muhammed Alamu</div>
+                        <div class="tutor-level-dept">400L | Mechanical Engineering</div>
+                        <div class="tutor-level-dept">Personal Tutorial: ₦1,800/session</div>
+                        <p>I am an experienced educator and founder of <strong>Impact Coaching Academy</strong> with over 7 years in teaching core engineering and advanced mathematics subjects. My area of expertise are Calculus, Algebra, Statistics, Numerical analysis, AP Physics, Fluid dynamics, Thermodynamics, and heat transfer. I am committed to tranforming challenging academic contents into manageable steps.</p>
+                        <div class="tutor-contact">
+                            <div class="contact-item">
+                                <i class="fas fa-envelope"></i>
+                               <span>folorunshomuhammed9090@gmail.com</span>
+                            </div>
+                            <div class="contact-item">
+                                <i class="fab fa-whatsapp"></i>
+                                <span>08127064566</span>
+                            </div>
+                        </div>
+                            <div class="courses-list">
+                            <span class="course-tag">MTH 101</span>
                             <span class="course-tag">PHY 101</span>
                             <span class="course-tag">PHY 103</span>
                             <span class="course-tag">MTS 201</span>
@@ -880,12 +1751,13 @@
                 <!-- Tutor 3 - O'yemi -->
                 <div class="tutor-card">
                     <div class="tutor-img">
-                        <img src="o'yemi.png" alt="O'yemi">
+                        <img src="o'yemi.jpg" alt="O'yemi">
                     </div>
                     <div class="tutor-info">
                         <h3>O'yemi</h3>
                         <div class="full-name">Abideen Yakub Opeyemi</div>
                         <div class="tutor-level-dept">300L | Electrical & Electronics Engineering</div>
+                        <div class="tutor-level-dept">Personal Tutorial: ₦1,500/session</div>
                         <p>STEM tutor with 3 years experience specializing in mathematics, physics, and electric circuit theory. Committed to making complex engineering concepts accessible and understandable.</p>
                         <div class="tutor-contact">
                             <div class="contact-item">
@@ -898,7 +1770,7 @@
                             </div>
                         </div>
                         <div class="courses-list">
-                            <span class="course-tag">MTS 101</span>
+                            <span class="course-tag">MTH 101</span>
                             <span class="course-tag">PHY 101</span>
                             <span class="course-tag">MTS 201</span>
                             <span class="course-tag">EEE 201</span>
@@ -917,6 +1789,7 @@
                         <h3>Absamie</h3>
                         <div class="full-name">Iluyomade Samson Abimbola</div>
                         <div class="tutor-level-dept">300L | Electrical & Electronics Engineering</div>
+                        <div class="tutor-level-dept">Personal Tutorial: ₦1,700/session</div>
                         <p>STEM tutor and educational consultant with 5 years experience in core engineering and advanced mathematics. Focuses on empowering students to achieve genuine subject mastery beyond just passing exams.</p>
                         <div class="tutor-contact">
                             <div class="contact-item">
@@ -929,16 +1802,12 @@
                             </div>
                         </div>
                         <div class="courses-list">
-                            <span class="course-tag">MTS 101</span>
-                            <span class="course-tag">MTS 102</span>
-                            <span class="course-tag">MTS 104</span>
+                            <span class="course-tag">MTH 101</span>
+                            <span class="course-tag">FMTH 103</span>
                             <span class="course-tag">PHY 101</span>
-                            <span class="course-tag">PHY 102</span>
                             <span class="course-tag">PHY 103</span>
                             <span class="course-tag">MTS 201</span>
-                            <span class="course-tag">MTS 202</span>
                             <span class="course-tag">EEE 201</span>
-                            <span class="course-tag">EEE 202</span>
                         </div>
                     </div>
                 </div>
@@ -946,12 +1815,13 @@
                 <!-- Tutor 5 - Physiobrain -->
                 <div class="tutor-card">
                     <div class="tutor-img">
-                        <img src="roqeebpicture.jpg" alt="Physiobrain">
+                        <img src="roqeebpicture.png" alt="Physiobrain">
                     </div>
                     <div class="tutor-info">
                         <h3>Physiobrain</h3>
                         <div class="full-name">Olayonwa Rokeeb Oluwafikayomi</div>
                         <div class="tutor-level-dept">200L | Physiology</div>
+                        <div class="tutor-level-dept">Personal Tutorial: ₦1,500/session</div>
                         <p>Educational enthusiast with 5 years experience in science courses. Focuses on breaking down complex topics and making them accessible while fostering academic excellence through effective mentorship.</p>
                         <div class="tutor-contact">
                             <div class="contact-item">
@@ -964,12 +1834,9 @@
                             </div>
                         </div>
                         <div class="courses-list">
-                            <span class="course-tag">CHE 101</span>
-                            <span class="course-tag">CHE 102</span>
+                            <span class="course-tag">FCHE 101</span>
                             <span class="course-tag">PHY 101</span>
-                            <span class="course-tag">PHY 102</span>
                             <span class="course-tag">BIO 101</span>
-                            <span class="course-tag">BIO 102</span>
                         </div>
                     </div>
                 </div>
@@ -983,6 +1850,7 @@
                         <h3>Davero</h3>
                         <div class="full-name">Idima David Nduka</div>
                         <div class="tutor-level-dept">200L | Medical Laboratory Science</div>
+                        <div class="tutor-level-dept">Personal Tutorial: ₦1,500/session</div>
                         <p>Educational enthusiast and healthcare entrepreneur with 3 years tutoring experience. Specializes in simplifying foundational chemistry and biology concepts while fostering a winning mindset in students.</p>
                         <div class="tutor-contact">
                             <div class="contact-item">
@@ -995,10 +1863,8 @@
                             </div>
                         </div>
                         <div class="courses-list">
-                            <span class="course-tag">CHE 101</span>
-                            <span class="course-tag">CHE 102</span>
+                            <span class="course-tag">FCHE 101</span>
                             <span class="course-tag">BIO 101</span>
-                            <span class="course-tag">BIO 102</span>
                         </div>
                     </div>
                 </div>
@@ -1006,12 +1872,13 @@
                 <!-- Tutor 7 - Favour -->
                 <div class="tutor-card">
                     <div class="tutor-img">
-                        <img src="favourpicture.jpg" alt="Favour">
+                        <img src="favourpicture.png" alt="Favour">
                     </div>
                     <div class="tutor-info">
                         <h3>Favour</h3>
                         <div class="full-name">Adesakin Peace</div>
                         <div class="tutor-level-dept">300L | Microbiology</div>
+                        <div class="tutor-level-dept">Personal Tutorial: ₦1,500/session</div>
                         <p>Dedicated biology and microbiology tutor committed to breaking down complex scientific concepts. Also an inspiring book writer passionate about education and sparking meaningful conversations.</p>
                         <div class="tutor-contact">
                             <div class="contact-item">
@@ -1025,11 +1892,8 @@
                         </div>
                         <div class="courses-list">
                             <span class="course-tag">BIO 101</span>
-                            <span class="course-tag">BIO 102</span>
                             <span class="course-tag">BIO 201</span>
-                            <span class="course-tag">BIO 202</span>
                             <span class="course-tag">MCB 201</span>
-                            <span class="course-tag">MCB 202</span>
                         </div>
                     </div>
                 </div>
@@ -1037,22 +1901,30 @@
                 <!-- Tutor 8 - Tomilayo -->
                 <div class="tutor-card">
                     <div class="tutor-img">
-                        <img src="tomipicture.jpg" alt="Tomilayo">
+                        <img src="tomipicture.png" alt="Tomilayo">
                     </div>
                     <div class="tutor-info">
                         <h3>Tomi</h3>
                         <div class="full-name">Asotun Oluwatomilayo</div>
-                        <div class="tutor-level-dept">Enthusiastic Science Tutor</div>
+                        <div class="tutor-level-dept">200L | Electrical & Electronics Engineering</div>
+                        <div class="tutor-level-dept">Personal Tutorial: ₦1,500/session</div>
                         <p>Committed and enthusiastic tutor with a strong passion for making science simple, practical and engaging. Dedicated to simplifying complex concepts, inspiring curiosity and helping students build confidence.</p>
-                        <div class="courses-list">
-                            <span class="course-tag">MTS 101</span>
-                            <span class="course-tag">MTS 102</span>
-                            <span class="course-tag">MTS 104</span>
+                        <div class="tutor-contact">
+                            <div class="contact-item">
+                                <i class="fas fa-envelope"></i>
+                                <span>asotunoluwatomilayo@gmail.com</span>
+                            </div>
+                            <div class="contact-item">
+                                <i class="fab fa-whatsapp"></i>
+                                <span>09035610143</span>
+                            </div>
+                        </div>
+                            <div class="courses-list">
+                            <span class="course-tag">MTH 101</span>
+                            <span class="course-tag">FMTH 103</span>
                             <span class="course-tag">PHY 101</span>
-                            <span class="course-tag">PHY 102</span>
                             <span class="course-tag">PHY 103</span>
-                            <span class="course-tag">CHE 101</span>
-                            <span class="course-tag">CHE 102</span>
+                            <span class="course-tag">FCHE 101</span>
                         </div>
                     </div>
                 </div>
@@ -1061,11 +1933,12 @@
     </section>
 
     <!-- Courses Section -->
-    <section id="courses">
+    <section id="courses" class="courses-section">
         <div class="container">
             <div class="section-title">
                 <h2>Available Courses</h2>
             </div>
+            <p class="section-subtitle">Browse our comprehensive list of courses across all academic levels, taught by our expert tutors.</p>
             
             <div class="level-tabs">
                 <div class="level-tab active" data-level="100">100 Level</div>
@@ -1077,97 +1950,62 @@
             <!-- 100 Level Courses -->
             <div class="courses-content active" id="level-100">
                 <div class="course-card">
-                    <h3>MTS 101 <span>Introductory Mathematics I</span></h3>
+                    <h3>MTH 101 <span>Introductory Mathematics I</span></h3>
                     <div class="tutors-list">
-                        <span class="tutor-tag">Muzzle</span>
-                        <span class="tutor-tag">O'yemi</span>
-                        <span class="tutor-tag">Absamie</span>
-                        <span class="tutor-tag">E-Simple</span>
-                        <span class="tutor-tag">Tomi</span>
-                    </div>
-                </div>
-                
-                <div class="course-card">
-                    <h3>MTS 102 <span>Introductory Mathematics II</span></h3>
-                    <div class="tutors-list">
-                        <span class="tutor-tag">Absamie</span>
-                        <span class="tutor-tag">Tomi</span>
+                        <span class="tutor-tag">Muzzle (₦1,800)</span>
+                        <span class="tutor-tag">O'yemi (₦1,500)</span>
+                        <span class="tutor-tag">Absamie (₦1,700)</span>
+                        <span class="tutor-tag">E-Simple (₦2,000)</span>
+                        <span class="tutor-tag">Tomi (₦1,500)</span>
                     </div>
                 </div>
 
                 <div class="course-card">
-                    <h3>MTS 104 <span>Introductory Mathematics III</span></h3>
+                    <h3>FMTH 103 <span>Elementary Mathematics III</span></h3>
                     <div class="tutors-list">
-                        <span class="tutor-tag">Absamie</span>
-                        <span class="tutor-tag">Tomi</span>
+                        <span class="tutor-tag">Absamie (₦1,700)</span>
+                        <span class="tutor-tag">Tomi (₦1,500)</span>
                     </div>
                 </div>
                 
                 <div class="course-card">
-                    <h3>CHE 101 <span>General Chemistry I</span></h3>
+                    <h3>FCHE 101 <span>General Chemistry I</span></h3>
                     <div class="tutors-list">
-                        <span class="tutor-tag">E-Simple</span>
-                        <span class="tutor-tag">Physiobrain</span>
-                        <span class="tutor-tag">Davero</span>
-                        <span class="tutor-tag">Tomi</span>
-                    </div>
-                </div>
-
-                <div class="course-card">
-                    <h3>CHE 102 <span>General Chemistry II</span></h3>
-                    <div class="tutors-list">
-                        <span class="tutor-tag">Physiobrain</span>
-                        <span class="tutor-tag">Davero</span>
-                        <span class="tutor-tag">Tomi</span>
+                        <span class="tutor-tag">E-Simple (₦2,000)</span>
+                        <span class="tutor-tag">Physiobrain (₦1,500)</span>
+                        <span class="tutor-tag">Davero (₦1,500)</span>
+                        <span class="tutor-tag">Tomi (₦1,500)</span>
                     </div>
                 </div>
                 
                 <div class="course-card">
                     <h3>PHY 101 <span>General Physics I</span></h3>
                     <div class="tutors-list">
-                        <span class="tutor-tag">E-Simple</span>
-                        <span class="tutor-tag">O'yemi</span>
-                        <span class="tutor-tag">Absamie</span>
-                        <span class="tutor-tag">Physiobrain</span>
-                        <span class="tutor-tag">Muzzle</span>
-                        <span class="tutor-tag">Tomi</span>
-                    </div>
-                </div>
-
-                <div class="course-card">
-                    <h3>PHY 102 <span>General Physics II</span></h3>
-                    <div class="tutors-list">
-                        <span class="tutor-tag">Physiobrain</span>
-                        <span class="tutor-tag">Absamie</span>
-                        <span class="tutor-tag">Tomi</span>
+                        <span class="tutor-tag">E-Simple (₦2,000)</span>
+                        <span class="tutor-tag">O'yemi (₦1,500)</span>
+                        <span class="tutor-tag">Absamie (₦1,700)</span>
+                        <span class="tutor-tag">Physiobrain (₦1,500)</span>
+                        <span class="tutor-tag">Muzzle (₦1,800)</span>
+                        <span class="tutor-tag">Tomi (₦1,500)</span>
                     </div>
                 </div>
 
                 <div class="course-card">
                     <h3>PHY 103 <span>General Physics III</span></h3>
                     <div class="tutors-list">
-                        <span class="tutor-tag">E-Simple</span>
-                        <span class="tutor-tag">Absamie</span>
-                        <span class="tutor-tag">Muzzle</span>
-                        <span class="tutor-tag">Tomi</span>
+                        <span class="tutor-tag">E-Simple (₦2,000)</span>
+                        <span class="tutor-tag">Absamie (₦1,700)</span>
+                        <span class="tutor-tag">Muzzle (₦1,800)</span>
+                        <span class="tutor-tag">Tomi (₦1,500)</span>
                     </div>
                 </div>
                 
                 <div class="course-card">
                     <h3>BIO 101 <span>General Biology I</span></h3>
                     <div class="tutors-list">
-                        <span class="tutor-tag">Physiobrain</span>
-                        <span class="tutor-tag">Davero</span>
-                        <span class="tutor-tag">Favour</span>
-                    </div>
-                </div>
-
-                <div class="course-card">
-                    <h3>BIO 102 <span>General Biology II</span></h3>
-                    <div class="tutors-list">
-                        <span class="tutor-tag">Physiobrain</span>
-                        <span class="tutor-tag">Davero</span>
-                        <span class="tutor-tag">Favour</span>
+                        <span class="tutor-tag">Physiobrain (₦1,500)</span>
+                        <span class="tutor-tag">Davero (₦1,500)</span>
+                        <span class="tutor-tag">Favour (₦1,500)</span>
                     </div>
                 </div>
                 
@@ -1182,86 +2020,53 @@
                 <div class="course-card">
                     <h3>MTS 201 <span>Mathematical Methods</span></h3>
                     <div class="tutors-list">
-                        <span class="tutor-tag">E-Simple</span>
-                        <span class="tutor-tag">O'yemi</span>
-                        <span class="tutor-tag">Muzzle</span>
-                        <span class="tutor-tag">Absamie</span>
-                    </div>
-                </div>
-
-                <div class="course-card">
-                    <h3>MTS 202 <span>Numerical Analysis</span></h3>
-                    <div class="tutors-list">
-                        <span class="tutor-tag">Absamie</span>
+                        <span class="tutor-tag">E-Simple (₦2,000)</span>
+                        <span class="tutor-tag">O'yemi (₦1,500)</span>
+                        <span class="tutor-tag">Muzzle (₦1,800)</span>
+                        <span class="tutor-tag">Absamie (₦1,700)</span>
                     </div>
                 </div>
                 
                 <div class="course-card">
                     <h3>EEE 201 <span>Basic Electrical and Electronics Engineering I</span></h3>
                     <div class="tutors-list">
-                        <span class="tutor-tag">Absamie</span>
-                        <span class="tutor-tag">O'yemi</span>
-                        <span class="tutor-tag">E-Simple</span>
-                    </div>
-                </div>
-
-                <div class="course-card">
-                    <h3>EEE 202 <span>Basic Electrical and Electronics Engineering II</span></h3>
-                    <div class="tutors-list">
-                        <span class="tutor-tag">Absamie</span>
+                        <span class="tutor-tag">Absamie (₦1,700)</span>
+                        <span class="tutor-tag">O'yemi (₦1,500)</span>
+                        <span class="tutor-tag">E-Simple (₦2,000)</span>
                     </div>
                 </div>
                 
                 <div class="course-card">
                     <h3>MEE 207 <span>Elementary Mechanics</span></h3>
                     <div class="tutors-list">
-                        <span class="tutor-tag">Muzzle</span>
-                        <span class="tutor-tag">O'yemi</span>
+                        <span class="tutor-tag">Muzzle (₦1,800)</span>
+                        <span class="tutor-tag">O'yemi (₦1,500)</span>
                     </div>
                 </div>
                 
                 <div class="course-card">
-                    <h3>MME 201 <span>Introduction to Metallurgical Engineering</span></h3>
+                    <h3>MME 201 <span>Science of Materials</span></h3>
                     <div class="tutors-list">
-                        <span class="tutor-tag">O'yemi</span>
+                        <span class="tutor-tag">O'yemi (₦1,500)</span>
                     </div>
                 </div>
 
                 <div class="course-card">
-                    <h3>MEE 201 <span>Science of Materials</span></h3>
-                    <p>No tutors currently available</p>
-                </div>
-
-                <div class="course-card">
-                    <h3>BIO 201 <span>Biology Course I</span></h3>
+                    <h3>BIO 201 <span>Introduction to Genetics I</span></h3>
                     <div class="tutors-list">
-                        <span class="tutor-tag">Favour</span>
+                        <span class="tutor-tag">Favour (₦1,500)</span>
                     </div>
                 </div>
 
                 <div class="course-card">
-                    <h3>BIO 202 <span>Biology Course II</span></h3>
+                    <h3>MCB 201 <span>General Microbiology I</span></h3>
                     <div class="tutors-list">
-                        <span class="tutor-tag">Favour</span>
-                    </div>
-                </div>
-
-                <div class="course-card">
-                    <h3>MCB 201 <span>Microbiology Course I</span></h3>
-                    <div class="tutors-list">
-                        <span class="tutor-tag">Favour</span>
-                    </div>
-                </div>
-
-                <div class="course-card">
-                    <h3>MCB 202 <span>Microbiology Course II</span></h3>
-                    <div class="tutors-list">
-                        <span class="tutor-tag">Favour</span>
+                        <span class="tutor-tag">Favour (₦1,500)</span>
                     </div>
                 </div>
                 
                 <div class="course-card">
-                    <h3>CHE 205 <span>Chemical Engineering Thermodynamics</span></h3>
+                    <h3>CHE 205 <span>Physical Chemistry I</span></h3>
                     <p>No tutors currently available</p>
                 </div>
             </div>
@@ -1271,22 +2076,22 @@
                 <div class="course-card">
                     <h3>EEE 305 <span>Electrical Machines</span></h3>
                     <div class="tutors-list">
-                        <span class="tutor-tag">E-Simple</span>
+                        <span class="tutor-tag">E-Simple (₦2,000)</span>
                     </div>
                 </div>
 
                 <div class="course-card">
                     <h3>EEE 307 <span>Electrical Machines</span></h3>
                     <div class="tutors-list">
-                        <span class="tutor-tag">E-Simple</span>
+                        <span class="tutor-tag">E-Simple (₦2,000)</span>
                     </div>
                 </div>
                 
                 <div class="course-card">
                     <h3>MTS 315 <span>Engineering Mathematics I</span></h3>
                     <div class="tutors-list">
-                        <span class="tutor-tag">E-Simple</span>
-                        <span class="tutor-tag">Muzzle</span>
+                        <span class="tutor-tag">E-Simple (₦2,000)</span>
+                        <span class="tutor-tag">Muzzle (₦1,800)</span>
                     </div>
                 </div>
             </div>
@@ -1296,14 +2101,350 @@
                 <div class="course-card">
                     <h3>EEE 401 <span>Advanced Electrical Engineering I</span></h3>
                     <div class="tutors-list">
-                        <span class="tutor-tag">E-Simple</span>
+                        <span class="tutor-tag">E-Simple (₦2,000)</span>
                     </div>
                 </div>
 
                 <div class="course-card">
                     <h3>EEE 403 <span>Advanced Electrical Engineering III</span></h3>
                     <div class="tutors-list">
-                        <span class="tutor-tag">E-Simple</span>
+                        <span class="tutor-tag">E-Simple (₦2,000)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section id="pricing">
+        <div class="container">
+            <div class="section-title">
+                <h2>Affordable Pricing</h2>
+            </div>
+            <p class="section-subtitle">Quality education shouldn't break the bank. Our pricing is designed to be accessible while maintaining the highest standards of tutoring excellence.</p>
+            
+            <!-- Pricing Banner -->
+            <div class="pricing-banner">
+                <h3>📢 Important Notice About Pricing</h3>
+                <p><strong>Tutor booking is NOT free but highly affordable!</strong> We believe in transparent, reasonable pricing for quality education.</p>
+                <div style="margin-top: 15px;">
+                    <span class="price-tag">Personal: ₦1,500 - ₦2,000</span>
+                    <span class="price-tag">Group: ₦500/student</span>
+                    <span class="price-tag">Mass: Contact us</span>
+                </div>
+            </div>
+            
+            <!-- Pricing Cards -->
+            <div class="pricing-grid">
+                <div class="pricing-card">
+                    <div class="pricing-icon">
+                        <i class="fas fa-user-graduate"></i>
+                    </div>
+                    <h3>Personal Tutorial</h3>
+                    <div class="pricing-amount">₦1,500 <span>- ₦2,000 / session</span></div>
+                    <p>One-on-one personalized attention</p>
+                    <ul class="pricing-features">
+                        <li><i class="fas fa-check"></i> Dedicated tutor attention</li>
+                        <li><i class="fas fa-check"></i> Customized learning plan</li>
+                        <li><i class="fas fa-check"></i> Flexible scheduling</li>
+                        <li><i class="fas fa-check"></i> Progress tracking</li>
+                        <li><i class="fas fa-check"></i> Priority support</li>
+                    </ul>
+                    <a href="#booking" class="btn" style="width: 100%;">Book Personal Session</a>
+                </div>
+                
+                <div class="pricing-card popular">
+                    <div class="popular-badge">MOST POPULAR</div>
+                    <div class="pricing-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3>Group Tutorial</h3>
+                    <div class="pricing-amount">₦500 <span>/ student / session</span></div>
+                    <p>Perfect for study groups (2-5 students)</p>
+                    <ul class="pricing-features">
+                        <li><i class="fas fa-check"></i> Collaborative learning</li>
+                        <li><i class="fas fa-check"></i> Cost-effective</li>
+                        <li><i class="fas fa-check"></i> Group discussions</li>
+                        <li><i class="fas fa-check"></i> Shared resources</li>
+                        <li><i class="fas fa-check"></i> Team problem-solving</li>
+                    </ul>
+                    <a href="#booking" class="btn" style="width: 100%; background: var(--secondary);">Book Group Session</a>
+                </div>
+                
+                <div class="pricing-card">
+                    <div class="pricing-icon">
+                        <i class="fas fa-chalkboard-teacher"></i>
+                    </div>
+                    <h3>Mass Tutorial</h3>
+                    <div class="pricing-amount">Contact <span>for pricing</span></div>
+                    <p>For classes, departments, or large groups</p>
+                    <ul class="pricing-features">
+                        <li><i class="fas fa-check"></i> Bulk discount rates</li>
+                        <li><i class="fas fa-check"></i> Professional setup</li>
+                        <li><i class="fas fa-check"></i> Comprehensive coverage</li>
+                        <li><i class="fas fa-check"></i> Exam preparation</li>
+                        <li><i class="fas fa-check"></i> Special arrangements</li>
+                    </ul>
+                    <a href="#booking" class="btn" style="width: 100%;">Inquire About Mass Tutorial</a>
+                </div>
+            </div>
+            
+            <div style="text-align: center; margin-top: 40px; padding: 25px; background: var(--light); border-radius: 12px;">
+                <h3 style="color: var(--primary); margin-bottom: 15px;">💡 Pricing Notes</h3>
+                <p><strong>Price Variation:</strong> Personal tutorial prices (₦1,500-₦2,000) depend on the tutor's experience and course complexity.</p>
+                <p><strong>Session Duration:</strong> Standard sessions are 2 hours. Extended sessions available at additional cost.</p>
+                <p><strong>Discounts:</strong> Available for multiple sessions, referrals, and upfront payments.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section id="faq" class="faq-section">
+        <div class="container">
+            <div class="section-title">
+                <h2>Frequently Asked Questions</h2>
+            </div>
+            <p class="section-subtitle">Find answers to common questions about our tutoring services, pricing, and booking process.</p>
+            
+            <div class="faq-container">
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>1. Is tutor booking free?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p><strong>No, tutor booking is not free but it's highly affordable.</strong> We offer quality tutoring services at reasonable prices: Personal tutorials start at ₦1,500, group tutorials are ₦500 per student, and mass tutorial pricing is available upon request. We believe in fair compensation for our tutors' expertise while keeping education accessible.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>2. How does the pricing work?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Our pricing structure is simple and transparent:</p>
+                        <ul>
+                            <li><strong>Personal Tutorials:</strong> ₦1,500 - ₦2,000 per session (2 hours), depending on tutor experience and course complexity</li>
+                            <li><strong>Group Tutorials:</strong> ₦500 per student per session (minimum 2, maximum 5 students)</li>
+                            <li><strong>Mass Tutorials:</strong> Custom pricing based on group size, duration, and requirements</li>
+                            <li><strong>Free Classes:</strong> We offer free introductory workshops and concept previews</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>3. How long is each tutoring session?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Standard tutoring sessions are 2 hours long. This gives enough time for concept explanation, problem-solving practice, and Q&A. Extended sessions (3-4 hours) are available at additional cost, especially useful for exam preparation or intensive topic coverage.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>4. Where do tutoring sessions take place?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Sessions can be conducted:</p>
+                        <ul>
+                            <li><strong>On Campus:</strong> Designated study areas at FUTA</li>
+                            <li><strong>Online:</strong> Via Zoom, Google Meet, or WhatsApp video</li>
+                            <li><strong>Hybrid:</strong> Combination of in-person and online sessions</li>
+                            <li><strong>At Designated Locations:</strong> Pre-arranged convenient locations</li>
+                        </ul>
+                        <p>You can specify your preference when booking.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>5. How do I pay for tutoring sessions?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>We offer multiple payment options for your convenience:</p>
+                        <ul>
+                            <li><strong>Bank Transfer:</strong> Direct bank deposit</li>
+                            <li><strong>Mobile Money:</strong> Opay, Palmpay, Moniepoint</li>
+                            <li><strong>Cash Payment:</strong> On arrangement</li>
+                            <li><strong>Online Payment:</strong> Available upon request</li>
+                        </ul>
+                        <p>Payment is typically made before or at the beginning of each session. For multiple sessions, you can pay upfront for a discount.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>6. What if I need to cancel or reschedule?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>We understand that schedules can change. Our cancellation/rescheduling policy:</p>
+                        <ul>
+                            <li><strong>24+ hours notice:</strong> Full refund or reschedule at no cost</li>
+                            <li><strong>12-24 hours notice:</strong> 50% refund or reschedule with small fee</li>
+                            <li><strong>Less than 12 hours:</strong> No refund but can reschedule with fee</li>
+                            <li><strong>Emergency situations:</strong> Case-by-case consideration</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>7. How are tutors selected and verified?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>All GPA tutors undergo a rigorous selection process:</p>
+                        <ul>
+                            <li>Academic verification (current FUTA students with proven records)</li>
+                            <li>Teaching ability assessment</li>
+                            <li>Subject matter expertise testing</li>
+                            <li>Reference checks</li>
+                            <li>Trial teaching sessions</li>
+                            <li>Continuous performance monitoring</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>8. Can I request a specific tutor?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Yes! You can request specific tutors during the booking process. However, tutor availability depends on their schedule. If your preferred tutor is unavailable, we'll suggest similar qualified tutors or help you find another suitable time.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>9. What materials are provided?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Depending on the tutorial type, we provide:</p>
+                        <ul>
+                            <li>Customized study notes and summaries</li>
+                            <li>Practice problems with solutions</li>
+                            <li>Past question papers and solutions</li>
+                            <li>Concept maps and study guides</li>
+                            <li>Access to our digital resource library</li>
+                            <li>Progress tracking sheets</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>10. How do I book a tutor?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Booking is simple:</p>
+                        <ol>
+                            <li>Fill out the booking form on our website</li>
+                            <li>Select your preferred tutorial type (personal/group/mass)</li>
+                            <li>Choose your course and preferred tutor</li>
+                            <li>Select your preferred contact method</li>
+                            <li>Submit the form</li>
+                            <li>We'll contact you within 24 hours to confirm details</li>
+                            <li>Make payment and start learning!</li>
+                        </ol>
+                        <p>You can also message us directly on WhatsApp for immediate assistance.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Privacy Policy Section -->
+    <section id="privacy" class="privacy-section">
+        <div class="container">
+            <div class="section-title">
+                <h2>Privacy Policy & Terms</h2>
+            </div>
+            <p class="section-subtitle">Your privacy and trust are important to us. Read our policies to understand how we handle your information.</p>
+            
+            <div class="privacy-container">
+                <div class="privacy-content">
+                    <h3>Privacy Policy</h3>
+                    <p><strong>Last Updated:</strong> March 2024</p>
+                    
+                    <h4>1. Information We Collect</h4>
+                    <p>When you book a tutor through Genius Point Academy, we collect:</p>
+                    <ul>
+                        <li>Personal information (name, email, phone number)</li>
+                        <li>Academic information (department, level, courses)</li>
+                        <li>Payment information (for processing transactions)</li>
+                        <li>Communication preferences</li>
+                        <li>Session feedback and performance data</li>
+                    </ul>
+                    
+                    <h4>2. How We Use Your Information</h4>
+                    <p>We use your information to:</p>
+                    <ul>
+                        <li>Process your tutor bookings</li>
+                        <li>Match you with suitable tutors</li>
+                        <li>Communicate about your sessions</li>
+                        <li>Process payments</li>
+                        <li>Improve our services</li>
+                        <li>Send educational updates (with your consent)</li>
+                    </ul>
+                    
+                    <h4>3. Information Sharing</h4>
+                    <p>We do NOT sell your personal information. We only share necessary information with:</p>
+                    <ul>
+                        <li>Assigned tutors (only what they need to conduct sessions)</li>
+                        <li>Payment processors (for transaction processing)</li>
+                        <li>When required by law</li>
+                    </ul>
+                    
+                    <h4>4. Data Security</h4>
+                    <p>We implement reasonable security measures to protect your information, including encryption and secure servers.</p>
+                    
+                    <h4>5. Your Rights</h4>
+                    <p>You have the right to:</p>
+                    <ul>
+                        <li>Access your personal information</li>
+                        <li>Correct inaccurate information</li>
+                        <li>Request deletion of your information</li>
+                        <li>Opt-out of marketing communications</li>
+                    </ul>
+                    
+                    <h4>6. Mass Tutorial Pricing Policy</h4>
+                    <p>For mass tutorials (11+ students) or tutor hiring for mass tutorials:</p>
+                    <ul>
+                        <li>Prices are negotiated based on group size, duration, and requirements</li>
+                        <li>Special rates apply for department-wide or class-wide tutorials</li>
+                        <li>Bulk discounts available for multiple sessions</li>
+                        <li>Custom packages can be created for specific needs</li>
+                        <li>Contact us directly for mass tutorial pricing inquiries</li>
+                    </ul>
+                    
+                    <h4>7. Contact Us</h4>
+                    <p>For privacy concerns or questions, contact us at:</p>
+                    <ul>
+                        <li>Email: academygeniuspoint@gmail.com</li>
+                        <li>WhatsApp: +2347038248528</li>
+                        <li>Phone: +2347038248528</li>
+                    </ul>
+                    
+                    <!-- PDF Download Section -->
+                    <div class="pdf-download">
+                        <i class="fas fa-file-pdf"></i>
+                        <h4>Download Full Privacy Policy</h4>
+                        <p>For a complete detailed version of our privacy policy, download the PDF document.</p>
+                        <a href="privacy-policy.pdf" download="Genius-Point-Academy-Privacy-Policy.pdf" class="btn" style="background: var(--primary); color: white; margin-top: 15px;">
+                            <i class="fas fa-download"></i> Download PDF
+                        </a>
+                        <p style="margin-top: 10px; font-size: 0.9rem; color: #666;">
+                            <i class="fas fa-info-circle"></i> File size: Approximately 150KB
+                        </p>
                     </div>
                 </div>
             </div>
@@ -1311,20 +2452,98 @@
     </section>
 
     <!-- Booking Section -->
-    <section id="booking" style="background-color: var(--light);">
+    <section id="booking" class="booking-section">
         <div class="container">
             <div class="section-title">
                 <h2>Book a Tutor</h2>
             </div>
+            <p class="section-subtitle" style="color: rgba(255,255,255,0.8);">Ready to achieve your academic breakthrough? Book a session with our expert tutors today!</p>
+            
+            <!-- Pricing Reminder -->
+            <div style="background: rgba(255,255,255,0.1); padding: 20px; border-radius: 12px; margin-bottom: 30px; text-align: center; backdrop-filter: blur(10px);">
+                <h4 style="color: var(--secondary); margin-bottom: 10px;">💰 Pricing Reminder</h4>
+                <p style="display: flex; justify-content: center; flex-wrap: wrap; gap: 20px;">
+                    <span><i class="fas fa-user"></i> Personal: ₦1,500 - ₦2,000</span>
+                    <span><i class="fas fa-users"></i> Group: ₦500/student</span>
+                    <span><i class="fas fa-chalkboard-teacher"></i> Mass: Contact for pricing</span>
+                </p>
+            </div>
+            
             <div class="booking-container">
                 <div class="booking-form">
-                    <form action="https://formsubmit.co/academygeniuspoint@gmail.com" method="POST" id="bookingForm">
+                    <form id="bookingForm">
                         <!-- FormSubmit Hidden Fields -->
                         <input type="hidden" name="_subject" value="New Tutor Booking - Genius Point Academy">
                         <input type="hidden" name="_template" value="table">
                         <input type="hidden" name="_captcha" value="false">
                         <input type="hidden" name="_autoresponse" value="Thank you for booking a tutor with Genius Point Academy! We have received your request and will contact you within 24 hours to confirm your session. For urgent inquiries, message us on WhatsApp: +2347038248528">
-                        <input type="hidden" name="_next" value="https://futafreshersguide.github.io/geniuspointacademytesting/">
+                        <input type="hidden" name="_next" value="#booking">
+
+                        <!-- Booking Type Selection -->
+                        <div class="form-group">
+                            <label for="bookingType">What are you booking for?</label>
+                            <div class="booking-type-options">
+                                <label class="booking-type-option">
+                                    <input type="radio" name="booking_type" value="personal" required>
+                                    <div class="option-content">
+                                        <i class="fas fa-user"></i>
+                                        <span>Personal Tutorial</span>
+                                        <small>1-on-1 session</small>
+                                        <div class="price-indicator">₦1,500 - ₦2,000</div>
+                                    </div>
+                                </label>
+                                <label class="booking-type-option">
+                                    <input type="radio" name="booking_type" value="group">
+                                    <div class="option-content">
+                                        <i class="fas fa-users"></i>
+                                        <span>Group Tutorial</span>
+                                        <small>2-5 students</small>
+                                        <div class="price-indicator">₦500/student</div>
+                                    </div>
+                                </label>
+                                <label class="booking-type-option">
+                                    <input type="radio" name="booking_type" value="mass">
+                                    <div class="option-content">
+                                        <i class="fas fa-chalkboard-teacher"></i>
+                                        <span>Mass Tutorial</span>
+                                        <small>6+ students</small>
+                                        <div class="price-indicator">Contact us</div>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Student Count (Conditional) -->
+                        <div class="form-group" id="studentCountGroup" style="display: none;">
+                            <label for="studentCount">Number of Students</label>
+                            <input type="number" id="studentCount" name="student_count" min="1" max="100">
+                            <small id="studentCountHelp" class="form-text"></small>
+                        </div>
+
+                        <!-- Number of Courses (Conditional for Group/Mass) -->
+                        <div class="form-group" id="courseCountGroup" style="display: none;">
+                            <label for="courseCount">How many courses do you want to book for?</label>
+                            <select id="courseCount" name="course_count">
+                                <option value="">Select number of courses</option>
+                                <option value="1">1 Course</option>
+                                <option value="2">2 Courses</option>
+                                <option value="3">3 Courses</option>
+                                <option value="4">4 Courses</option>
+                                <option value="5">5+ Courses</option>
+                            </select>
+                        </div>
+
+                        <!-- Number of Tutors (Conditional for Group/Mass) -->
+                        <div class="form-group" id="tutorCountGroup" style="display: none;">
+                            <label for="tutorCount">How many tutors do you need?</label>
+                            <select id="tutorCount" name="tutor_count">
+                                <option value="">Select number of tutors</option>
+                                <option value="1">1 Tutor</option>
+                                <option value="2">2 Tutors</option>
+                                <option value="3">3 Tutors</option>
+                                <option value="4">4+ Tutors</option>
+                            </select>
+                        </div>
 
                         <div class="form-group">
                             <label for="fullName">Full Name</label>
@@ -1353,19 +2572,27 @@
                                 <option value="500">500 Level</option>
                             </select>
                         </div>
-                        <div class="form-group">
-                            <label for="course">Course</label>
-                            <select id="course" name="course" required>
-                                <option value="">Select Course</option>
-                                <!-- Options will be populated based on level selection -->
-                            </select>
+                        
+                        <!-- Course Selection (Dynamic based on course count) -->
+                        <div id="courseSelectionContainer">
+                            <div class="form-group course-selection">
+                                <label for="course1">Course</label>
+                                <select id="course1" name="course[]" required>
+                                    <option value="">Select Course</option>
+                                    <!-- Options will be populated based on level selection -->
+                                </select>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label for="tutor">Preferred Tutor</label>
-                            <select id="tutor" name="preferred_tutor">
-                                <option value="">Any Available Tutor</option>
-                                <!-- Options will be populated based on course selection -->
-                            </select>
+
+                        <!-- Tutor Selection (Dynamic based on tutor count) -->
+                        <div id="tutorSelectionContainer">
+                            <div class="form-group tutor-selection">
+                                <label for="tutor1">Preferred Tutor</label>
+                                <select id="tutor1" name="preferred_tutor[]">
+                                    <option value="">Any Available Tutor</option>
+                                    <!-- Options will be populated based on course selection -->
+                                </select>
+                            </div>
                         </div>
                         
                         <!-- Contact Preference Section -->
@@ -1397,16 +2624,18 @@
 
                         <div class="form-group">
                             <label for="message">Additional Message (Optional)</label>
-                            <textarea id="message" name="message" rows="4" placeholder="Any specific topics you need help with? Preferred time for tutoring sessions?"></textarea>
+                            <textarea id="message" name="message" rows="4" placeholder="Any specific topics you need help with? Preferred time for tutoring sessions? Budget considerations?"></textarea>
                         </div>
                         
-                        <button type="submit" class="btn" style="width: 100%;">Submit Booking Request</button>
+                        <button type="submit" class="btn" id="submitBtn" style="width: 100%; background: var(--primary); color: white;">
+                            Submit Booking Request
+                        </button>
                     </form>
                     
                     <!-- Confirmation Message -->
                     <div class="confirmation-message" id="confirmationMessage">
                         <h4><i class="fas fa-check-circle" style="color: var(--success);"></i> Booking Request Received!</h4>
-                        <p>We've sent a confirmation email to <strong id="userEmail"></strong>. You'll be contacted within 24 hours via your preferred method(s) to confirm your session.</p>
+                        <p>We've sent a confirmation email to <strong id="userEmail"></strong>. You'll be contacted within 24 hours via your preferred method(s) to confirm your session and discuss pricing details.</p>
                         <div class="whatsapp-info">
                             <i class="fab fa-whatsapp"></i>
                             <span>You can also message us directly on WhatsApp: <strong>+2347038248528</strong></span>
@@ -1416,27 +2645,29 @@
                 <div class="booking-info">
                     <i class="fas fa-calendar-check"></i>
                     <h3>How It Works</h3>
-                    <p>1. Fill out the booking form with your details</p>
-                    <p>2. Select your level and desired course</p>
-                    <p>3. Choose a preferred tutor (optional)</p>
-                    <p>4. Select how you want to be contacted</p>
-                    <p>5. Submit your request</p>
-                    <p>6. Get instant email confirmation</p>
-                    <p>7. We'll contact you within 24 hours to confirm your booking</p>
+                    <p><i class="fas fa-check-circle"></i> Select your preferred tutorial type</p>
+                    <p><i class="fas fa-check-circle"></i> For group/mass tutorials: specify number of students, courses, and tutors needed</p>
+                    <p><i class="fas fa-check-circle"></i> Fill out the booking form with your details</p>
+                    <p><i class="fas fa-check-circle"></i> Select your level and desired courses</p>
+                    <p><i class="fas fa-check-circle"></i> Choose preferred tutors (optional)</p>
+                    <p><i class="fas fa-check-circle"></i> Select how you want to be contacted</p>
+                    <p><i class="fas fa-check-circle"></i> Submit your request</p>
+                    <p><i class="fas fa-check-circle"></i> Get email confirmation within 24 hours</p>
+                    <p><i class="fas fa-check-circle"></i> We'll contact you within 24 hours to confirm your booking and discuss payment</p>
                     
-                    <div style="margin-top: 30px; padding: 20px; background: white; border-radius: 8px; box-shadow: 0 3px 10px rgba(0,0,0,0.1);">
-                        <h4><i class="fas fa-envelope" style="color: var(--primary);"></i> Email Confirmation</h4>
-                        <p>After booking, you'll receive an email with:</p>
-                        <ul style="text-align: left; margin-top: 10px; padding-left: 20px;">
-                            <li>Booking details summary</li>
-                            <li>Expected response time</li>
-                            <li>Contact information for urgent queries</li>
-                            <li>Next steps in the process</li>
+                    <div style="margin-top: 30px; padding: 25px; background: rgba(255,255,255,0.1); border-radius: 12px; backdrop-filter: blur(10px);">
+                        <h4><i class="fas fa-money-bill-wave"></i> Payment Information</h4>
+                        <p>After booking confirmation, you'll receive:</p>
+                        <ul style="text-align: left; margin-top: 15px; padding-left: 20px;">
+                            <li>Final pricing based on your selection</li>
+                            <li>Multiple payment options</li>
+                            <li>Payment deadline information</li>
+                            <li>Receipt upon payment</li>
                         </ul>
                     </div>
 
                     <!-- WhatsApp Button -->
-                    <button onclick="sendWhatsAppMessage()" class="btn" style="background-color: #25D366; margin-top: 20px; width: 100%;">
+                    <button onclick="sendWhatsAppMessage()" class="btn" style="background-color: #25D366; margin-top: 25px; width: 100%;">
                         <i class="fab fa-whatsapp"></i> Message Absamie on WhatsApp
                     </button>
                 </div>
@@ -1450,22 +2681,25 @@
             <div class="footer-content">
                 <div class="footer-section">
                     <h3>Genius Point Academy</h3>
-                    <p>Find Your Academic Breakthrough at FUTA's Premier Tutorial Community</p>
+                    <p>Find Your Academic Breakthrough at FUTA's Premier Tutorial Community. We provide affordable, quality tutoring services to help students excel in their academic journey.</p>
                     <div class="social-links">
-                        <!-- Facebook link: <a href="YOUR_FACEBOOK_URL"><i class="fab fa-facebook-f"></i></a> -->
-                        <!-- Twitter link: <a href="YOUR_TWITTER_URL"><i class="fab fa-twitter"></i></a> -->
-                        <!-- Instagram link: <a href="YOUR_INSTAGRAM_URL"><i class="fab fa-instagram"></i></a> -->
-                        <!-- LinkedIn link: <a href="YOUR_LINKEDIN_URL"><i class="fab fa-linkedin-in"></i></a> -->
+                        <a href="#" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" title="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" title="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
                     </div>
                 </div>
                 <div class="footer-section">
                     <h3>Quick Links</h3>
                     <ul>
-                        <li><a href="#home">Home</a></li>
-                        <li><a href="#about">About Us</a></li>
-                        <li><a href="#tutors">Our Tutors</a></li>
-                        <li><a href="#courses">Courses</a></li>
-                        <li><a href="#booking">Book a Tutor</a></li>
+                        <li><a href="#home"><i class="fas fa-chevron-right"></i> Home</a></li>
+                        <li><a href="#about"><i class="fas fa-chevron-right"></i> About Us</a></li>
+                        <li><a href="#pricing"><i class="fas fa-chevron-right"></i> Pricing</a></li>
+                        <li><a href="#tutors"><i class="fas fa-chevron-right"></i> Our Tutors</a></li>
+                        <li><a href="#courses"><i class="fas fa-chevron-right"></i> Courses</a></li>
+                        <li><a href="#faq"><i class="fas fa-chevron-right"></i> FAQ</a></li>
+                        <li><a href="#privacy"><i class="fas fa-chevron-right"></i> Privacy Policy</a></li>
+                        <li><a href="#booking"><i class="fas fa-chevron-right"></i> Book a Tutor</a></li>
                     </ul>
                 </div>
                 <div class="footer-section">
@@ -1474,12 +2708,12 @@
                     <p><i class="fas fa-phone"></i> +2347038248528</p>
                     <p><i class="fab fa-whatsapp"></i> +2347038248528</p>
                     <p><i class="fas fa-envelope"></i> academygeniuspoint@gmail.com</p>
+                    <p><i class="fas fa-clock"></i> Response Time: Within 24 hours</p>
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2023 Genius Point Academy. All Rights Reserved.</p>
+                <p>&copy; 2024 Genius Point Academy. All Rights Reserved. | <a href="#privacy" style="color: var(--secondary); text-decoration: none;">Privacy Policy</a></p>
             </div>
-</div>
         </div>
     </footer>
 
@@ -1490,7 +2724,7 @@
             <div style="text-align: center; padding: 20px;">
                 <i class="fas fa-check-circle" style="font-size: 4rem; color: var(--success); margin-bottom: 20px;"></i>
                 <h2>Booking Submitted Successfully!</h2>
-                <p id="modalMessage">Thank you for your booking request. We will contact you within 24 hours to confirm your session.</p>
+                <p id="modalMessage">Thank you for booking with Genius Point Academy. We have received your request and will contact you within 24 hours to confirm your session and discuss pricing details.</p>
                 <button class="btn" style="margin-top: 20px;" id="modalClose">Close</button>
             </div>
         </div>
@@ -1500,6 +2734,16 @@
         // Mobile Menu Toggle
         document.querySelector('.mobile-menu').addEventListener('click', function() {
             document.querySelector('.nav-menu').classList.toggle('active');
+        });
+
+        // Header scroll effect
+        window.addEventListener('scroll', function() {
+            const header = document.getElementById('header');
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
         });
 
         // Level Tabs
@@ -1519,43 +2763,51 @@
             });
         });
 
+        // FAQ Accordion
+        const faqItems = document.querySelectorAll('.faq-item');
+        faqItems.forEach(item => {
+            const question = item.querySelector('.faq-question');
+            question.addEventListener('click', () => {
+                // Close all other FAQ items
+                faqItems.forEach(otherItem => {
+                    if (otherItem !== item) {
+                        otherItem.classList.remove('active');
+                    }
+                });
+                
+                // Toggle current item
+                item.classList.toggle('active');
+            });
+        });
+
         // Course data based on level
         const coursesData = {
             '100': [
-                { code: 'MTS 101', name: 'Introductory Mathematics I', tutors: ['Muzzle', 'O\'yemi', 'Absamie', 'E-Simple', 'Tomi'] },
-                { code: 'MTS 102', name: 'Introductory Mathematics II', tutors: ['Absamie', 'Tomi'] },
-                { code: 'MTS 104', name: 'Introductory Mathematics III', tutors: ['Absamie', 'Tomi'] },
-                { code: 'CHE 101', name: 'General Chemistry I', tutors: ['E-Simple', 'Physiobrain', 'Davero', 'Tomi'] },
-                { code: 'CHE 102', name: 'General Chemistry II', tutors: ['Physiobrain', 'Davero', 'Tomi'] },
-                { code: 'PHY 101', name: 'General Physics I', tutors: ['E-Simple', 'O\'yemi', 'Absamie', 'Physiobrain', 'Muzzle', 'Tomi'] },
-                { code: 'PHY 102', name: 'General Physics II', tutors: ['Physiobrain', 'Absamie', 'Tomi'] },
-                { code: 'PHY 103', name: 'General Physics III', tutors: ['E-Simple', 'Absamie', 'Muzzle', 'Tomi'] },
-                { code: 'BIO 101', name: 'General Biology I', tutors: ['Physiobrain', 'Davero', 'Favour'] },
-                { code: 'BIO 102', name: 'General Biology II', tutors: ['Physiobrain', 'Davero', 'Favour'] },
+                { code: 'MTH 101', name: 'Elementary Mathematics I', tutors: ['Muzzle (₦1,800)', 'O\'yemi (₦1,500)', 'Absamie (₦1,700)', 'E-Simple (₦2,000)', 'Tomi (₦1,500)'] },
+                { code: 'FMTH 103', name: 'Elementary Mathematics III', tutors: ['Absamie (₦1,700)', 'Tomi (₦1,500)'] },
+                { code: 'FCHE 101', name: 'General Chemistry I', tutors: ['E-Simple (₦2,000)', 'Physiobrain (₦1,500)', 'Davero (₦1,500)', 'Tomi (₦1,500)'] },
+                { code: 'PHY 101', name: 'General Physics I', tutors: ['E-Simple (₦2,000)', 'O\'yemi (₦1,500)', 'Absamie (₦1,700)', 'Physiobrain (₦1,500)', 'Muzzle (₦1,800)', 'Tomi (₦1,500)'] },
+                { code: 'PHY 103', name: 'General Physics III', tutors: ['E-Simple (₦2,000)', 'Absamie (₦1,700)', 'Muzzle (₦1,800)', 'Tomi (₦1,500)'] },
+                { code: 'BIO 101', name: 'General Biology I', tutors: ['Physiobrain (₦1,500)', 'Davero (₦1,500)', 'Favour (₦1,500)'] },
                 { code: 'MEE 101', name: 'Engineering Drawing I', tutors: [] }
             ],
             '200': [
-                { code: 'MTS 201', name: 'Mathematical Methods', tutors: ['E-Simple', 'O\'yemi', 'Muzzle', 'Absamie'] },
-                { code: 'MTS 202', name: 'Numerical Analysis', tutors: ['Absamie'] },
-                { code: 'EEE 201', name: 'Basic Electrical and Electronics Engineering I', tutors: ['Absamie', 'O\'yemi', 'E-Simple'] },
-                { code: 'EEE 202', name: 'Basic Electrical and Electronics Engineering II', tutors: ['Absamie'] },
-                { code: 'MEE 207', name: 'Elementary Mechanics', tutors: ['Muzzle', 'O\'yemi'] },
-                { code: 'MME 201', name: 'Introduction to Metallurgical Engineering', tutors: ['O\'yemi'] },
-                { code: 'MEE 201', name: 'Science of Materials', tutors: [] },
-                { code: 'BIO 201', name: 'Biology Course I', tutors: ['Favour'] },
-                { code: 'BIO 202', name: 'Biology Course II', tutors: ['Favour'] },
-                { code: 'MCB 201', name: 'Microbiology Course I', tutors: ['Favour'] },
-                { code: 'MCB 202', name: 'Microbiology Course II', tutors: ['Favour'] },
-                { code: 'CHE 205', name: 'Chemical Engineering Thermodynamics', tutors: [] }
+                { code: 'MTS 201', name: 'Mathematical Methods', tutors: ['E-Simple (₦2,000)', 'O\'yemi (₦1,500)', 'Muzzle (₦1,800)', 'Absamie (₦1,700)'] },
+                { code: 'EEE 201', name: 'Basic Electrical and Electronics Engineering I', tutors: ['Absamie (₦1,700)', 'O\'yemi (₦1,500)', 'E-Simple (₦2,000)'] },
+                { code: 'MEE 207', name: 'Elementary Mechanics', tutors: ['Muzzle (₦1,800)', 'O\'yemi (₦1,500)'] },
+                { code: 'MME 201', name: 'Science of Materials', tutors: ['O\'yemi (₦1,500)'] },
+                { code: 'BIO 201', name: 'Introduction to Genetics I', tutors: ['Favour (₦1,500)'] },
+                { code: 'MCB 201', name: 'General Microbiology I', tutors: ['Favour (₦1,500)'] },
+                { code: 'CHE 205', name: 'Physical Chemistry I', tutors: [] }
             ],
             '300': [
-                { code: 'EEE 305', name: 'Electrical Machines', tutors: ['E-Simple'] },
-                { code: 'EEE 307', name: 'Electrical Machines', tutors: ['E-Simple'] },
-                { code: 'MTS 315', name: 'Engineering Mathematics I', tutors: ['E-Simple', 'Muzzle'] }
+                { code: 'EEE 305', name: 'Electrical Machines', tutors: ['E-Simple (₦2,000)'] },
+                { code: 'EEE 307', name: 'Electrical Machines', tutors: ['E-Simple (₦2,000)'] },
+                { code: 'MTS 315', name: 'Engineering Mathematics I', tutors: ['E-Simple (₦2,000)', 'Muzzle (₦1,800)'] }
             ],
             '400': [
-                { code: 'EEE 401', name: 'Advanced Electrical Engineering I', tutors: ['E-Simple'] },
-                { code: 'EEE 403', name: 'Advanced Electrical Engineering III', tutors: ['E-Simple'] }
+                { code: 'EEE 401', name: 'Advanced Electrical Engineering I', tutors: ['E-Simple (₦2,000)'] },
+                { code: 'EEE 403', name: 'Advanced Electrical Engineering III', tutors: ['E-Simple (₦2,000)'] }
             ],
             '500': [
                 { code: 'No courses', name: 'No courses available for 500 level', tutors: [] }
@@ -1565,47 +2817,188 @@
         // Update course options based on selected level
         document.getElementById('level').addEventListener('change', function() {
             const level = this.value;
-            const courseSelect = document.getElementById('course');
-            const tutorSelect = document.getElementById('tutor');
+            const courseSelects = document.querySelectorAll('select[name="course[]"]');
             
-            // Clear previous options
-            courseSelect.innerHTML = '<option value="">Select Course</option>';
-            tutorSelect.innerHTML = '<option value="">Any Available Tutor</option>';
-            
-            if (level && coursesData[level]) {
-                // Add courses for selected level
-                coursesData[level].forEach(course => {
-                    const option = document.createElement('option');
-                    option.value = course.code;
-                    option.textContent = `${course.code} - ${course.name}`;
-                    courseSelect.appendChild(option);
-                });
-            }
+            courseSelects.forEach(select => {
+                select.innerHTML = '<option value="">Select Course</option>';
+                
+                if (level && coursesData[level]) {
+                    coursesData[level].forEach(course => {
+                        const option = document.createElement('option');
+                        option.value = course.code;
+                        option.textContent = `${course.code} - ${course.name}`;
+                        select.appendChild(option);
+                    });
+                }
+            });
         });
 
         // Update tutor options based on selected course
-        document.getElementById('course').addEventListener('change', function() {
-            const level = document.getElementById('level').value;
-            const courseCode = this.value;
-            const tutorSelect = document.getElementById('tutor');
-            
-            // Clear previous options except the first one
-            tutorSelect.innerHTML = '<option value="">Any Available Tutor</option>';
-            
-            if (level && courseCode && coursesData[level]) {
-                const selectedCourse = coursesData[level].find(course => course.code === courseCode);
+        document.addEventListener('change', function(e) {
+            if (e.target.name === 'course[]') {
+                const level = document.getElementById('level').value;
+                const courseCode = e.target.value;
+                const tutorSelectId = e.target.id.replace('course', 'tutor');
+                const tutorSelect = document.getElementById(tutorSelectId);
                 
-                if (selectedCourse && selectedCourse.tutors.length > 0) {
-                    // Add tutors for selected course
-                    selectedCourse.tutors.forEach(tutor => {
-                        const option = document.createElement('option');
-                        option.value = tutor;
-                        option.textContent = tutor;
-                        tutorSelect.appendChild(option);
-                    });
+                if (tutorSelect) {
+                    tutorSelect.innerHTML = '<option value="">Any Available Tutor</option>';
+                    
+                    if (level && courseCode && coursesData[level]) {
+                        const selectedCourse = coursesData[level].find(course => course.code === courseCode);
+                        
+                        if (selectedCourse && selectedCourse.tutors.length > 0) {
+                            selectedCourse.tutors.forEach(tutor => {
+                                const option = document.createElement('option');
+                                option.value = tutor.split(' (')[0]; // Remove price from value
+                                option.textContent = tutor;
+                                tutorSelect.appendChild(option);
+                            });
+                        }
+                    }
                 }
             }
         });
+
+        // Booking Type Selection
+        document.querySelectorAll('input[name="booking_type"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                const studentCountGroup = document.getElementById('studentCountGroup');
+                const courseCountGroup = document.getElementById('courseCountGroup');
+                const tutorCountGroup = document.getElementById('tutorCountGroup');
+                const studentCountInput = document.getElementById('studentCount');
+                const studentCountHelp = document.getElementById('studentCountHelp');
+                
+                if (this.value === 'personal') {
+                    // Hide all group-specific fields for personal tutorials
+                    studentCountGroup.style.display = 'none';
+                    courseCountGroup.style.display = 'none';
+                    tutorCountGroup.style.display = 'none';
+                    
+                    // Reset values
+                    studentCountInput.value = '1';
+                    studentCountInput.required = false;
+                    
+                    // Reset to single course/tutor selection
+                    resetToSingleSelection();
+                    
+                } else if (this.value === 'group' || this.value === 'mass') {
+                    // Show all group-specific fields
+                    studentCountGroup.style.display = 'block';
+                    courseCountGroup.style.display = 'block';
+                    tutorCountGroup.style.display = 'block';
+                    
+                    // Set appropriate validation
+                    if (this.value === 'group') {
+                        studentCountInput.min = 2;
+                        studentCountInput.max = 5;
+                        studentCountHelp.textContent = 'Group tutorials are for 2-5 students';
+                    } else if (this.value === 'mass') {
+                        studentCountInput.min = 6;
+                        studentCountInput.max = 100;
+                        studentCountHelp.textContent = 'Mass tutorials are for 6+ students';
+                    }
+                    
+                    studentCountInput.value = '';
+                    studentCountInput.required = true;
+                }
+            });
+        });
+
+        // Function to reset to single course/tutor selection
+        function resetToSingleSelection() {
+            const courseContainer = document.getElementById('courseSelectionContainer');
+            const tutorContainer = document.getElementById('tutorSelectionContainer');
+            
+            courseContainer.innerHTML = `
+                <div class="form-group course-selection">
+                    <label for="course1">Course</label>
+                    <select id="course1" name="course[]" required>
+                        <option value="">Select Course</option>
+                    </select>
+                </div>
+            `;
+            
+            tutorContainer.innerHTML = `
+                <div class="form-group tutor-selection">
+                    <label for="tutor1">Preferred Tutor</label>
+                    <select id="tutor1" name="preferred_tutor[]">
+                        <option value="">Any Available Tutor</option>
+                    </select>
+                </div>
+            `;
+            
+            // Repopulate course options if level is selected
+            const level = document.getElementById('level').value;
+            if (level) {
+                populateCourseOptions('course1', level);
+            }
+        }
+
+        // Update course count selection (for group/mass tutorials)
+        document.getElementById('courseCount').addEventListener('change', function() {
+            const courseCount = parseInt(this.value);
+            const container = document.getElementById('courseSelectionContainer');
+            
+            // Clear previous course selections
+            container.innerHTML = '';
+            
+            for (let i = 1; i <= courseCount; i++) {
+                const courseGroup = document.createElement('div');
+                courseGroup.className = 'form-group course-selection';
+                courseGroup.innerHTML = `
+                    <label for="course${i}">Course ${i}</label>
+                    <select id="course${i}" name="course[]" required>
+                        <option value="">Select Course</option>
+                    </select>
+                `;
+                container.appendChild(courseGroup);
+                
+                // Populate courses based on selected level
+                const level = document.getElementById('level').value;
+                if (level) {
+                    populateCourseOptions(`course${i}`, level);
+                }
+            }
+        });
+
+        // Update tutor count selection (for group/mass tutorials)
+        document.getElementById('tutorCount').addEventListener('change', function() {
+            const tutorCount = parseInt(this.value);
+            const container = document.getElementById('tutorSelectionContainer');
+            
+            // Clear previous tutor selections
+            container.innerHTML = '';
+            
+            for (let i = 1; i <= tutorCount; i++) {
+                const tutorGroup = document.createElement('div');
+                tutorGroup.className = 'form-group tutor-selection';
+                tutorGroup.innerHTML = `
+                    <label for="tutor${i}">Preferred Tutor ${i}</label>
+                    <select id="tutor${i}" name="preferred_tutor[]">
+                        <option value="">Any Available Tutor</option>
+                    </select>
+                `;
+                container.appendChild(tutorGroup);
+            }
+        });
+
+        // Function to populate course options
+        function populateCourseOptions(selectId, level) {
+            const courseSelect = document.getElementById(selectId);
+            if (courseSelect) {
+                courseSelect.innerHTML = '<option value="">Select Course</option>';
+                
+                if (level && coursesData[level]) {
+                    coursesData[level].forEach(course => {
+                        const option = document.createElement('option');
+                        option.value = course.code;
+                        option.textContent = `${course.code} - ${course.name}`;
+                        courseSelect.appendChild(option);
+                    });
+                }
+            }
+        }
 
         // Contact preference selection
         document.querySelectorAll('.contact-option').forEach(option => {
@@ -1618,55 +3011,92 @@
 
         // Form submission with FormSubmit
         document.getElementById('bookingForm').addEventListener('submit', function(e) {
-            // Let FormSubmit handle the submission naturally
-            // We'll just show the confirmation message
+            e.preventDefault(); // Prevent default form submission
             
-            const userEmail = document.getElementById('email').value;
+            // Validate student count based on booking type
+            const bookingType = document.querySelector('input[name="booking_type"]:checked');
+            const studentCount = document.getElementById('studentCount').value;
             
-            // Show confirmation message immediately
-            document.getElementById('userEmail').textContent = userEmail;
-            document.getElementById('confirmationMessage').classList.add('show');
-            
-            // Update modal message
-            const contactMethods = document.querySelectorAll('input[name="contact_method[]"]:checked');
-            const selectedMethods = Array.from(contactMethods).map(cb => cb.value);
-            let contactMessage = '';
-            
-            if (selectedMethods.includes('whatsapp')) {
-                contactMessage += '• WhatsApp: +2347038248528<br>';
-            }
-            if (selectedMethods.includes('phone')) {
-                contactMessage += '• Phone Call: +2347038248528<br>';
-            }
-            if (selectedMethods.includes('email')) {
-                contactMessage += '• Email: academygeniuspoint@gmail.com<br>';
-            }
-            if (selectedMethods.includes('sms')) {
-                contactMessage += '• SMS: +2347038248528<br>';
+            if (bookingType) {
+                if (bookingType.value === 'group' && (studentCount < 2 || studentCount > 5)) {
+                    alert('Group tutorials must have between 2-5 students');
+                    return;
+                }
+                
+                if (bookingType.value === 'mass' && studentCount < 6) {
+                    alert('Mass tutorials must have at least 6 students');
+                    return;
+                }
             }
             
-            document.getElementById('modalMessage').innerHTML = `
-                Thank you for your booking request! We've sent a confirmation email to your inbox.<br><br>
-                <strong>You'll be contacted via:</strong><br>
-                ${contactMessage || 'Your selected contact method(s)'}<br>
-                We'll get back to you within 24 hours to confirm your session.
-            `;
+            // Get form data
+            const form = this;
+            const formData = new FormData(form);
             
-            // Reset form after submission (FormSubmit will handle the actual submission)
-            setTimeout(() => {
-                document.querySelectorAll('.contact-option').forEach(option => {
-                    option.classList.remove('selected');
-                });
-                document.getElementById('confirmationMessage').classList.remove('show');
-            }, 5000);
+            // Show loading state
+            const submitBtn = document.getElementById('submitBtn');
+            const originalText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<span class="spinner"></span> Submitting...';
+            submitBtn.disabled = true;
+            
+            // Send form data via fetch API
+            fetch('https://formsubmit.co/academygeniuspoint@gmail.com', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => {
+                if (response.ok) {
+                    // Show success message
+                    const userEmail = document.getElementById('email').value;
+                    document.getElementById('userEmail').textContent = userEmail;
+                    document.getElementById('confirmationMessage').classList.add('show');
+                    
+                    // Scroll to confirmation message
+                    document.getElementById('confirmationMessage').scrollIntoView({ behavior: 'smooth' });
+                    
+                    // Reset form after successful submission
+                    form.reset();
+                    
+                    // Reset booking type specific fields
+                    document.getElementById('studentCountGroup').style.display = 'none';
+                    document.getElementById('courseCountGroup').style.display = 'none';
+                    document.getElementById('tutorCountGroup').style.display = 'none';
+                    
+                    // Reset contact preferences
+                    document.querySelectorAll('.contact-option').forEach(option => {
+                        option.classList.remove('selected');
+                        option.querySelector('input').checked = false;
+                    });
+                    
+                    // Reset to single course/tutor selection
+                    resetToSingleSelection();
+                    
+                    // Show success modal
+                    setTimeout(() => {
+                        document.getElementById('successModal').style.display = 'flex';
+                    }, 500);
+                    
+                } else {
+                    throw new Error('Network response was not ok');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('There was an error submitting your booking. Please try again or contact us directly via WhatsApp.');
+            })
+            .finally(() => {
+                // Restore button state
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+            });
         });
 
         // WhatsApp direct message functionality
         function sendWhatsAppMessage() {
             const phone = '+2347038248528'; // Absamie's WhatsApp number
-            const course = document.getElementById('course').value || 'a course';
+            const course = document.getElementById('course1').value || 'a course';
             const level = document.getElementById('level').value || 'your level';
-            const message = `Hello GPA! I'm interested in booking a tutor for ${course} (${level} Level).`;
+            const message = `Hello GPA! I'm interested in booking a tutor for ${course} (${level} Level). Can you provide pricing details?`;
             const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
             window.open(url, '_blank');
         }
@@ -1699,7 +3129,7 @@
                 const targetElement = document.querySelector(targetId);
                 if (targetElement) {
                     window.scrollTo({
-                        top: targetElement.offsetTop - 80,
+                        top: targetElement.offsetTop - 100,
                         behavior: 'smooth'
                     });
                     
@@ -1708,188 +3138,33 @@
                 }
             });
         });
-// Load admin data from localStorage and update website
-function loadAdminData() {
-    const savedTutors = localStorage.getItem('gpaTutors');
-    const savedCourses = localStorage.getItem('gpaCourses');
-    
-    if (savedTutors) {
-        updateTutorsDisplay(JSON.parse(savedTutors));
-    }
-    
-    if (savedCourses) {
-        updateCoursesDisplay(JSON.parse(savedCourses));
-    }
-}
-// Auto-check for updates every 2 minutes
-setInterval(loadAdminData, 120000);
-// Function to update tutors on main website
-function updateTutorsDisplay(tutors) {
-    const tutorsGrid = document.querySelector('.tutors-grid');
-    if (!tutorsGrid) return;
-    
-    // Clear existing tutors (except first one as template)
-    tutorsGrid.innerHTML = '';
-    
-    // Add each tutor
-    tutors.forEach(tutor => {
-        const tutorCard = document.createElement('div');
-        tutorCard.className = 'tutor-card';
-        tutorCard.innerHTML = `
-            <div class="tutor-img">
-                <img src="${tutor.image}" alt="${tutor.name}" onerror="this.src='default-tutor.jpg'">
-            </div>
-            <div class="tutor-info">
-                <h3>${tutor.name}</h3>
-                <div class="full-name">${tutor.fullName}</div>
-                <div class="tutor-level-dept">${tutor.levelDept}</div>
-                <p>${tutor.description || 'Passionate tutor dedicated to student success.'}</p>
-                <div class="tutor-contact">
-                    <div class="contact-item">
-                        <i class="fas fa-envelope"></i>
-                        <span>${tutor.email}</span>
-                    </div>
-                    <div class="contact-item">
-                        <i class="fab fa-whatsapp"></i>
-                        <span>${tutor.whatsapp}</span>
-                    </div>
-                </div>
-                <div class="courses-list">
-                    ${tutor.courses.map(course => `<span class="course-tag">${course}</span>`).join('')}
-                </div>
-            </div>
-        `;
-        tutorsGrid.appendChild(tutorCard);
-    });
-    
-    console.log('Tutors updated from admin data');
-}
 
-// Function to update courses on main website
-function updateCoursesDisplay(courses) {
-    // Update each level's courses
-    Object.keys(courses).forEach(level => {
-        const levelSection = document.getElementById(`level-${level}`);
-        if (!levelSection) return;
-        
-        levelSection.innerHTML = '';
-        
-        courses[level].forEach(course => {
-            const courseCard = document.createElement('div');
-            courseCard.className = 'course-card';
-            courseCard.innerHTML = `
-                <h3>${course.code} <span>${course.name}</span></h3>
-                <div class="tutors-list">
-                    ${course.tutors.map(tutor => `<span class="tutor-tag">${tutor}</span>`).join('')}
-                </div>
-            `;
-            levelSection.appendChild(courseCard);
+        // Add animation on scroll
+        function animateOnScroll() {
+            const elements = document.querySelectorAll('.tutor-card, .course-card, .learning-option, .mission, .vision, .pricing-card, .faq-item');
+            
+            elements.forEach(element => {
+                const elementTop = element.getBoundingClientRect().top;
+                const elementVisible = 150;
+                
+                if (elementTop < window.innerHeight - elementVisible) {
+                    element.style.opacity = "1";
+                    element.style.transform = "translateY(0)";
+                }
+            });
+        }
+
+        // Set initial state for animated elements
+        document.querySelectorAll('.tutor-card, .course-card, .learning-option, .mission, .vision, .pricing-card, .faq-item').forEach(element => {
+            element.style.opacity = "0";
+            element.style.transform = "translateY(20px)";
+            element.style.transition = "opacity 0.6s ease, transform 0.6s ease";
         });
-    });
-    
-    console.log('Courses updated from admin data');
-}
 
-// Check for admin updates every minute
-setInterval(loadAdminData, 60000);
-
-// Load data on page load
-document.addEventListener('DOMContentLoaded', function() {
-    loadAdminData();
-    
-    // Also check if there's a message about recent updates
-    const lastUpdate = localStorage.getItem('gpaLastUpdate');
-    if (lastUpdate) {
-        const updateTime = new Date(lastUpdate);
-        const now = new Date();
-        const diffHours = (now - updateTime) / (1000 * 60 * 60);
-        
-        if (diffHours < 24) { // If updated within last 24 hours
-            console.log('Website was recently updated by admin');
-        }
-    }
-});
-
-    <!-- Admin Update Notification -->
-<div class="admin-update-notice" id="adminUpdateNotice" style="display: none;">
-    <i class="fas fa-sync-alt"></i>
-    <div>
-        <strong>Website Updated!</strong>
-        <p id="updateMessage">New changes loaded from admin.</p>
-    </div>
-    <button onclick="window.location.reload()">Refresh</button>
-    <button onclick="document.getElementById('adminUpdateNotice').style.display='none'">Dismiss</button>
-</div>
-
-<script>
-// Load admin data from localStorage
-function loadAdminData() {
-    const savedTutors = localStorage.getItem('gpaTutors');
-    const savedCourses = localStorage.getItem('gpaCourses');
-    
-    if (savedTutors) {
-        try {
-            const tutors = JSON.parse(savedTutors);
-            updateTutorsDisplay(tutors);
-        } catch(e) {
-            console.error('Error loading tutors:', e);
-        }
-    }
-    
-    if (savedCourses) {
-        try {
-            const courses = JSON.parse(savedCourses);
-            updateCoursesDisplay(courses);
-        } catch(e) {
-            console.error('Error loading courses:', e);
-        }
-    }
-}
-
-// Check for updates every 30 seconds
-setInterval(loadAdminData, 30000);
-
-// Load on page load
-document.addEventListener('DOMContentLoaded', function() {
-    loadAdminData();
-    
-    // Check if admin just updated
-    const lastUpdate = localStorage.getItem('gpaLastUpdate');
-    if (lastUpdate) {
-        const updateTime = new Date(lastUpdate);
-        const now = new Date();
-        const diffMinutes = (now - updateTime) / (1000 * 60);
-        
-        if (diffMinutes < 5) { // Updated within last 5 minutes
-            document.getElementById('adminUpdateNotice').style.display = 'flex';
-        }
-    }
-});
-</script>
+        // Run animation on scroll
+        window.addEventListener('scroll', animateOnScroll);
+        // Run once on load
+        window.addEventListener('load', animateOnScroll);
+    </script>
 </body>
 </html>
-
-<!-- 
-LINE NUMBER GUIDE FOR FUTURE UPDATES:
-
-- Logo image: Line 109
-- Hero background image: Line 143
-- About section collage image: Line 253
-- Add new tutor: Lines 315-380 (follow tutor card structure)
-- E-Simple photo: Line 319
-- Muzzle photo: Line 340 (currently placeholder icon)
-- O'yemi photo: Line 361
-- Absamie photo: Line 382
-- Physiobrain photo: Line 410
-- Davero photo: Line 438
-- Favour photo: Line 466
-- Tomilayo photo: Line 494
-- Update tutor info: Lines 325-380 (each tutor card section)
-- Update courses: Lines 550-750 (courses section)
-- Add new course: Lines 550-750 (follow course card structure)
-- Update course titles: Lines 560, 570, etc. (each course card)
-- Update FormSubmit email: Line 815
-- Update WhatsApp number: Line 819, 1065
-- Update contact info: Lines 1085-1095
-- Add social media links: Lines 1078-1081
--->
