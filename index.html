@@ -2595,251 +2595,64 @@
             color: white;
         }
 
-      /* ============ RESPONSIVE - Update these sections ============ */
-@media (max-width: 768px) {
-    .header-content { flex-direction: column; text-align: center; }
-    .logo { margin-bottom: 15px; justify-content: center; }
-    nav ul { margin-top: 15px; flex-wrap: wrap; justify-content: center; }
-    nav ul li { margin: 5px 10px; }
-    .mobile-menu { display: block; position: absolute; top: 20px; right: 20px; }
-    .nav-menu { display: none; width: 100%; margin-top: 15px; }
-    .nav-menu.active { display: block; }
-    .header-right { justify-content: center; width: 100%; }
-    .hero { padding: 6rem 0; }
-    .hero h2 { font-size: 2.2rem; }
-    .hero p { font-size: 1rem; }
-    .section-title h2 { font-size: 2rem; }
-    .path-to-clarity, .real-education, .privacy-content { padding: 30px 20px; }
-    .booking-form { padding: 25px; }
-    .pricing-banner { padding: 20px 15px; }
-    .price-tag { display: block; margin: 10px auto; max-width: 200px; }
-    .semester-toggle-container { flex-direction: column; align-items: center; }
-    .message-panel { width: 100%; max-width: 100vw; right: -100%; }
-    .message-bell-container { right: 10px; }
-    .message-bell-btn { width: 45px; height: 45px; font-size: 1.2rem; }
-    .new-message-popup { right: 70px; bottom: 80px; max-width: 280px; }
-    .announcement-bar { height: 40px; }
-    .announcement-bar .announcement-text { font-size: 0.8rem; }
-    body.has-announcement { padding-top: 40px; }
-    body.has-announcement header { top: 40px; }
-    
-    /* ============ AUTH MODAL MOBILE FIX ============ */
-    .auth-modal {
-        max-width: 95vw;
-        max-height: 90vh;
-        border-radius: 15px;
-        overflow-y: auto;
-    }
-    
-    .auth-header {
-        padding: 20px 15px;
-    }
-    
-    .auth-header .auth-logo {
-        width: 55px;
-        height: 55px;
-        margin-bottom: 10px;
-    }
-    
-    .auth-header .auth-logo img {
-        width: 40px;
-        height: 40px;
-    }
-    
-    .auth-header h2 {
-        font-size: 1.2rem;
-    }
-    
-    .auth-header p {
-        font-size: 0.75rem;
-    }
-    
-    .auth-body {
-        padding: 20px 15px;
-    }
-    
-    .auth-tabs {
-        margin-bottom: 18px;
-    }
-    
-    .auth-tab {
-        padding: 10px;
-        font-size: 0.85rem;
-    }
-    
-    .auth-form .form-group {
-        margin-bottom: 14px;
-    }
-    
-    .auth-form .form-group label {
-        font-size: 0.8rem;
-        margin-bottom: 5px;
-    }
-    
-    .auth-form .form-group input,
-    .auth-form .form-group select {
-        padding: 10px 12px;
-        font-size: 0.85rem;
-        border-radius: 8px;
-    }
-    
-    .auth-form .btn-auth {
-        padding: 12px;
-        font-size: 0.9rem;
-    }
-    
-    .auth-close {
-        top: 10px;
-        right: 12px;
-        width: 28px;
-        height: 28px;
-        font-size: 0.9rem;
-    }
-    
-    .auth-error, .auth-success {
-        padding: 10px 12px;
-        font-size: 0.75rem;
-    }
-    
-    .password-strength {
-        height: 3px;
-        margin-top: 5px;
-    }
-}
+        /* ============ RESPONSIVE ============ */
+        @media (max-width: 1200px) {
+            .hero h2 { font-size: 2.8rem; }
+            .message-panel { width: 380px; }
+        }
 
-@media (max-width: 576px) {
-    .hero h2 { font-size: 1.8rem; }
-    .section-title h2 { font-size: 1.7rem; }
-    .tutors-grid { grid-template-columns: 1fr; }
-    .level-tabs { flex-direction: column; border-radius: 12px; }
-    .level-tab { border-radius: 8px; margin-bottom: 5px; }
-    .booking-type-options { grid-template-columns: 1fr; }
-    .stats-container { grid-template-columns: 1fr 1fr; }
-    .pricing-card { padding: 30px 20px; }
-    .message-bell-container { top: auto; bottom: 90px; right: 10px; transform: none; flex-direction: row; }
-    .message-bell-label { display: none !important; }
-    .new-message-popup { right: 10px; left: 10px; bottom: 150px; max-width: none; }
-    
-    /* ============ AUTH MODAL SMALL PHONE FIX ============ */
-    .auth-modal {
-        max-width: 98vw;
-        max-height: 85vh;
-        border-radius: 12px;
-        margin: 10px;
-    }
-    
-    .auth-header {
-        padding: 15px 12px;
-    }
-    
-    .auth-header .auth-logo {
-        width: 45px;
-        height: 45px;
-    }
-    
-    .auth-header .auth-logo img {
-        width: 32px;
-        height: 32px;
-    }
-    
-    .auth-header h2 {
-        font-size: 1.1rem;
-    }
-    
-    .auth-header p {
-        font-size: 0.7rem;
-    }
-    
-    .auth-body {
-        padding: 15px 12px;
-    }
-    
-    .auth-tab {
-        padding: 8px;
-        font-size: 0.8rem;
-    }
-    
-    .auth-form .form-group {
-        margin-bottom: 12px;
-    }
-    
-    .auth-form .form-group label {
-        font-size: 0.75rem;
-    }
-    
-    .auth-form .form-group input,
-    .auth-form .form-group select {
-        padding: 8px 10px;
-        font-size: 0.8rem;
-        border-radius: 6px;
-        border-width: 1.5px;
-    }
-    
-    .auth-form .btn-auth {
-        padding: 10px;
-        font-size: 0.85rem;
-        border-radius: 8px;
-    }
-    
-    .auth-close {
-        top: 8px;
-        right: 10px;
-        width: 25px;
-        height: 25px;
-        font-size: 0.8rem;
-    }
-    
-    /* Make select dropdowns easier to tap */
-    .auth-form .form-group select {
-        min-height: 40px;
-    }
-}
-        /* ============ AUTH MODAL MOBILE OPTIMIZATION ============ */
-@media (max-width: 480px) {
-    .auth-overlay {
-        align-items: flex-end; /* Push modal to bottom on very small screens */
-        padding-bottom: 0;
-    }
-    
-    .auth-modal {
-        max-width: 100vw;
-        width: 100%;
-        border-radius: 20px 20px 0 0;
-        max-height: 80vh;
-        animation: slideUpMobile 0.4s ease;
-        margin: 0;
-    }
-    
-    @keyframes slideUpMobile {
-        from { transform: translateY(100%); }
-        to { transform: translateY(0); }
-    }
-    
-    .auth-body {
-        max-height: 55vh;
-        overflow-y: auto;
-        padding: 18px 15px;
-    }
-    
-    /* Make inputs bigger for touch */
-    .auth-form .form-group input,
-    .auth-form .form-group select {
-        min-height: 44px;
-        font-size: 16px; /* Prevents iOS zoom on focus */
-    }
-    
-    /* Increase tap targets */
-    .auth-tab {
-        min-height: 40px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-    
-    .btn-auth {
-        min-height: 48px;
-    }
-}
+        @media (max-width: 992px) {
+            .about-content, .booking-container, .mission-vision, .pricing-grid {
+                grid-template-columns: 1fr;
+            }
+            .pricing-card.popular { transform: scale(1); }
+            .pricing-card.popular:hover { transform: translateY(-10px); }
+            .about-image { order: -1; }
+            .hero h2 { font-size: 2.5rem; }
+            .hero p { font-size: 1.1rem; }
+            .message-panel { width: 350px; }
+        }
+
+        @media (max-width: 768px) {
+            .header-content { flex-direction: column; text-align: center; }
+            .logo { margin-bottom: 15px; justify-content: center; }
+            nav ul { margin-top: 15px; flex-wrap: wrap; justify-content: center; }
+            nav ul li { margin: 5px 10px; }
+            .mobile-menu { display: block; position: absolute; top: 20px; right: 20px; }
+            .nav-menu { display: none; width: 100%; margin-top: 15px; }
+            .nav-menu.active { display: block; }
+            .header-right { justify-content: center; width: 100%; }
+            .hero { padding: 6rem 0; }
+            .hero h2 { font-size: 2.2rem; }
+            .hero p { font-size: 1rem; }
+            .section-title h2 { font-size: 2rem; }
+            .path-to-clarity, .real-education, .privacy-content { padding: 30px 20px; }
+            .booking-form { padding: 25px; }
+            .pricing-banner { padding: 20px 15px; }
+            .price-tag { display: block; margin: 10px auto; max-width: 200px; }
+            .semester-toggle-container { flex-direction: column; align-items: center; }
+            .message-panel { width: 100%; max-width: 100vw; right: -100%; }
+            .message-bell-container { right: 10px; }
+            .message-bell-btn { width: 45px; height: 45px; font-size: 1.2rem; }
+            .new-message-popup { right: 70px; bottom: 80px; max-width: 280px; }
+            .announcement-bar { height: 40px; }
+            body.has-announcement { padding-top: 40px; }
+            body.has-announcement header { top: 40px; }
+        }
+
+        @media (max-width: 576px) {
+            .hero h2 { font-size: 1.8rem; }
+            .section-title h2 { font-size: 1.7rem; }
+            .tutors-grid { grid-template-columns: 1fr; }
+            .level-tabs { flex-direction: column; border-radius: 12px; }
+            .level-tab { border-radius: 8px; margin-bottom: 5px; }
+            .booking-type-options { grid-template-columns: 1fr; }
+            .stats-container { grid-template-columns: 1fr 1fr; }
+            .pricing-card { padding: 30px 20px; }
+            .message-bell-container { top: auto; bottom: 90px; right: 10px; transform: none; flex-direction: row; }
+            .message-bell-label { display: none !important; }
+            .new-message-popup { right: 10px; left: 10px; bottom: 150px; max-width: none; }
+        }
     </style>
 </head>
 <body>
