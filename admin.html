@@ -1970,1300 +1970,916 @@
 
     <!-- ============ TOAST CONTAINER ============ -->
     <div class="toast-container" id="toastContainer"></div>
-    <script>
-        // ============ ADMIN CONFIGURATION ============
-        const ADMIN_PASSWORD = 'TeamGeniusPoint';
-        let currentAdmin = null;
-        let confirmCallback = null;
+ <script>
+    // ============ FIREBASE INITIALIZATION ============
+    const firebaseConfig = {
+        apiKey: "AIzaSyBoQQwFUf0YQNbSNgMkLzR8NcuOVKvlN3g",
+        authDomain: "genius-point-academy.firebaseapp.com",
+        projectId: "genius-point-academy",
+        storageBucket: "genius-point-academy.firebasestorage.app",
+        messagingSenderId: "963510545735",
+        appId: "1:963510545735:web:b3672dc5e7b7ba42317062"
+    };
 
-        // ============ DATA STORAGE KEYS ============
-        const STORAGE_KEYS = {
-            users: 'gpa_users',
-            courses: 'gpa_admin_courses',
-            tutors: 'gpa_admin_tutors',
-            messages: 'gpa_messages',
-            activities: 'gpa_activities',
-            announcement: 'gpa_announcement',
-            currentUser: 'gpa_current_user'
-        };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
 
-        // ============ INITIALIZATION ============
-        document.addEventListener('DOMContentLoaded', function() {
-            // Check if already logged in (session)
-            const savedAdmin = sessionStorage.getItem('gpa_admin_session');
-            if (savedAdmin === 'true') {
-                const adminName = sessionStorage.getItem('gpa_admin_name') || 'Admin';
-                loginSuccess(adminName);
-            }
-            
-            // Initialize default courses if none exist
-            initializeDefaultData();
+    // ============ ADMIN CONFIGURATION ============
+    const ADMIN_PASSWORD = 'TeamGeniusPoint';
+    let currentAdmin = null;
+    let confirmCallback = null;
+
+    // ============ FIRESTORE HELPERS ============
+    const COLLECTIONS = {
+        users: 'users',
+        sessions: 'sessions',
+        messages: 'messages',
+        announcements: 'announcements',
+        activities: 'activities',
+        courses: 'courses',
+        tutors: 'tutors'
+    };
+
+    async function saveToFirestore(collection, docId, data) {
+        try {
+            await db.collection(collection).doc(docId).set({
+                data: data,
+                updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+            });
+            return true;
+        } catch(e) {
+            console.log('Firestore save error:', e);
+            return false;
+        }
+    }
+
+    async function getFromFirestore(collection, docId) {
+        try {
+            const doc = await db.collection(collection).doc(docId).get();
+            return doc.exists ? doc.data().data : null;
+        } catch(e) {
+            console.log('Firestore get error:', e);
+            return null;
+        }
+    }
+
+    async function deleteFromFirestore(collection, docId) {
+        try {
+            await db.collection(collection).doc(docId).delete();
+            return true;
+        } catch(e) {
+            return false;
+        }
+    }
+
+    // ============ DATA HELPERS (Firestore) ============
+    let cachedUsers = [];
+    let cachedCourses = [];
+    let cachedTutors = [];
+    let cachedMessages = [];
+    let cachedActivities = [];
+
+    async function getData(key) {
+        switch(key) {
+            case 'users': return cachedUsers;
+            case 'courses': return cachedCourses;
+            case 'tutors': return cachedTutors;
+            case 'messages': return cachedMessages;
+            case 'activities': return cachedActivities;
+            default: return [];
+        }
+    }
+
+    async function saveData(key, data) {
+        switch(key) {
+            case 'users':
+                cachedUsers = data;
+                await saveToFirestore('users', 'all', data);
+                break;
+            case 'courses':
+                cachedCourses = data;
+                await saveToFirestore('courses', 'all', data);
+                break;
+            case 'tutors':
+                cachedTutors = data;
+                await saveToFirestore('tutors', 'all', data);
+                break;
+            case 'messages':
+                cachedMessages = data;
+                await saveToFirestore('messages', 'all', data);
+                break;
+            case 'activities':
+                cachedActivities = data;
+                await saveToFirestore('activities', 'all', data);
+                break;
+        }
+    }
+
+    // ============ INITIALIZATION ============
+    document.addEventListener('DOMContentLoaded', async function() {
+        console.log('🔥 Loading admin data from Firebase...');
+        
+        // Load all data from Firestore
+        const [users, courses, tutors, messages, activities] = await Promise.all([
+            getFromFirestore('users', 'all'),
+            getFromFirestore('courses', 'all'),
+            getFromFirestore('tutors', 'all'),
+            getFromFirestore('messages', 'all'),
+            getFromFirestore('activities', 'all')
+        ]);
+        
+        cachedUsers = users || [];
+        cachedCourses = courses || [];
+        cachedTutors = tutors || [];
+        cachedMessages = messages || [];
+        cachedActivities = activities || [];
+        
+        // Check if already logged in
+        const savedAdmin = sessionStorage.getItem('gpa_admin_session');
+        if (savedAdmin === 'true') {
+            const adminName = sessionStorage.getItem('gpa_admin_name') || 'Admin';
+            loginSuccess(adminName);
+        }
+        
+        // Initialize default data if empty
+        await initializeDefaultData();
+        
+        console.log('✅ Admin data loaded from Firebase Cloud!');
+    });
+
+    async function initializeDefaultData() {
+        if (cachedCourses.length === 0) {
+            const defaultCourses = [
+                { id: 'c1', code: 'MTH 101', name: 'Introductory Mathematics I', level: '100', semester: 'first' },
+                { id: 'c2', code: 'FMTH 103', name: 'Elementary Mathematics III', level: '100', semester: 'first' },
+                { id: 'c3', code: 'FCHE 101', name: 'General Chemistry I', level: '100', semester: 'first' },
+                { id: 'c4', code: 'PHY 101', name: 'General Physics I', level: '100', semester: 'first' },
+                { id: 'c5', code: 'PHY 103', name: 'General Physics III', level: '100', semester: 'first' },
+                { id: 'c6', code: 'BIO 101', name: 'General Biology I', level: '100', semester: 'first' },
+                { id: 'c7', code: 'MEE 101', name: 'Engineering Drawing I', level: '100', semester: 'first' },
+                { id: 'c8', code: 'MTS 201', name: 'Mathematical Methods', level: '200', semester: 'first' },
+                { id: 'c9', code: 'EEE 201', name: 'Basic Electrical and Electronics Engineering I', level: '200', semester: 'first' },
+                { id: 'c10', code: 'MEE 207', name: 'Elementary Mechanics', level: '200', semester: 'first' },
+                { id: 'c11', code: 'MME 201', name: 'Science of Materials', level: '200', semester: 'first' },
+                { id: 'c12', code: 'BIO 201', name: 'Introduction to Genetics I', level: '200', semester: 'first' },
+                { id: 'c13', code: 'MCB 201', name: 'General Microbiology I', level: '200', semester: 'first' },
+                { id: 'c14', code: 'CHE 205', name: 'Physical Chemistry I', level: '200', semester: 'first' },
+                { id: 'c15', code: 'EEE 305', name: 'Electrical Machines', level: '300', semester: 'first' },
+                { id: 'c16', code: 'EEE 307', name: 'Electrical Machines II', level: '300', semester: 'first' },
+                { id: 'c17', code: 'MTS 315', name: 'Engineering Mathematics I', level: '300', semester: 'first' },
+                { id: 'c18', code: 'EEE 401', name: 'Advanced Electrical Engineering I', level: '400', semester: 'first' },
+                { id: 'c19', code: 'EEE 403', name: 'Advanced Electrical Engineering III', level: '400', semester: 'first' },
+                { id: 'c20', code: 'MTH 102', name: 'Introductory Mathematics II', level: '100', semester: 'second' },
+                { id: 'c21', code: 'MTS 104', name: 'Introductory Applied Mathematics', level: '100', semester: 'second' },
+                { id: 'c22', code: 'PHY 102', name: 'Basic General Physics II', level: '100', semester: 'second' },
+                { id: 'c23', code: 'BIO 102', name: 'General Biology II', level: '100', semester: 'second' },
+                { id: 'c24', code: 'CHE 102', name: 'General Chemistry II', level: '100', semester: 'second' },
+                { id: 'c25', code: 'CHM 102', name: 'Chemistry II', level: '100', semester: 'second' },
+                { id: 'c26', code: 'MTS 202', name: 'Numerical Analysis', level: '200', semester: 'second' },
+                { id: 'c27', code: 'CVE 202', name: 'Strength of Materials', level: '200', semester: 'second' },
+                { id: 'c28', code: 'MEE 206', name: 'Engineering Thermodynamics', level: '200', semester: 'second' },
+                { id: 'c29', code: 'EEE 202', name: 'Basic Electricity II', level: '200', semester: 'second' },
+                { id: 'c30', code: 'MTS 316', name: 'Engineering Mathematics II', level: '300', semester: 'second' },
+                { id: 'c31', code: 'EEE 302', name: 'Electronics Engineering II', level: '300', semester: 'second' }
+            ];
+            await saveData('courses', defaultCourses);
+        }
+
+        if (cachedTutors.length === 0) {
+            const defaultTutors = [
+                { id: 't1', nickname: 'E-Simple', fullName: 'Amusan Emmanuel Oluwapelumi', department: 'Electrical & Electronics Engineering', level: '400', price: '2000', semester: 'both', courses: ['MTH 101', 'PHY 101', 'PHY 103', 'FCHE 101', 'MTS 201', 'EEE 201', 'MTS 315', 'EEE 305', 'EEE 307', 'EEE 401', 'EEE 403', 'MTS 316', 'EEE 302', 'CHM 102'], email: 'emmanuelamusan732@gmail.com', whatsapp: '08109807833', bio: 'Passionate STEM tutor with 8+ years experience.' },
+                { id: 't2', nickname: 'Muzzle', fullName: 'Folorunsho Muhammed Alamu', department: 'Mechanical Engineering', level: '400', price: '1800', semester: 'both', courses: ['MTH 101', 'PHY 101', 'PHY 103', 'MTS 201', 'MTS 315', 'MEE 207', 'MTS 316', 'MEE 206', 'MTH 102', 'MTS 104'], email: 'folorunshomuhammed9090@gmail.com', whatsapp: '08127064566', bio: 'Experienced educator, founder of Impact Coaching Academy.' },
+                { id: 't3', nickname: 'O\'yemi', fullName: 'Abideen Yakub Opeyemi', department: 'Electrical & Electronics Engineering', level: '300', price: '1500', semester: 'both', courses: ['MTH 101', 'PHY 101', 'MTS 201', 'EEE 201', 'MEE 207', 'MME 201', 'MTH 102', 'MTS 202', 'CVE 202'], email: 'abideenyakub08@gmail.com', whatsapp: '07050376975', bio: 'STEM tutor with 3 years experience.' },
+                { id: 't4', nickname: 'Absamie', fullName: 'Iluyomade Samson Abimbola', department: 'Electrical & Electronics Engineering', level: '300', price: '1700', semester: 'both', courses: ['MTH 101', 'FMTH 103', 'PHY 101', 'PHY 103', 'MTS 201', 'EEE 201', 'MTH 102', 'MTS 202', 'MTS 104', 'EEE 202'], email: 'absamy999@gmail.com', whatsapp: '07038248528', bio: 'STEM tutor and educational consultant.' },
+                { id: 't5', nickname: 'Physiobrain', fullName: 'Olayonwa Rokeeb Oluwafikayomi', department: 'Physiology', level: '200', price: '1500', semester: 'both', courses: ['FCHE 101', 'PHY 101', 'BIO 101', 'CHM 102', 'PHY 102'], email: 'rokeebolayonwa@gmail.com', whatsapp: '08127347805', bio: 'Educational enthusiast with 5 years experience.' },
+                { id: 't6', nickname: 'Davero', fullName: 'Idima David Nduka', department: 'Medical Laboratory Science', level: '200', price: '1500', semester: 'both', courses: ['FCHE 101', 'BIO 101', 'CHM 102'], email: 'davididima7@gmail.com', whatsapp: '09131782624', bio: 'Healthcare entrepreneur with 3 years tutoring experience.' },
+                { id: 't7', nickname: 'Favour', fullName: 'Adesakin Peace', department: 'Microbiology', level: '300', price: '1500', semester: 'first', courses: ['BIO 101', 'BIO 201', 'MCB 201'], email: 'peaceadesakin6@gmail.com', whatsapp: '09061791062', bio: 'Dedicated biology and microbiology tutor.' },
+                { id: 't8', nickname: 'Tomi', fullName: 'Asotun Oluwatomilayo', department: 'Electrical & Electronics Engineering', level: '200', price: '1500', semester: 'both', courses: ['MTH 101', 'FMTH 103', 'PHY 101', 'PHY 103', 'FCHE 101', 'MTH 102', 'MTS 104', 'CHE 102', 'PHY 102'], email: 'asotunoluwatomilayo@gmail.com', whatsapp: '09035610143', bio: 'Committed and enthusiastic tutor.' }
+            ];
+            await saveData('tutors', defaultTutors);
+        }
+    }
+
+    // ============ LOGIN SYSTEM ============
+    document.getElementById('adminLoginForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const adminName = document.getElementById('adminName').value.trim();
+        const password = document.getElementById('adminPassword').value;
+        const loginError = document.getElementById('loginError');
+        const loginBtn = document.getElementById('loginBtn');
+        
+        if (!adminName) {
+            showLoginError('Please enter your admin name.');
+            return;
+        }
+        
+        if (password !== ADMIN_PASSWORD) {
+            showLoginError('Invalid password! Access denied.');
+            return;
+        }
+        
+        loginBtn.disabled = true;
+        loginBtn.innerHTML = '<span class="spinner"></span> Authenticating...';
+        
+        setTimeout(() => {
+            loginSuccess(adminName);
+            loginBtn.disabled = false;
+            loginBtn.innerHTML = '<i class="fas fa-lock-open"></i> Access Dashboard';
+        }, 800);
+    });
+
+    function showLoginError(message) {
+        const loginError = document.getElementById('loginError');
+        loginError.textContent = message;
+        loginError.classList.add('show');
+        loginError.style.animation = 'none';
+        loginError.offsetHeight;
+        loginError.style.animation = 'shake 0.5s ease';
+        setTimeout(() => loginError.classList.remove('show'), 4000);
+    }
+
+    function loginSuccess(adminName) {
+        currentAdmin = adminName;
+        sessionStorage.setItem('gpa_admin_session', 'true');
+        sessionStorage.setItem('gpa_admin_name', adminName);
+        document.getElementById('loginOverlay').classList.add('hidden');
+        document.getElementById('adminContainer').style.display = 'flex';
+        document.getElementById('sidebarAdminName').textContent = adminName;
+        document.getElementById('sidebarAvatar').textContent = adminName.charAt(0).toUpperCase();
+        logAdminActivity('login', `Admin "${adminName}" logged in`);
+        refreshAllData();
+        showToast('Welcome back, ' + adminName + '!', 'success');
+        navigateTo('dashboard');
+    }
+
+    function logout() {
+        if (confirm('Are you sure you want to logout?')) {
+            logAdminActivity('logout', `Admin "${currentAdmin}" logged out`);
+            sessionStorage.removeItem('gpa_admin_session');
+            sessionStorage.removeItem('gpa_admin_name');
+            currentAdmin = null;
+            document.getElementById('loginOverlay').classList.remove('hidden');
+            document.getElementById('adminContainer').style.display = 'none';
+            document.getElementById('adminLoginForm').reset();
+            document.getElementById('loginError').classList.remove('show');
+        }
+    }
+
+    document.getElementById('sidebarLogoutBtn').addEventListener('click', logout);
+
+    // ============ NAVIGATION ============
+    document.querySelectorAll('.sidebar-nav .nav-item').forEach(item => {
+        item.addEventListener('click', function() {
+            navigateTo(this.getAttribute('data-page'));
+            document.getElementById('sidebar').classList.remove('open');
+            document.getElementById('sidebarBackdrop').classList.remove('show');
         });
+    });
 
-        function initializeDefaultData() {
-            // Initialize courses if empty
-            let courses = getData('courses');
-            if (courses.length === 0) {
-                const defaultCourses = [
-                    // First Semester
-                    { id: 'c1', code: 'MTH 101', name: 'Introductory Mathematics I', level: '100', semester: 'first' },
-                    { id: 'c2', code: 'FMTH 103', name: 'Elementary Mathematics III', level: '100', semester: 'first' },
-                    { id: 'c3', code: 'FCHE 101', name: 'General Chemistry I', level: '100', semester: 'first' },
-                    { id: 'c4', code: 'PHY 101', name: 'General Physics I', level: '100', semester: 'first' },
-                    { id: 'c5', code: 'PHY 103', name: 'General Physics III', level: '100', semester: 'first' },
-                    { id: 'c6', code: 'BIO 101', name: 'General Biology I', level: '100', semester: 'first' },
-                    { id: 'c7', code: 'MEE 101', name: 'Engineering Drawing I', level: '100', semester: 'first' },
-                    { id: 'c8', code: 'MTS 201', name: 'Mathematical Methods', level: '200', semester: 'first' },
-                    { id: 'c9', code: 'EEE 201', name: 'Basic Electrical and Electronics Engineering I', level: '200', semester: 'first' },
-                    { id: 'c10', code: 'MEE 207', name: 'Elementary Mechanics', level: '200', semester: 'first' },
-                    { id: 'c11', code: 'MME 201', name: 'Science of Materials', level: '200', semester: 'first' },
-                    { id: 'c12', code: 'BIO 201', name: 'Introduction to Genetics I', level: '200', semester: 'first' },
-                    { id: 'c13', code: 'MCB 201', name: 'General Microbiology I', level: '200', semester: 'first' },
-                    { id: 'c14', code: 'CHE 205', name: 'Physical Chemistry I', level: '200', semester: 'first' },
-                    { id: 'c15', code: 'EEE 305', name: 'Electrical Machines', level: '300', semester: 'first' },
-                    { id: 'c16', code: 'EEE 307', name: 'Electrical Machines II', level: '300', semester: 'first' },
-                    { id: 'c17', code: 'MTS 315', name: 'Engineering Mathematics I', level: '300', semester: 'first' },
-                    { id: 'c18', code: 'EEE 401', name: 'Advanced Electrical Engineering I', level: '400', semester: 'first' },
-                    { id: 'c19', code: 'EEE 403', name: 'Advanced Electrical Engineering III', level: '400', semester: 'first' },
-                    // Second Semester
-                    { id: 'c20', code: 'MTH 102', name: 'Introductory Mathematics II', level: '100', semester: 'second' },
-                    { id: 'c21', code: 'MTS 104', name: 'Introductory Applied Mathematics', level: '100', semester: 'second' },
-                    { id: 'c22', code: 'PHY 102', name: 'Basic General Physics II', level: '100', semester: 'second' },
-                    { id: 'c23', code: 'BIO 102', name: 'General Biology II', level: '100', semester: 'second' },
-                    { id: 'c24', code: 'CHE 102', name: 'General Chemistry II', level: '100', semester: 'second' },
-                    { id: 'c25', code: 'CHM 102', name: 'Chemistry II', level: '100', semester: 'second' },
-                    { id: 'c26', code: 'MTS 202', name: 'Numerical Analysis', level: '200', semester: 'second' },
-                    { id: 'c27', code: 'CVE 202', name: 'Strength of Materials', level: '200', semester: 'second' },
-                    { id: 'c28', code: 'MEE 206', name: 'Engineering Thermodynamics', level: '200', semester: 'second' },
-                    { id: 'c29', code: 'EEE 202', name: 'Basic Electricity II', level: '200', semester: 'second' },
-                    { id: 'c30', code: 'MTS 316', name: 'Engineering Mathematics II', level: '300', semester: 'second' },
-                    { id: 'c31', code: 'EEE 302', name: 'Electronics Engineering II', level: '300', semester: 'second' }
-                ];
-                saveData('courses', defaultCourses);
-            }
-
-            // Initialize tutors if empty
-            let tutors = getData('tutors');
-            if (tutors.length === 0) {
-                const defaultTutors = [
-                    { id: 't1', nickname: 'E-Simple', fullName: 'Amusan Emmanuel Oluwapelumi', department: 'Electrical & Electronics Engineering', level: '400', price: '2000', semester: 'first', courses: ['MTH 101', 'PHY 101', 'PHY 103', 'FCHE 101', 'MTS 201', 'EEE 201', 'MTS 315', 'EEE 305', 'EEE 307', 'EEE 401', 'EEE 403'], email: 'emmanuelamusan732@gmail.com', whatsapp: '08109807833', bio: 'Passionate STEM tutor with 8+ years experience.' },
-                    { id: 't2', nickname: 'Muzzle', fullName: 'Folorunsho Muhammed Alamu', department: 'Mechanical Engineering', level: '400', price: '1800', semester: 'first', courses: ['MTH 101', 'PHY 101', 'PHY 103', 'MTS 201', 'MTS 315', 'MEE 207'], email: 'folorunshomuhammed9090@gmail.com', whatsapp: '08127064566', bio: 'Experienced educator, founder of Impact Coaching Academy.' },
-                    { id: 't3', nickname: 'O\'yemi', fullName: 'Abideen Yakub Opeyemi', department: 'Electrical & Electronics Engineering', level: '300', price: '1500', semester: 'first', courses: ['MTH 101', 'PHY 101', 'MTS 201', 'EEE 201', 'MEE 207', 'MME 201'], email: 'abideenyakub08@gmail.com', whatsapp: '07050376975', bio: 'STEM tutor with 3 years experience.' },
-                    { id: 't4', nickname: 'Absamie', fullName: 'Iluyomade Samson Abimbola', department: 'Electrical & Electronics Engineering', level: '300', price: '1700', semester: 'first', courses: ['MTH 101', 'FMTH 103', 'PHY 101', 'PHY 103', 'MTS 201', 'EEE 201'], email: 'absamy999@gmail.com', whatsapp: '07038248528', bio: 'STEM tutor and educational consultant.' },
-                    { id: 't5', nickname: 'Physiobrain', fullName: 'Olayonwa Rokeeb Oluwafikayomi', department: 'Physiology', level: '200', price: '1500', semester: 'first', courses: ['FCHE 101', 'PHY 101', 'BIO 101'], email: 'rokeebolayonwa@gmail.com', whatsapp: '08127347805', bio: 'Educational enthusiast with 5 years experience.' },
-                    { id: 't6', nickname: 'Davero', fullName: 'Idima David Nduka', department: 'Medical Laboratory Science', level: '200', price: '1500', semester: 'first', courses: ['FCHE 101', 'BIO 101'], email: 'davididima7@gmail.com', whatsapp: '09131782624', bio: 'Healthcare entrepreneur with 3 years tutoring experience.' },
-                    { id: 't7', nickname: 'Favour', fullName: 'Adesakin Peace', department: 'Microbiology', level: '300', price: '1500', semester: 'first', courses: ['BIO 101', 'BIO 201', 'MCB 201'], email: 'peaceadesakin6@gmail.com', whatsapp: '09061791062', bio: 'Dedicated biology and microbiology tutor.' },
-                    { id: 't8', nickname: 'Tomi', fullName: 'Asotun Oluwatomilayo', department: 'Electrical & Electronics Engineering', level: '200', price: '1500', semester: 'both', courses: ['MTH 101', 'FMTH 103', 'PHY 101', 'PHY 103', 'FCHE 101', 'MTH 102', 'MTS 104', 'CHE 102', 'PHY 102'], email: 'asotunoluwatomilayo@gmail.com', whatsapp: '09035610143', bio: 'Committed and enthusiastic tutor.' }
-                ];
-                saveData('tutors', defaultTutors);
-            }
-        }
-
-        // ============ DATA HELPERS ============
-        function getData(key) {
-            const data = localStorage.getItem(STORAGE_KEYS[key]);
-            return data ? JSON.parse(data) : [];
-        }
-
-        function saveData(key, data) {
-            localStorage.setItem(STORAGE_KEYS[key], JSON.stringify(data));
-        }
-
-        // ============ LOGIN SYSTEM ============
-        document.getElementById('adminLoginForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const adminName = document.getElementById('adminName').value.trim();
-            const password = document.getElementById('adminPassword').value;
-            const loginError = document.getElementById('loginError');
-            const loginBtn = document.getElementById('loginBtn');
-            
-            if (!adminName) {
-                showLoginError('Please enter your admin name.');
-                return;
-            }
-            
-            if (password !== ADMIN_PASSWORD) {
-                showLoginError('Invalid password! Access denied.');
-                return;
-            }
-            
-            // Show loading
-            loginBtn.disabled = true;
-            loginBtn.innerHTML = '<span class="spinner"></span> Authenticating...';
-            
-            // Simulate brief loading
-            setTimeout(() => {
-                loginSuccess(adminName);
-                loginBtn.disabled = false;
-                loginBtn.innerHTML = '<i class="fas fa-lock-open"></i> Access Dashboard';
-            }, 800);
-        });
-
-        function showLoginError(message) {
-            const loginError = document.getElementById('loginError');
-            loginError.textContent = message;
-            loginError.classList.add('show');
-            
-            // Shake effect
-            loginError.style.animation = 'none';
-            loginError.offsetHeight;
-            loginError.style.animation = 'shake 0.5s ease';
-            
-            setTimeout(() => {
-                loginError.classList.remove('show');
-            }, 4000);
-        }
-
-        function loginSuccess(adminName) {
-            currentAdmin = adminName;
-            sessionStorage.setItem('gpa_admin_session', 'true');
-            sessionStorage.setItem('gpa_admin_name', adminName);
-            
-            // Hide login, show dashboard
-            document.getElementById('loginOverlay').classList.add('hidden');
-            document.getElementById('adminContainer').style.display = 'flex';
-            
-            // Update sidebar
-            document.getElementById('sidebarAdminName').textContent = adminName;
-            document.getElementById('sidebarAvatar').textContent = adminName.charAt(0).toUpperCase();
-            
-            // Log activity
-            logAdminActivity('login', `Admin "${adminName}" logged in`);
-            
-            // Refresh all data
-            refreshAllData();
-            
-            // Show welcome toast
-            showToast('Welcome back, ' + adminName + '!', 'success');
-            
-            // Navigate to dashboard
-            navigateTo('dashboard');
-        }
-
-        function logout() {
-            if (confirm('Are you sure you want to logout?')) {
-                logAdminActivity('logout', `Admin "${currentAdmin}" logged out`);
-                sessionStorage.removeItem('gpa_admin_session');
-                sessionStorage.removeItem('gpa_admin_name');
-                currentAdmin = null;
-                document.getElementById('loginOverlay').classList.remove('hidden');
-                document.getElementById('adminContainer').style.display = 'none';
-                document.getElementById('adminLoginForm').reset();
-                document.getElementById('loginError').classList.remove('show');
-            }
-        }
-
-        document.getElementById('sidebarLogoutBtn').addEventListener('click', logout);
-
-        // ============ NAVIGATION ============
+    function navigateTo(page) {
         document.querySelectorAll('.sidebar-nav .nav-item').forEach(item => {
-            item.addEventListener('click', function() {
-                const page = this.getAttribute('data-page');
-                navigateTo(page);
-                
-                // Close sidebar on mobile
-                document.getElementById('sidebar').classList.remove('open');
-                document.getElementById('sidebarBackdrop').classList.remove('show');
-            });
+            item.classList.remove('active');
+            if (item.getAttribute('data-page') === page) item.classList.add('active');
         });
-
-        function navigateTo(page) {
-            // Update sidebar active state
-            document.querySelectorAll('.sidebar-nav .nav-item').forEach(item => {
-                item.classList.remove('active');
-                if (item.getAttribute('data-page') === page) {
-                    item.classList.add('active');
-                }
-            });
-            
-            // Show correct page
-            document.querySelectorAll('.page-section').forEach(section => {
-                section.classList.remove('active');
-            });
-            
-            const targetPage = document.getElementById('page-' + page);
-            if (targetPage) {
-                targetPage.classList.add('active');
-            }
-            
-            // Update header
-            const titles = {
-                dashboard: ['Dashboard', 'Overview of all activities'],
-                users: ['Users Management', 'Manage registered users'],
-                courses: ['Courses Management', 'Add, edit, or remove courses'],
-                tutors: ['Tutors Management', 'Manage tutor profiles and assignments'],
-                messages: ['Send Messages', 'Communicate with website users'],
-                announcement: ['Announcement Bar', 'Manage the scrolling announcement'],
-                activities: ['Activity Log', 'Monitor all actions and events'],
-                bookings: ['Bookings', 'View tutor booking submissions']
-            };
-            
-            const [title, subtitle] = titles[page] || [page, ''];
-            document.getElementById('pageTitle').textContent = title;
-            document.getElementById('pageSubtitle').textContent = subtitle;
-            
-            // Show/hide add button
-            const addBtn = document.getElementById('headerAddBtn');
-            if (page === 'courses' || page === 'tutors') {
-                addBtn.style.display = 'flex';
-                addBtn.onclick = page === 'courses' ? openCourseModal : openTutorModal;
-                addBtn.innerHTML = '<i class="fas fa-plus"></i> Add ' + (page === 'courses' ? 'Course' : 'Tutor');
-            } else {
-                addBtn.style.display = 'none';
-            }
-            
-            // Refresh specific page data
-            refreshPageData(page);
+        
+        document.querySelectorAll('.page-section').forEach(s => s.classList.remove('active'));
+        const targetPage = document.getElementById('page-' + page);
+        if (targetPage) targetPage.classList.add('active');
+        
+        const titles = {
+            dashboard: ['Dashboard', 'Overview of all activities'],
+            users: ['Users Management', 'Manage registered users'],
+            courses: ['Courses Management', 'Add, edit, or remove courses'],
+            tutors: ['Tutors Management', 'Manage tutor profiles'],
+            messages: ['Send Messages', 'Communicate with website users'],
+            announcement: ['Announcement Bar', 'Manage the scrolling announcement'],
+            activities: ['Activity Log', 'Monitor all actions and events'],
+            bookings: ['Bookings', 'View tutor booking submissions']
+        };
+        
+        const [title, subtitle] = titles[page] || [page, ''];
+        document.getElementById('pageTitle').textContent = title;
+        document.getElementById('pageSubtitle').textContent = subtitle;
+        
+        const addBtn = document.getElementById('headerAddBtn');
+        if (page === 'courses' || page === 'tutors') {
+            addBtn.style.display = 'flex';
+            addBtn.onclick = page === 'courses' ? openCourseModal : openTutorModal;
+            addBtn.innerHTML = '<i class="fas fa-plus"></i> Add ' + (page === 'courses' ? 'Course' : 'Tutor');
+        } else {
+            addBtn.style.display = 'none';
         }
+        
+        refreshPageData(page);
+    }
 
-        function refreshPageData(page) {
-            switch(page) {
-                case 'dashboard':
-                    updateDashboardStats();
-                    renderDashboardActivity();
-                    break;
-                case 'users':
-                    renderUsers();
-                    break;
-                case 'courses':
-                    renderCourses();
-                    break;
-                case 'tutors':
-                    renderTutors();
-                    break;
-                case 'messages':
-                    renderSentMessages();
-                    break;
-                case 'announcement':
-                    loadCurrentAnnouncement();
-                    break;
-                case 'activities':
-                    renderActivities();
-                    break;
-                case 'bookings':
-                    renderBookings();
-                    break;
-            }
+    function refreshPageData(page) {
+        switch(page) {
+            case 'dashboard': updateDashboardStats(); renderDashboardActivity(); break;
+            case 'users': renderUsers(); break;
+            case 'courses': renderCourses(); break;
+            case 'tutors': renderTutors(); break;
+            case 'messages': renderSentMessages(); break;
+            case 'announcement': loadCurrentAnnouncement(); break;
+            case 'activities': renderActivities(); break;
+            case 'bookings': renderBookings(); break;
         }
+    }
 
-        function refreshAllData() {
-            updateDashboardStats();
-            updateSidebarBadges();
-            const activePage = document.querySelector('.page-section.active');
-            if (activePage) {
-                const pageId = activePage.id.replace('page-', '');
-                refreshPageData(pageId);
-            }
+    async function refreshAllData() {
+        // Reload from Firestore
+        const [users, courses, tutors, messages, activities] = await Promise.all([
+            getFromFirestore('users', 'all'),
+            getFromFirestore('courses', 'all'),
+            getFromFirestore('tutors', 'all'),
+            getFromFirestore('messages', 'all'),
+            getFromFirestore('activities', 'all')
+        ]);
+        
+        cachedUsers = users || [];
+        cachedCourses = courses || [];
+        cachedTutors = tutors || [];
+        cachedMessages = messages || [];
+        cachedActivities = activities || [];
+        
+        updateDashboardStats();
+        updateSidebarBadges();
+        const activePage = document.querySelector('.page-section.active');
+        if (activePage) refreshPageData(activePage.id.replace('page-', ''));
+    }
+
+    function updateSidebarBadges() {
+        document.getElementById('sidebarUserCount').textContent = cachedUsers.length;
+        document.getElementById('sidebarMsgCount').textContent = cachedMessages.length;
+    }
+
+    // ============ DASHBOARD ============
+    function updateDashboardStats() {
+        document.getElementById('statUsers').textContent = cachedUsers.length;
+        document.getElementById('statCourses').textContent = cachedCourses.length;
+        document.getElementById('statTutors').textContent = cachedTutors.length;
+        document.getElementById('statMessages').textContent = cachedMessages.length;
+        document.getElementById('statActivities').textContent = cachedActivities.length;
+    }
+
+    function renderDashboardActivity() {
+        const container = document.getElementById('dashboardActivity');
+        if (cachedActivities.length === 0) {
+            container.innerHTML = '<div class="empty-state"><i class="fas fa-history"></i><p>No activities recorded yet</p></div>';
+            return;
         }
+        const recent = cachedActivities.slice(-10).reverse();
+        container.innerHTML = recent.map(a => {
+            const time = new Date(a.timestamp).toLocaleString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+            return `<div class="activity-item"><div class="activity-header"><span class="activity-action">${a.action}</span><span class="activity-time">${time}</span></div><div class="activity-details">${a.userName ? `<strong>${a.userName}</strong> - ` : ''}${a.details || ''}</div></div>`;
+        }).join('');
+    }
 
-        function updateSidebarBadges() {
-            const users = getData('users');
-            const messages = getData('messages');
-            
-            document.getElementById('sidebarUserCount').textContent = users.length;
-            document.getElementById('sidebarMsgCount').textContent = messages.length;
-        }
-
-        // ============ DASHBOARD ============
-        function updateDashboardStats() {
-            const users = getData('users');
-            const courses = getData('courses');
-            const tutors = getData('tutors');
-            const messages = getData('messages');
-            const activities = getData('activities');
-            
-            document.getElementById('statUsers').textContent = users.length;
-            document.getElementById('statCourses').textContent = courses.length;
-            document.getElementById('statTutors').textContent = tutors.length;
-            document.getElementById('statMessages').textContent = messages.length;
-            document.getElementById('statActivities').textContent = activities.length;
-        }
-
-        function renderDashboardActivity() {
-            const activities = getData('activities');
-            const container = document.getElementById('dashboardActivity');
-            
-            if (activities.length === 0) {
-                container.innerHTML = '<div class="empty-state"><i class="fas fa-history"></i><p>No activities recorded yet</p></div>';
-                return;
-            }
-            
-            // Show last 10 activities
-            const recentActivities = activities.slice(-10).reverse();
-            
-            container.innerHTML = recentActivities.map(activity => {
-                const time = new Date(activity.timestamp).toLocaleString('en-US', {
-                    month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit'
-                });
-                return `
-                    <div class="activity-item">
-                        <div class="activity-header">
-                            <span class="activity-action">${activity.action}</span>
-                            <span class="activity-time">${time}</span>
-                        </div>
-                        <div class="activity-details">
-                            ${activity.userName ? `<strong>${activity.userName}</strong> - ` : ''}${activity.details || ''}
-                        </div>
-                    </div>
-                `;
-            }).join('');
-        }
-
-        // ============ USERS MANAGEMENT ============
-        function renderUsers() {
-            const users = getData('users');
-            const searchTerm = (document.getElementById('userSearch')?.value || '').toLowerCase();
-            const tbody = document.getElementById('usersTableBody');
-            
-            document.getElementById('userCountBadge').textContent = users.length;
-            
-            let filteredUsers = users;
-            if (searchTerm) {
-                filteredUsers = users.filter(u => 
-                    (u.fullName && u.fullName.toLowerCase().includes(searchTerm)) ||
-                    (u.email && u.email.toLowerCase().includes(searchTerm)) ||
-                    (u.department && u.department.toLowerCase().includes(searchTerm))
-                );
-            }
-            
-            if (filteredUsers.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="8"><div class="empty-state"><i class="fas fa-user-slash"></i><p>' + (searchTerm ? 'No users match your search' : 'No users registered yet') + '</p></div></td></tr>';
-                return;
-            }
-            
-            tbody.innerHTML = filteredUsers.map(user => {
-                const joinedDate = user.joinedDate ? new Date(user.joinedDate).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }) : 'N/A';
-                return `
-                    <tr>
-                        <td><strong>${user.fullName || 'N/A'}</strong></td>
-                        <td>${user.email || 'N/A'}</td>
-                        <td>${user.phone || 'N/A'}</td>
-                        <td>${user.department || 'N/A'}</td>
-                        <td>${user.level ? user.level + ' Level' : 'N/A'}</td>
-                        <td>${joinedDate}</td>
-                        <td><span class="status-badge active">Active</span></td>
-                        <td>
-                            <div class="action-btns">
-                                <button class="btn-sm view" onclick="viewUser('${user.id}')" title="View Details">
-                                    <i class="fas fa-eye"></i>
-                                </button>
-                                <button class="btn-sm delete" onclick="deleteUser('${user.id}')" title="Delete User">
-                                    <i class="fas fa-trash-alt"></i>
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
-                `;
-            }).join('');
-        }
-
-        function viewUser(userId) {
-            const users = getData('users');
-            const user = users.find(u => u.id === userId);
-            if (!user) return;
-            
-            alert(`User Details:\n\nName: ${user.fullName}\nEmail: ${user.email}\nPhone: ${user.phone || 'N/A'}\nDepartment: ${user.department || 'N/A'}\nLevel: ${user.level || 'N/A'}\nJoined: ${user.joinedDate ? new Date(user.joinedDate).toLocaleDateString() : 'N/A'}\nBookings: ${user.bookings ? user.bookings.length : 0}`);
-        }
-
-        function deleteUser(userId) {
-            const users = getData('users');
-            const user = users.find(u => u.id === userId);
-            if (!user) return;
-            
-            showConfirmDialog(
-                'Delete User',
-                `Are you sure you want to delete "${user.fullName}"? This action cannot be undone.`,
-                function() {
-                    const updatedUsers = users.filter(u => u.id !== userId);
-                    saveData('users', updatedUsers);
-                    logAdminActivity('delete_user', `Deleted user "${user.fullName}" (${user.email})`);
-                    renderUsers();
-                    updateDashboardStats();
-                    updateSidebarBadges();
-                    showToast('User deleted successfully!', 'success');
-                }
+    // ============ USERS MANAGEMENT ============
+    function renderUsers() {
+        const searchTerm = (document.getElementById('userSearch')?.value || '').toLowerCase();
+        const tbody = document.getElementById('usersTableBody');
+        document.getElementById('userCountBadge').textContent = cachedUsers.length;
+        
+        let filtered = cachedUsers;
+        if (searchTerm) {
+            filtered = cachedUsers.filter(u => 
+                (u.fullName && u.fullName.toLowerCase().includes(searchTerm)) ||
+                (u.email && u.email.toLowerCase().includes(searchTerm)) ||
+                (u.department && u.department.toLowerCase().includes(searchTerm))
             );
         }
+        
+        if (filtered.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="8"><div class="empty-state"><i class="fas fa-user-slash"></i><p>${searchTerm ? 'No users match' : 'No users yet'}</p></div></td></tr>`;
+            return;
+        }
+        
+        tbody.innerHTML = filtered.map(user => {
+            const joined = user.joinedDate ? new Date(user.joinedDate).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }) : 'N/A';
+            return `<tr>
+                <td><strong>${user.fullName || 'N/A'}</strong></td>
+                <td>${user.email || 'N/A'}</td><td>${user.phone || 'N/A'}</td>
+                <td>${user.department || 'N/A'}</td><td>${user.level ? user.level + ' Level' : 'N/A'}</td>
+                <td>${joined}</td><td><span class="status-badge active">Active</span></td>
+                <td><div class="action-btns">
+                    <button class="btn-sm view" onclick="viewUser('${user.id}')"><i class="fas fa-eye"></i></button>
+                    <button class="btn-sm delete" onclick="deleteUser('${user.id}')"><i class="fas fa-trash-alt"></i></button>
+                </div></td></tr>`;
+        }).join('');
+    }
 
-        // ============ COURSES MANAGEMENT ============
-        let currentCourseTab = 'first';
+    function viewUser(userId) {
+        const user = cachedUsers.find(u => u.id === userId);
+        if (!user) return;
+        alert(`User: ${user.fullName}\nEmail: ${user.email}\nPhone: ${user.phone || 'N/A'}\nDept: ${user.department || 'N/A'}\nLevel: ${user.level || 'N/A'}\nJoined: ${user.joinedDate ? new Date(user.joinedDate).toLocaleDateString() : 'N/A'}`);
+    }
 
-        document.querySelectorAll('[data-course-tab]').forEach(tab => {
-            tab.addEventListener('click', function() {
-                document.querySelectorAll('[data-course-tab]').forEach(t => t.classList.remove('active'));
-                this.classList.add('active');
-                currentCourseTab = this.getAttribute('data-course-tab');
-                document.getElementById('courseTableTitle').textContent = currentCourseTab === 'first' ? 'First Semester' : 'Second Semester';
-                renderCourses();
-            });
+    async function deleteUser(userId) {
+        const user = cachedUsers.find(u => u.id === userId);
+        if (!user) return;
+        showConfirmDialog('Delete User', `Delete "${user.fullName}"?`, async function() {
+            cachedUsers = cachedUsers.filter(u => u.id !== userId);
+            await saveData('users', cachedUsers);
+            logAdminActivity('delete_user', `Deleted "${user.fullName}"`);
+            renderUsers(); updateDashboardStats(); updateSidebarBadges();
+            showToast('User deleted!', 'success');
         });
+    }
 
-        function renderCourses() {
-            const courses = getData('courses');
-            const searchTerm = (document.getElementById('courseSearch')?.value || '').toLowerCase();
-            const tbody = document.getElementById('coursesTableBody');
-            
-            let filteredCourses = courses.filter(c => c.semester === currentCourseTab);
-            
-            if (searchTerm) {
-                filteredCourses = filteredCourses.filter(c => 
-                    c.code.toLowerCase().includes(searchTerm) ||
-                    c.name.toLowerCase().includes(searchTerm) ||
-                    c.level.includes(searchTerm)
-                );
-            }
-            
-            // Sort by level then code
-            filteredCourses.sort((a, b) => {
-                if (a.level !== b.level) return parseInt(a.level) - parseInt(b.level);
-                return a.code.localeCompare(b.code);
-            });
-            
-            document.getElementById('courseCountBadge').textContent = filteredCourses.length;
-            
-            if (filteredCourses.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="6"><div class="empty-state"><i class="fas fa-book-open"></i><p>' + (searchTerm ? 'No courses match your search' : 'No courses added yet') + '</p></div></td></tr>';
-                return;
-            }
-            
-            // Get tutors for each course
-            const tutors = getData('tutors');
-            
-            tbody.innerHTML = filteredCourses.map(course => {
-                // Find tutors that teach this course
-                const courseTutors = tutors.filter(t => t.courses && t.courses.includes(course.code));
-                const tutorNames = courseTutors.map(t => t.nickname).join(', ') || 'No tutors';
-                
-                return `
-                    <tr>
-                        <td><strong>${course.code}</strong></td>
-                        <td>${course.name}</td>
-                        <td>${course.level} Level</td>
-                        <td><span class="status-badge ${course.semester === 'first' ? 'info' : 'active'}">${course.semester === 'first' ? '1st Sem' : '2nd Sem'}</span></td>
-                        <td>${tutorNames}</td>
-                        <td>
-                            <div class="action-btns">
-                                <button class="btn-sm edit" onclick="editCourse('${course.id}')" title="Edit Course">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button class="btn-sm delete" onclick="deleteCourse('${course.id}')" title="Delete Course">
-                                    <i class="fas fa-trash-alt"></i>
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
-                `;
-            }).join('');
-        }
+    // ============ COURSES MANAGEMENT ============
+    let currentCourseTab = 'first';
 
-        function openCourseModal(courseId = null) {
-            const modal = document.getElementById('courseModal');
-            const form = document.getElementById('courseForm');
-            form.reset();
-            document.getElementById('courseEditId').value = '';
-            
-            if (courseId) {
-                const courses = getData('courses');
-                const course = courses.find(c => c.id === courseId);
-                if (course) {
-                    document.getElementById('courseModalTitle').textContent = 'Edit Course';
-                    document.getElementById('courseEditId').value = course.id;
-                    document.getElementById('courseCode').value = course.code;
-                    document.getElementById('courseName').value = course.name;
-                    document.getElementById('courseLevel').value = course.level;
-                    document.getElementById('courseSemester').value = course.semester;
-                }
-            } else {
-                document.getElementById('courseModalTitle').textContent = 'Add New Course';
-            }
-            
-            modal.classList.add('show');
-        }
-
-        function closeCourseModal() {
-            document.getElementById('courseModal').classList.remove('show');
-            document.getElementById('courseForm').reset();
-            document.getElementById('courseEditId').value = '';
-        }
-
-        function editCourse(courseId) {
-            openCourseModal(courseId);
-        }
-
-        function saveCourse() {
-            const form = document.getElementById('courseForm');
-            if (!form.checkValidity()) {
-                form.reportValidity();
-                return;
-            }
-            
-            const editId = document.getElementById('courseEditId').value;
-            const courseData = {
-                code: document.getElementById('courseCode').value.trim().toUpperCase(),
-                name: document.getElementById('courseName').value.trim(),
-                level: document.getElementById('courseLevel').value,
-                semester: document.getElementById('courseSemester').value
-            };
-            
-            let courses = getData('courses');
-            
-            if (editId) {
-                // Edit existing
-                const index = courses.findIndex(c => c.id === editId);
-                if (index !== -1) {
-                    courses[index] = { ...courses[index], ...courseData };
-                    logAdminActivity('edit_course', `Updated course "${courseData.code}"`);
-                    showToast('Course updated successfully!', 'success');
-                }
-            } else {
-                // Add new
-                const newCourse = {
-                    id: 'c_' + Date.now(),
-                    ...courseData
-                };
-                courses.push(newCourse);
-                logAdminActivity('add_course', `Added new course "${courseData.code} - ${courseData.name}"`);
-                showToast('Course added successfully!', 'success');
-            }
-            
-            saveData('courses', courses);
-            closeCourseModal();
+    document.querySelectorAll('[data-course-tab]').forEach(tab => {
+        tab.addEventListener('click', function() {
+            document.querySelectorAll('[data-course-tab]').forEach(t => t.classList.remove('active'));
+            this.classList.add('active');
+            currentCourseTab = this.getAttribute('data-course-tab');
+            document.getElementById('courseTableTitle').textContent = currentCourseTab === 'first' ? 'First Semester' : 'Second Semester';
             renderCourses();
-            updateDashboardStats();
-        }
-
-        function deleteCourse(courseId) {
-            const courses = getData('courses');
-            const course = courses.find(c => c.id === courseId);
-            if (!course) return;
-            
-            showConfirmDialog(
-                'Delete Course',
-                `Are you sure you want to delete "${course.code} - ${course.name}"? This will not affect existing tutors but they will lose this course assignment.`,
-                function() {
-                    const updatedCourses = courses.filter(c => c.id !== courseId);
-                    saveData('courses', updatedCourses);
-                    
-                    // Also remove this course from tutors
-                    const tutors = getData('tutors');
-                    tutors.forEach(t => {
-                        if (t.courses) {
-                            t.courses = t.courses.filter(c => c !== course.code);
-                        }
-                    });
-                    saveData('tutors', tutors);
-                    
-                    logAdminActivity('delete_course', `Deleted course "${course.code} - ${course.name}"`);
-                    renderCourses();
-                    updateDashboardStats();
-                    showToast('Course deleted successfully!', 'success');
-                }
-            );
-        }
-
-        // ============ TUTORS MANAGEMENT ============
-        let currentTutorTab = 'first';
-
-        document.querySelectorAll('[data-tutor-tab]').forEach(tab => {
-            tab.addEventListener('click', function() {
-                document.querySelectorAll('[data-tutor-tab]').forEach(t => t.classList.remove('active'));
-                this.classList.add('active');
-                currentTutorTab = this.getAttribute('data-tutor-tab');
-                document.getElementById('tutorTableTitle').textContent = currentTutorTab === 'first' ? 'First Semester' : 'Second Semester';
-                renderTutors();
-            });
         });
+    });
 
-        function renderTutors() {
-            const tutors = getData('tutors');
-            const searchTerm = (document.getElementById('tutorSearch')?.value || '').toLowerCase();
-            const tbody = document.getElementById('tutorsTableBody');
-            
-            let filteredTutors = tutors.filter(t => {
-                if (currentTutorTab === 'first') {
-                    return t.semester === 'first' || t.semester === 'both';
-                } else {
-                    return t.semester === 'second' || t.semester === 'both';
-                }
-            });
-            
-            if (searchTerm) {
-                filteredTutors = filteredTutors.filter(t => 
-                    t.nickname.toLowerCase().includes(searchTerm) ||
-                    t.fullName.toLowerCase().includes(searchTerm) ||
-                    t.department.toLowerCase().includes(searchTerm) ||
-                    (t.courses && t.courses.some(c => c.toLowerCase().includes(searchTerm)))
-                );
-            }
-            
-            document.getElementById('tutorCountBadge').textContent = filteredTutors.length;
-            
-            if (filteredTutors.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="8"><div class="empty-state"><i class="fas fa-user-graduate"></i><p>' + (searchTerm ? 'No tutors match your search' : 'No tutors added yet') + '</p></div></td></tr>';
-                return;
-            }
-            
-            tbody.innerHTML = filteredTutors.map(tutor => {
-                const semesterLabel = tutor.semester === 'both' ? 'Both' : (tutor.semester === 'first' ? '1st' : '2nd');
-                return `
-                    <tr>
-                        <td><strong>${tutor.nickname}</strong></td>
-                        <td>${tutor.fullName}</td>
-                        <td>${tutor.department}</td>
-                        <td>${tutor.level}L</td>
-                        <td>₦${parseInt(tutor.price).toLocaleString()}</td>
-                        <td><span class="status-badge ${tutor.semester === 'first' ? 'info' : (tutor.semester === 'second' ? 'active' : 'pending')}">${semesterLabel} Sem</span></td>
-                        <td>${tutor.courses ? tutor.courses.join(', ') : 'N/A'}</td>
-                        <td>
-                            <div class="action-btns">
-                                <button class="btn-sm view" onclick="viewTutorDetails('${tutor.id}')" title="View Details">
-                                    <i class="fas fa-eye"></i>
-                                </button>
-                                <button class="btn-sm edit" onclick="editTutor('${tutor.id}')" title="Edit Tutor">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button class="btn-sm delete" onclick="deleteTutor('${tutor.id}')" title="Delete Tutor">
-                                    <i class="fas fa-trash-alt"></i>
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
-                `;
-            }).join('');
+    function renderCourses() {
+        const searchTerm = (document.getElementById('courseSearch')?.value || '').toLowerCase();
+        const tbody = document.getElementById('coursesTableBody');
+        let filtered = cachedCourses.filter(c => c.semester === currentCourseTab);
+        
+        if (searchTerm) {
+            filtered = filtered.filter(c => c.code.toLowerCase().includes(searchTerm) || c.name.toLowerCase().includes(searchTerm) || c.level.includes(searchTerm));
         }
-
-        function viewTutorDetails(tutorId) {
-            const tutors = getData('tutors');
-            const tutor = tutors.find(t => t.id === tutorId);
-            if (!tutor) return;
-            
-            alert(`Tutor Details:\n\nNickname: ${tutor.nickname}\nFull Name: ${tutor.fullName}\nDepartment: ${tutor.department}\nLevel: ${tutor.level}L\nPrice: ₦${parseInt(tutor.price).toLocaleString()}/session\nSemester: ${tutor.semester}\nCourses: ${tutor.courses ? tutor.courses.join(', ') : 'N/A'}\nEmail: ${tutor.email || 'N/A'}\nWhatsApp: ${tutor.whatsapp || 'N/A'}\n\nBio: ${tutor.bio || 'N/A'}`);
+        
+        filtered.sort((a, b) => parseInt(a.level) - parseInt(b.level) || a.code.localeCompare(b.code));
+        document.getElementById('courseCountBadge').textContent = filtered.length;
+        
+        if (filtered.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="6"><div class="empty-state"><i class="fas fa-book-open"></i><p>${searchTerm ? 'No matches' : 'No courses yet'}</p></div></td></tr>`;
+            return;
         }
+        
+        tbody.innerHTML = filtered.map(course => {
+            const tutors = cachedTutors.filter(t => t.courses && t.courses.includes(course.code)).map(t => t.nickname).join(', ') || 'No tutors';
+            return `<tr>
+                <td><strong>${course.code}</strong></td><td>${course.name}</td>
+                <td>${course.level} Level</td>
+                <td><span class="status-badge ${course.semester === 'first' ? 'info' : 'active'}">${course.semester === 'first' ? '1st' : '2nd'} Sem</span></td>
+                <td>${tutors}</td>
+                <td><div class="action-btns">
+                    <button class="btn-sm edit" onclick="editCourse('${course.id}')"><i class="fas fa-edit"></i></button>
+                    <button class="btn-sm delete" onclick="deleteCourse('${course.id}')"><i class="fas fa-trash-alt"></i></button>
+                </div></td></tr>`;
+        }).join('');
+    }
 
-        function openTutorModal(tutorId = null) {
-            const modal = document.getElementById('tutorModal');
-            const form = document.getElementById('tutorForm');
-            form.reset();
-            document.getElementById('tutorEditId').value = '';
-            
-            if (tutorId) {
-                const tutors = getData('tutors');
-                const tutor = tutors.find(t => t.id === tutorId);
-                if (tutor) {
-                    document.getElementById('tutorModalTitle').textContent = 'Edit Tutor';
-                    document.getElementById('tutorEditId').value = tutor.id;
-                    document.getElementById('tutorNickname').value = tutor.nickname;
-                    document.getElementById('tutorFullName').value = tutor.fullName;
-                    document.getElementById('tutorDepartment').value = tutor.department;
-                    document.getElementById('tutorLevel').value = tutor.level;
-                    document.getElementById('tutorPrice').value = tutor.price;
-                    document.getElementById('tutorSemester').value = tutor.semester;
-                    document.getElementById('tutorCourses').value = tutor.courses ? tutor.courses.join(', ') : '';
-                    document.getElementById('tutorEmail').value = tutor.email || '';
-                    document.getElementById('tutorWhatsApp').value = tutor.whatsapp || '';
-                    document.getElementById('tutorBio').value = tutor.bio || '';
-                }
-            } else {
-                document.getElementById('tutorModalTitle').textContent = 'Add New Tutor';
+    function openCourseModal(courseId = null) {
+        document.getElementById('courseForm').reset();
+        document.getElementById('courseEditId').value = '';
+        if (courseId) {
+            const course = cachedCourses.find(c => c.id === courseId);
+            if (course) {
+                document.getElementById('courseModalTitle').textContent = 'Edit Course';
+                document.getElementById('courseEditId').value = course.id;
+                document.getElementById('courseCode').value = course.code;
+                document.getElementById('courseName').value = course.name;
+                document.getElementById('courseLevel').value = course.level;
+                document.getElementById('courseSemester').value = course.semester;
             }
-            
-            modal.classList.add('show');
+        } else {
+            document.getElementById('courseModalTitle').textContent = 'Add New Course';
         }
+        document.getElementById('courseModal').classList.add('show');
+    }
 
-        function closeTutorModal() {
-            document.getElementById('tutorModal').classList.remove('show');
-            document.getElementById('tutorForm').reset();
-            document.getElementById('tutorEditId').value = '';
+    function closeCourseModal() {
+        document.getElementById('courseModal').classList.remove('show');
+    }
+
+    function editCourse(courseId) { openCourseModal(courseId); }
+
+    async function saveCourse() {
+        const form = document.getElementById('courseForm');
+        if (!form.checkValidity()) { form.reportValidity(); return; }
+        
+        const editId = document.getElementById('courseEditId').value;
+        const data = {
+            code: document.getElementById('courseCode').value.trim().toUpperCase(),
+            name: document.getElementById('courseName').value.trim(),
+            level: document.getElementById('courseLevel').value,
+            semester: document.getElementById('courseSemester').value
+        };
+        
+        if (editId) {
+            const idx = cachedCourses.findIndex(c => c.id === editId);
+            if (idx !== -1) { cachedCourses[idx] = { ...cachedCourses[idx], ...data }; }
+            logAdminActivity('edit_course', `Updated "${data.code}"`);
+            showToast('Course updated!', 'success');
+        } else {
+            cachedCourses.push({ id: 'c_' + Date.now(), ...data });
+            logAdminActivity('add_course', `Added "${data.code}"`);
+            showToast('Course added!', 'success');
         }
+        
+        await saveData('courses', cachedCourses);
+        closeCourseModal();
+        renderCourses();
+        updateDashboardStats();
+    }
 
-        function editTutor(tutorId) {
-            openTutorModal(tutorId);
-        }
+    async function deleteCourse(courseId) {
+        const course = cachedCourses.find(c => c.id === courseId);
+        if (!course) return;
+        showConfirmDialog('Delete Course', `Delete "${course.code} - ${course.name}"?`, async function() {
+            cachedCourses = cachedCourses.filter(c => c.id !== courseId);
+            cachedTutors.forEach(t => { if (t.courses) t.courses = t.courses.filter(c => c !== course.code); });
+            await saveData('courses', cachedCourses);
+            await saveData('tutors', cachedTutors);
+            logAdminActivity('delete_course', `Deleted "${course.code}"`);
+            renderCourses(); updateDashboardStats();
+            showToast('Course deleted!', 'success');
+        });
+    }
 
-        function saveTutor() {
-            const form = document.getElementById('tutorForm');
-            if (!form.checkValidity()) {
-                form.reportValidity();
-                return;
-            }
-            
-            const editId = document.getElementById('tutorEditId').value;
-            const coursesRaw = document.getElementById('tutorCourses').value.trim();
-            const courses = coursesRaw ? coursesRaw.split(',').map(c => c.trim()).filter(c => c) : [];
-            
-            const tutorData = {
-                nickname: document.getElementById('tutorNickname').value.trim(),
-                fullName: document.getElementById('tutorFullName').value.trim(),
-                department: document.getElementById('tutorDepartment').value.trim(),
-                level: document.getElementById('tutorLevel').value,
-                price: document.getElementById('tutorPrice').value,
-                semester: document.getElementById('tutorSemester').value,
-                courses: courses,
-                email: document.getElementById('tutorEmail').value.trim(),
-                whatsapp: document.getElementById('tutorWhatsApp').value.trim(),
-                bio: document.getElementById('tutorBio').value.trim()
-            };
-            
-            let tutors = getData('tutors');
-            
-            if (editId) {
-                const index = tutors.findIndex(t => t.id === editId);
-                if (index !== -1) {
-                    tutors[index] = { ...tutors[index], ...tutorData };
-                    logAdminActivity('edit_tutor', `Updated tutor "${tutorData.nickname}"`);
-                    showToast('Tutor updated successfully!', 'success');
-                }
-            } else {
-                const newTutor = {
-                    id: 't_' + Date.now(),
-                    ...tutorData
-                };
-                tutors.push(newTutor);
-                logAdminActivity('add_tutor', `Added new tutor "${tutorData.nickname}"`);
-                showToast('Tutor added successfully!', 'success');
-            }
-            
-            saveData('tutors', tutors);
-            closeTutorModal();
+    // ============ TUTORS MANAGEMENT ============
+    let currentTutorTab = 'first';
+
+    document.querySelectorAll('[data-tutor-tab]').forEach(tab => {
+        tab.addEventListener('click', function() {
+            document.querySelectorAll('[data-tutor-tab]').forEach(t => t.classList.remove('active'));
+            this.classList.add('active');
+            currentTutorTab = this.getAttribute('data-tutor-tab');
+            document.getElementById('tutorTableTitle').textContent = currentTutorTab === 'first' ? 'First Semester' : 'Second Semester';
             renderTutors();
-            renderCourses(); // Update course tutor display
-            updateDashboardStats();
-        }
-
-        function deleteTutor(tutorId) {
-            const tutors = getData('tutors');
-            const tutor = tutors.find(t => t.id === tutorId);
-            if (!tutor) return;
-            
-            showConfirmDialog(
-                'Delete Tutor',
-                `Are you sure you want to delete "${tutor.nickname} (${tutor.fullName})"?`,
-                function() {
-                    const updatedTutors = tutors.filter(t => t.id !== tutorId);
-                    saveData('tutors', updatedTutors);
-                    logAdminActivity('delete_tutor', `Deleted tutor "${tutor.nickname}"`);
-                    renderTutors();
-                    renderCourses();
-                    updateDashboardStats();
-                    showToast('Tutor deleted successfully!', 'success');
-                }
-            );
-        }
-
-        // ============ MESSAGES SYSTEM ============
-        document.getElementById('sendMessageForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const type = document.getElementById('messageType').value;
-            const title = document.getElementById('messageTitle').value.trim();
-            const body = document.getElementById('messageBody').value.trim();
-            
-            if (!title || !body) {
-                showToast('Please fill in all fields.', 'error');
-                return;
-            }
-            
-            const newMessage = {
-                id: 'msg_' + Date.now(),
-                type: type,
-                title: title,
-                body: body,
-                timestamp: new Date().toISOString(),
-                readBy: [],
-                sentBy: currentAdmin
-            };
-            
-            let messages = getData('messages');
-            messages.push(newMessage);
-            saveData('messages', messages);
-            
-            logAdminActivity('send_message', `Sent ${type} message: "${title}"`);
-            
-            // Reset form
-            this.reset();
-            
-            renderSentMessages();
-            updateDashboardStats();
-            updateSidebarBadges();
-            showToast('Message sent successfully to all users!', 'success');
         });
+    });
 
-        function renderSentMessages() {
-            const messages = getData('messages');
-            const tbody = document.getElementById('sentMessagesBody');
-            
-            document.getElementById('sentMsgCount').textContent = messages.length;
-            
-            if (messages.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="6"><div class="empty-state"><i class="fas fa-inbox"></i><p>No messages sent yet</p></div></td></tr>';
-                return;
-            }
-            
-            // Sort by newest first
-            const sortedMessages = [...messages].reverse();
-            
-            tbody.innerHTML = sortedMessages.map(msg => {
-                const time = new Date(msg.timestamp).toLocaleString('en-US', {
-                    month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit'
-                });
-                return `
-                    <tr>
-                        <td><span class="status-badge ${msg.type}">${msg.type}</span></td>
-                        <td><strong>${msg.title}</strong></td>
-                        <td>${msg.body.substring(0, 60)}...</td>
-                        <td>${time}</td>
-                        <td>${msg.readBy ? msg.readBy.length : 0} users</td>
-                        <td>
-                            <div class="action-btns">
-                                <button class="btn-sm view" onclick="previewSentMessage('${msg.id}')" title="View">
-                                    <i class="fas fa-eye"></i>
-                                </button>
-                                <button class="btn-sm delete" onclick="deleteMessage('${msg.id}')" title="Delete">
-                                    <i class="fas fa-trash-alt"></i>
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
-                `;
-            }).join('');
-        }
-
-        function previewMessage() {
-            const type = document.getElementById('messageType').value;
-            const title = document.getElementById('messageTitle').value.trim();
-            const body = document.getElementById('messageBody').value.trim();
-            
-            if (!title || !body) {
-                showToast('Please fill in title and body first.', 'warning');
-                return;
-            }
-            
-            alert(`Message Preview:\n\nType: ${type}\nTitle: ${title}\n\nBody:\n${body}\n\nThis is how users will see it on the website.`);
-        }
-
-        function previewSentMessage(msgId) {
-            const messages = getData('messages');
-            const msg = messages.find(m => m.id === msgId);
-            if (!msg) return;
-            
-            const time = new Date(msg.timestamp).toLocaleString('en-US', {
-                year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit'
-            });
-            
-            alert(`Message Details:\n\nType: ${msg.type}\nTitle: ${msg.title}\nSent: ${time}\nRead by: ${msg.readBy ? msg.readBy.length : 0} users\n\nFull Body:\n${msg.body}`);
-        }
-
-        function deleteMessage(msgId) {
-            showConfirmDialog(
-                'Delete Message',
-                'Are you sure you want to delete this message? Users who have already read it will still see it in their history.',
-                function() {
-                    let messages = getData('messages');
-                    messages = messages.filter(m => m.id !== msgId);
-                    saveData('messages', messages);
-                    logAdminActivity('delete_message', `Deleted a message`);
-                    renderSentMessages();
-                    updateDashboardStats();
-                    updateSidebarBadges();
-                    showToast('Message deleted!', 'success');
-                }
-            );
-        }
-
-        function clearAllMessages() {
-            showConfirmDialog(
-                'Clear All Messages',
-                'Are you sure you want to delete ALL sent messages? This cannot be undone.',
-                function() {
-                    saveData('messages', []);
-                    logAdminActivity('clear_messages', 'Cleared all messages');
-                    renderSentMessages();
-                    updateDashboardStats();
-                    updateSidebarBadges();
-                    showToast('All messages cleared!', 'success');
-                }
-            );
-        }
-
-        // ============ ANNOUNCEMENT SYSTEM ============
-        document.getElementById('announcementForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const type = document.getElementById('announcementType').value;
-            const text = document.getElementById('announcementText').value.trim();
-            
-            if (!text) {
-                showToast('Please enter announcement text.', 'error');
-                return;
-            }
-            
-            const announcement = {
-                text: text,
-                type: type,
-                active: true,
-                timestamp: new Date().toISOString(),
-                sentBy: currentAdmin
-            };
-            
-            localStorage.setItem(STORAGE_KEYS.announcement, JSON.stringify(announcement));
-            
-            logAdminActivity('publish_announcement', `Published ${type} announcement`);
-            
-            // Reset form
-            this.reset();
-            
-            loadCurrentAnnouncement();
-            showToast('Announcement published! It will appear on the main website.', 'success');
+    function renderTutors() {
+        const searchTerm = (document.getElementById('tutorSearch')?.value || '').toLowerCase();
+        const tbody = document.getElementById('tutorsTableBody');
+        
+        let filtered = cachedTutors.filter(t => {
+            if (currentTutorTab === 'first') return t.semester === 'first' || t.semester === 'both';
+            return t.semester === 'second' || t.semester === 'both';
         });
+        
+        if (searchTerm) {
+            filtered = filtered.filter(t => t.nickname.toLowerCase().includes(searchTerm) || t.fullName.toLowerCase().includes(searchTerm));
+        }
+        
+        document.getElementById('tutorCountBadge').textContent = filtered.length;
+        
+        if (filtered.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="8"><div class="empty-state"><i class="fas fa-user-graduate"></i><p>${searchTerm ? 'No matches' : 'No tutors yet'}</p></div></td></tr>`;
+            return;
+        }
+        
+        tbody.innerHTML = filtered.map(tutor => {
+            const sem = tutor.semester === 'both' ? 'Both' : (tutor.semester === 'first' ? '1st' : '2nd');
+            return `<tr>
+                <td><strong>${tutor.nickname}</strong></td><td>${tutor.fullName}</td>
+                <td>${tutor.department}</td><td>${tutor.level}L</td>
+                <td>₦${parseInt(tutor.price).toLocaleString()}</td>
+                <td><span class="status-badge ${tutor.semester === 'first' ? 'info' : (tutor.semester === 'second' ? 'active' : 'pending')}">${sem} Sem</span></td>
+                <td>${tutor.courses ? tutor.courses.join(', ') : 'N/A'}</td>
+                <td><div class="action-btns">
+                    <button class="btn-sm view" onclick="viewTutorDetails('${tutor.id}')"><i class="fas fa-eye"></i></button>
+                    <button class="btn-sm edit" onclick="editTutor('${tutor.id}')"><i class="fas fa-edit"></i></button>
+                    <button class="btn-sm delete" onclick="deleteTutor('${tutor.id}')"><i class="fas fa-trash-alt"></i></button>
+                </div></td></tr>`;
+        }).join('');
+    }
 
-        function loadCurrentAnnouncement() {
-            const announcement = JSON.parse(localStorage.getItem(STORAGE_KEYS.announcement) || 'null');
-            const infoDiv = document.getElementById('currentAnnouncementInfo');
-            
-            if (announcement && announcement.active) {
-                infoDiv.style.display = 'block';
-                document.getElementById('currentAnnouncementText').textContent = `"${announcement.text}" (Type: ${announcement.type})`;
-            } else {
-                infoDiv.style.display = 'none';
+    function viewTutorDetails(tutorId) {
+        const t = cachedTutors.find(x => x.id === tutorId);
+        if (!t) return;
+        alert(`${t.nickname}\n${t.fullName}\n${t.department}\n${t.level}L\n₦${parseInt(t.price).toLocaleString()}\n${t.semester}\nCourses: ${t.courses ? t.courses.join(', ') : 'N/A'}`);
+    }
+
+    function openTutorModal(tutorId = null) {
+        document.getElementById('tutorForm').reset();
+        document.getElementById('tutorEditId').value = '';
+        if (tutorId) {
+            const t = cachedTutors.find(x => x.id === tutorId);
+            if (t) {
+                document.getElementById('tutorModalTitle').textContent = 'Edit Tutor';
+                document.getElementById('tutorEditId').value = t.id;
+                document.getElementById('tutorNickname').value = t.nickname;
+                document.getElementById('tutorFullName').value = t.fullName;
+                document.getElementById('tutorDepartment').value = t.department;
+                document.getElementById('tutorLevel').value = t.level;
+                document.getElementById('tutorPrice').value = t.price;
+                document.getElementById('tutorSemester').value = t.semester;
+                document.getElementById('tutorCourses').value = t.courses ? t.courses.join(', ') : '';
+                document.getElementById('tutorEmail').value = t.email || '';
+                document.getElementById('tutorWhatsApp').value = t.whatsapp || '';
+                document.getElementById('tutorBio').value = t.bio || '';
             }
+        } else {
+            document.getElementById('tutorModalTitle').textContent = 'Add New Tutor';
         }
+        document.getElementById('tutorModal').classList.add('show');
+    }
 
-        function removeAnnouncement() {
-            const announcement = JSON.parse(localStorage.getItem(STORAGE_KEYS.announcement) || 'null');
-            if (announcement) {
-                announcement.active = false;
-                localStorage.setItem(STORAGE_KEYS.announcement, JSON.stringify(announcement));
-            } else {
-                localStorage.setItem(STORAGE_KEYS.announcement, JSON.stringify({ active: false }));
-            }
-            
-            logAdminActivity('remove_announcement', 'Removed announcement bar');
-            loadCurrentAnnouncement();
-            showToast('Announcement removed from website!', 'info');
+    function closeTutorModal() { document.getElementById('tutorModal').classList.remove('show'); }
+    function editTutor(tutorId) { openTutorModal(tutorId); }
+
+    async function saveTutor() {
+        const form = document.getElementById('tutorForm');
+        if (!form.checkValidity()) { form.reportValidity(); return; }
+        
+        const editId = document.getElementById('tutorEditId').value;
+        const coursesRaw = document.getElementById('tutorCourses').value.trim();
+        const data = {
+            nickname: document.getElementById('tutorNickname').value.trim(),
+            fullName: document.getElementById('tutorFullName').value.trim(),
+            department: document.getElementById('tutorDepartment').value.trim(),
+            level: document.getElementById('tutorLevel').value,
+            price: document.getElementById('tutorPrice').value,
+            semester: document.getElementById('tutorSemester').value,
+            courses: coursesRaw ? coursesRaw.split(',').map(c => c.trim()).filter(c => c) : [],
+            email: document.getElementById('tutorEmail').value.trim(),
+            whatsapp: document.getElementById('tutorWhatsApp').value.trim(),
+            bio: document.getElementById('tutorBio').value.trim()
+        };
+        
+        if (editId) {
+            const idx = cachedTutors.findIndex(t => t.id === editId);
+            if (idx !== -1) { cachedTutors[idx] = { ...cachedTutors[idx], ...data }; }
+            logAdminActivity('edit_tutor', `Updated "${data.nickname}"`);
+            showToast('Tutor updated!', 'success');
+        } else {
+            cachedTutors.push({ id: 't_' + Date.now(), ...data });
+            logAdminActivity('add_tutor', `Added "${data.nickname}"`);
+            showToast('Tutor added!', 'success');
         }
+        
+        await saveData('tutors', cachedTutors);
+        closeTutorModal();
+        renderTutors(); renderCourses(); updateDashboardStats();
+    }
 
-        // ============ ACTIVITIES ============
-        function renderActivities() {
-            const activities = getData('activities');
-            const container = document.getElementById('activitiesTimeline');
-            
-            document.getElementById('activityCountBadge').textContent = activities.length;
-            
-            if (activities.length === 0) {
-                container.innerHTML = '<div class="empty-state"><i class="fas fa-history"></i><p>No activities recorded yet</p></div>';
-                return;
-            }
-            
-            const sortedActivities = [...activities].reverse();
-            
-            container.innerHTML = sortedActivities.map(activity => {
-                const time = new Date(activity.timestamp).toLocaleString('en-US', {
-                    year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit'
-                });
-                return `
-                    <div class="activity-item">
-                        <div class="activity-header">
-                            <span class="activity-action">${activity.action}</span>
-                            <span class="activity-time">${time}</span>
-                        </div>
-                        <div class="activity-details">
-                            ${activity.userName ? `<strong>${activity.userName}</strong> (${activity.userEmail || 'N/A'}) - ` : ''}${activity.details || ''}
-                        </div>
-                    </div>
-                `;
-            }).join('');
+    async function deleteTutor(tutorId) {
+        const tutor = cachedTutors.find(t => t.id === tutorId);
+        if (!tutor) return;
+        showConfirmDialog('Delete Tutor', `Delete "${tutor.nickname}"?`, async function() {
+            cachedTutors = cachedTutors.filter(t => t.id !== tutorId);
+            await saveData('tutors', cachedTutors);
+            logAdminActivity('delete_tutor', `Deleted "${tutor.nickname}"`);
+            renderTutors(); renderCourses(); updateDashboardStats();
+            showToast('Tutor deleted!', 'success');
+        });
+    }
+
+    // ============ MESSAGES SYSTEM ============
+    document.getElementById('sendMessageForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        const type = document.getElementById('messageType').value;
+        const title = document.getElementById('messageTitle').value.trim();
+        const body = document.getElementById('messageBody').value.trim();
+        
+        if (!title || !body) { showToast('Fill all fields!', 'error'); return; }
+        
+        const msg = { id: 'msg_' + Date.now(), type, title, body, timestamp: new Date().toISOString(), readBy: [], sentBy: currentAdmin };
+        cachedMessages.push(msg);
+        await saveData('messages', cachedMessages);
+        logAdminActivity('send_message', `Sent ${type}: "${title}"`);
+        this.reset();
+        renderSentMessages(); updateDashboardStats(); updateSidebarBadges();
+        showToast('Message sent!', 'success');
+    });
+
+    function renderSentMessages() {
+        const tbody = document.getElementById('sentMessagesBody');
+        document.getElementById('sentMsgCount').textContent = cachedMessages.length;
+        if (cachedMessages.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="6"><div class="empty-state"><i class="fas fa-inbox"></i><p>No messages</p></div></td></tr>';
+            return;
         }
+        tbody.innerHTML = [...cachedMessages].reverse().map(msg => {
+            const time = new Date(msg.timestamp).toLocaleString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+            return `<tr><td><span class="status-badge ${msg.type}">${msg.type}</span></td><td><strong>${msg.title}</strong></td><td>${msg.body.substring(0,60)}...</td><td>${time}</td><td>${msg.readBy ? msg.readBy.length : 0} users</td>
+            <td><div class="action-btns"><button class="btn-sm view" onclick="previewSentMessage('${msg.id}')"><i class="fas fa-eye"></i></button><button class="btn-sm delete" onclick="deleteMessage('${msg.id}')"><i class="fas fa-trash-alt"></i></button></div></td></tr>`;
+        }).join('');
+    }
 
-        function clearActivities() {
-            showConfirmDialog(
-                'Clear Activity Log',
-                'Are you sure you want to clear ALL activity logs? This cannot be undone.',
-                function() {
-                    saveData('activities', []);
-                    renderActivities();
-                    updateDashboardStats();
-                    renderDashboardActivity();
-                    showToast('Activity log cleared!', 'success');
-                }
-            );
+    function previewMessage() {
+        const t = document.getElementById('messageType').value;
+        const ti = document.getElementById('messageTitle').value.trim();
+        const b = document.getElementById('messageBody').value.trim();
+        if (!ti || !b) { showToast('Fill fields first!', 'warning'); return; }
+        alert(`Preview:\nType: ${t}\nTitle: ${ti}\n\n${b}`);
+    }
+
+    function previewSentMessage(msgId) {
+        const msg = cachedMessages.find(m => m.id === msgId);
+        if (!msg) return;
+        alert(`Type: ${msg.type}\nTitle: ${msg.title}\nRead by: ${msg.readBy ? msg.readBy.length : 0}\n\n${msg.body}`);
+    }
+
+    async function deleteMessage(msgId) {
+        showConfirmDialog('Delete Message', 'Delete this message?', async function() {
+            cachedMessages = cachedMessages.filter(m => m.id !== msgId);
+            await saveData('messages', cachedMessages);
+            logAdminActivity('delete_message', 'Deleted message');
+            renderSentMessages(); updateDashboardStats(); updateSidebarBadges();
+            showToast('Deleted!', 'success');
+        });
+    }
+
+    async function clearAllMessages() {
+        showConfirmDialog('Clear All', 'Delete ALL messages?', async function() {
+            cachedMessages = [];
+            await saveData('messages', []);
+            logAdminActivity('clear_messages', 'Cleared all');
+            renderSentMessages(); updateDashboardStats(); updateSidebarBadges();
+            showToast('All cleared!', 'success');
+        });
+    }
+
+    // ============ ANNOUNCEMENT SYSTEM ============
+    document.getElementById('announcementForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        const type = document.getElementById('announcementType').value;
+        const text = document.getElementById('announcementText').value.trim();
+        if (!text) { showToast('Enter text!', 'error'); return; }
+        
+        const announcement = { text, type, active: true, timestamp: new Date().toISOString(), sentBy: currentAdmin };
+        await saveToFirestore('announcements', 'active', announcement);
+        logAdminActivity('publish_announcement', `Published ${type}`);
+        this.reset();
+        loadCurrentAnnouncement();
+        showToast('Announcement published!', 'success');
+    });
+
+    async function loadCurrentAnnouncement() {
+        const announcement = await getFromFirestore('announcements', 'active');
+        const infoDiv = document.getElementById('currentAnnouncementInfo');
+        if (announcement && announcement.active) {
+            infoDiv.style.display = 'block';
+            document.getElementById('currentAnnouncementText').textContent = `"${announcement.text}" (Type: ${announcement.type})`;
+        } else {
+            infoDiv.style.display = 'none';
         }
+    }
 
-        // ============ BOOKINGS ============
-        function renderBookings() {
-            const activities = getData('activities');
-            const bookingActivities = activities.filter(a => a.action === 'booking');
-            const tbody = document.getElementById('bookingsTableBody');
-            
-            if (bookingActivities.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="5"><div class="empty-state"><i class="fas fa-calendar-times"></i><p>No bookings logged yet</p></div></td></tr>';
-                return;
-            }
-            
-            tbody.innerHTML = bookingActivities.reverse().map(activity => {
-                const time = new Date(activity.timestamp).toLocaleString('en-US', {
-                    year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit'
-                });
-                return `
-                    <tr>
-                        <td><strong>${activity.userName || 'N/A'}</strong></td>
-                        <td>${activity.userEmail || 'N/A'}</td>
-                        <td><span class="status-badge info">Tutorial</span></td>
-                        <td>${activity.details || 'N/A'}</td>
-                        <td>${time}</td>
-                    </tr>
-                `;
-            }).join('');
+    async function removeAnnouncement() {
+        const announcement = await getFromFirestore('announcements', 'active');
+        if (announcement) { announcement.active = false; await saveToFirestore('announcements', 'active', announcement); }
+        else { await saveToFirestore('announcements', 'active', { active: false }); }
+        logAdminActivity('remove_announcement', 'Removed');
+        loadCurrentAnnouncement();
+        showToast('Announcement removed!', 'info');
+    }
+
+    // ============ ACTIVITIES ============
+    function renderActivities() {
+        const container = document.getElementById('activitiesTimeline');
+        document.getElementById('activityCountBadge').textContent = cachedActivities.length;
+        if (cachedActivities.length === 0) {
+            container.innerHTML = '<div class="empty-state"><i class="fas fa-history"></i><p>No activities</p></div>';
+            return;
         }
+        container.innerHTML = [...cachedActivities].reverse().map(a => {
+            const time = new Date(a.timestamp).toLocaleString('en-US', { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+            return `<div class="activity-item"><div class="activity-header"><span class="activity-action">${a.action}</span><span class="activity-time">${time}</span></div><div class="activity-details">${a.userName ? `<strong>${a.userName}</strong> - ` : ''}${a.details || ''}</div></div>`;
+        }).join('');
+    }
 
-        // ============ CONFIRM DIALOG ============
-        function showConfirmDialog(title, message, callback) {
-            document.getElementById('confirmTitle').textContent = title;
-            document.getElementById('confirmMessage').textContent = message;
-            document.getElementById('confirmDialog').classList.add('show');
-            confirmCallback = callback;
-            
-            document.getElementById('confirmDeleteBtn').onclick = function() {
-                if (confirmCallback) {
-                    confirmCallback();
-                }
-                closeConfirmDialog();
-            };
+    async function clearActivities() {
+        showConfirmDialog('Clear Log', 'Delete ALL activity logs?', async function() {
+            cachedActivities = [];
+            await saveData('activities', []);
+            renderActivities(); updateDashboardStats(); renderDashboardActivity();
+            showToast('Cleared!', 'success');
+        });
+    }
+
+    // ============ BOOKINGS ============
+    function renderBookings() {
+        const bookings = cachedActivities.filter(a => a.action === 'booking');
+        const tbody = document.getElementById('bookingsTableBody');
+        if (bookings.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="5"><div class="empty-state"><i class="fas fa-calendar-times"></i><p>No bookings</p></div></td></tr>';
+            return;
         }
+        tbody.innerHTML = bookings.reverse().map(a => {
+            const time = new Date(a.timestamp).toLocaleString('en-US', { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+            return `<tr><td><strong>${a.userName||'N/A'}</strong></td><td>${a.userEmail||'N/A'}</td><td><span class="status-badge info">Tutorial</span></td><td>${a.details||'N/A'}</td><td>${time}</td></tr>`;
+        }).join('');
+    }
 
-        function closeConfirmDialog() {
+    // ============ CONFIRM DIALOG ============
+    function showConfirmDialog(title, message, callback) {
+        document.getElementById('confirmTitle').textContent = title;
+        document.getElementById('confirmMessage').textContent = message;
+        document.getElementById('confirmDialog').classList.add('show');
+        confirmCallback = callback;
+        document.getElementById('confirmDeleteBtn').onclick = function() { if (confirmCallback) confirmCallback(); closeConfirmDialog(); };
+    }
+
+    function closeConfirmDialog() { document.getElementById('confirmDialog').classList.remove('show'); confirmCallback = null; }
+
+    // ============ TOAST ============
+    function showToast(message, type = 'info') {
+        const container = document.getElementById('toastContainer');
+        const toast = document.createElement('div');
+        toast.className = `toast ${type}`;
+        const icons = { success: 'fa-check-circle', error: 'fa-times-circle', warning: 'fa-exclamation-triangle', info: 'fa-info-circle' };
+        toast.innerHTML = `<i class="fas ${icons[type]||icons.info}"></i><span>${message}</span><button class="toast-close" onclick="this.parentElement.remove()">&times;</button>`;
+        container.appendChild(toast);
+        setTimeout(() => { if (toast.parentElement) { toast.style.opacity = '0'; toast.style.transform = 'translateX(100px)'; toast.style.transition = 'all 0.3s ease'; setTimeout(() => toast.remove(), 300); } }, 4000);
+    }
+
+    // ============ ADMIN LOGGING ============
+    async function logAdminActivity(action, details) {
+        cachedActivities.push({ id: 'act_' + Date.now(), action, userName: currentAdmin || 'Admin', userEmail: 'admin@gpa.com', details, timestamp: new Date().toISOString() });
+        if (cachedActivities.length > 500) cachedActivities.splice(0, cachedActivities.length - 500);
+        await saveData('activities', cachedActivities);
+    }
+
+    // ============ EXPORT ============
+    function exportData(format) {
+        const data = { users: cachedUsers, courses: cachedCourses, tutors: cachedTutors, messages: cachedMessages, activities: cachedActivities };
+        if (format === 'pdf') {
+            const w = window.open('', '_blank');
+            w.document.write(`<html><head><title>GPA Export</title><style>body{font-family:Arial;padding:20px}h2{color:#1a4b8c}table{width:100%;border-collapse:collapse;margin-bottom:20px}th,td{border:1px solid #ddd;padding:8px;font-size:12px}th{background:#f5f5f5}</style></head><body><h1>GPA Export</h1><p>By: ${currentAdmin} | ${new Date().toLocaleString()}</p>`);
+            w.document.write(`<h2>Users (${data.users.length})</h2>${data.users.length ? '<table><tr><th>Name</th><th>Email</th><th>Phone</th></tr>'+data.users.map(u=>`<tr><td>${u.fullName||''}</td><td>${u.email||''}</td><td>${u.phone||''}</td></tr>`).join('')+'</table>' : ''}`);
+            w.document.write(`<h2>Courses (${data.courses.length})</h2>${data.courses.length ? '<table><tr><th>Code</th><th>Name</th><th>Level</th><th>Sem</th></tr>'+data.courses.map(c=>`<tr><td>${c.code}</td><td>${c.name}</td><td>${c.level}</td><td>${c.semester}</td></tr>`).join('')+'</table>' : ''}`);
+            w.document.write('</body></html>'); w.document.close();
+            setTimeout(() => w.print(), 500);
+        } else {
+            let csv = 'Type,Name,Email,Details,Date\n';
+            data.activities.forEach(a => csv += `"${a.action}","${a.userName||''}","${a.userEmail||''}","${a.details||''}","${new Date(a.timestamp).toLocaleString()}"\n`);
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `gpa_export_${new Date().toISOString().split('T')[0]}.csv`; a.click();
+        }
+        showToast(`Exported as ${format.toUpperCase()}!`, 'success');
+    }
+
+    function exportUsers(format) {
+        if (!cachedUsers.length) { showToast('No users!', 'warning'); return; }
+        if (format === 'excel') {
+            let csv = 'Name,Email,Phone,Department,Level,Joined\n';
+            cachedUsers.forEach(u => csv += `"${u.fullName||''}","${u.email||''}","${u.phone||''}","${u.department||''}","${u.level||''}","${u.joinedDate?new Date(u.joinedDate).toLocaleDateString():''}"\n`);
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `gpa_users_${new Date().toISOString().split('T')[0]}.csv`; a.click();
+            showToast('Exported!', 'success');
+        } else exportData('pdf');
+    }
+
+    function exportActivities(format) {
+        if (!cachedActivities.length) { showToast('No activities!', 'warning'); return; }
+        if (format === 'excel') {
+            let csv = 'Action,User,Email,Details,Timestamp\n';
+            cachedActivities.forEach(a => csv += `"${a.action}","${a.userName||''}","${a.userEmail||''}","${a.details||''}","${new Date(a.timestamp).toLocaleString()}"\n`);
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `gpa_activities_${new Date().toISOString().split('T')[0]}.csv`; a.click();
+            showToast('Exported!', 'success');
+        } else exportData('pdf');
+    }
+
+    // ============ MOBILE SIDEBAR ============
+    document.getElementById('mobileToggle').addEventListener('click', () => {
+        document.getElementById('sidebar').classList.toggle('open');
+        document.getElementById('sidebarBackdrop').classList.toggle('show');
+    });
+    document.getElementById('sidebarBackdrop').addEventListener('click', function() {
+        document.getElementById('sidebar').classList.remove('open');
+        this.classList.remove('show');
+    });
+
+    // ============ MODAL CLOSE ============
+    document.querySelectorAll('.modal-overlay').forEach(overlay => {
+        overlay.addEventListener('click', function(e) {
+            if (e.target === this) { this.classList.remove('show'); }
+        });
+    });
+    document.getElementById('confirmDialog').addEventListener('click', function(e) {
+        if (e.target === this) closeConfirmDialog();
+    });
+
+    // ============ KEYBOARD SHORTCUTS ============
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            document.getElementById('courseModal').classList.remove('show');
+            document.getElementById('tutorModal').classList.remove('show');
             document.getElementById('confirmDialog').classList.remove('show');
             confirmCallback = null;
-        }
-
-        // ============ TOAST SYSTEM ============
-        function showToast(message, type = 'info') {
-            const container = document.getElementById('toastContainer');
-            const toast = document.createElement('div');
-            toast.className = `toast ${type}`;
-            
-            const icons = {
-                success: 'fa-check-circle',
-                error: 'fa-times-circle',
-                warning: 'fa-exclamation-triangle',
-                info: 'fa-info-circle'
-            };
-            
-            toast.innerHTML = `
-                <i class="fas ${icons[type] || icons.info}"></i>
-                <span>${message}</span>
-                <button class="toast-close" onclick="this.parentElement.remove()">&times;</button>
-            `;
-            
-            container.appendChild(toast);
-            
-            // Auto remove after 4 seconds
-            setTimeout(() => {
-                if (toast.parentElement) {
-                    toast.style.opacity = '0';
-                    toast.style.transform = 'translateX(100px)';
-                    toast.style.transition = 'all 0.3s ease';
-                    setTimeout(() => toast.remove(), 300);
-                }
-            }, 4000);
-        }
-
-        // ============ ADMIN LOGGING ============
-        function logAdminActivity(action, details) {
-            const activities = getData('activities');
-            activities.push({
-                id: 'act_' + Date.now(),
-                action: action,
-                userName: currentAdmin || 'Admin',
-                userEmail: 'admin@gpa.com',
-                details: details,
-                timestamp: new Date().toISOString()
-            });
-            if (activities.length > 500) {
-                activities.splice(0, activities.length - 500);
-            }
-            saveData('activities', activities);
-        }
-
-        // ============ EXPORT FUNCTIONS ============
-        function exportData(format) {
-            const data = {
-                users: getData('users'),
-                courses: getData('courses'),
-                tutors: getData('tutors'),
-                messages: getData('messages'),
-                activities: getData('activities')
-            };
-            
-            if (format === 'pdf') {
-                // Create printable content
-                const printWindow = window.open('', '_blank');
-                printWindow.document.write('<html><head><title>GPA Admin Export</title>');
-                printWindow.document.write('<style>body{font-family:Arial,sans-serif;padding:20px;color:#333;}h2{color:#1a4b8c;}table{width:100%;border-collapse:collapse;margin-bottom:20px;}th,td{border:1px solid #ddd;padding:8px;text-align:left;font-size:12px;}th{background:#f5f5f5;}</style>');
-                printWindow.document.write('</head><body>');
-                printWindow.document.write('<h1>Genius Point Academy - Data Export</h1>');
-                printWindow.document.write(`<p>Exported by: ${currentAdmin} | Date: ${new Date().toLocaleString()}</p>`);
-                
-                // Users
-                printWindow.document.write('<h2>Users (' + data.users.length + ')</h2>');
-                if (data.users.length > 0) {
-                    printWindow.document.write('<table><tr><th>Name</th><th>Email</th><th>Phone</th><th>Department</th><th>Level</th><th>Joined</th></tr>');
-                    data.users.forEach(u => {
-                        printWindow.document.write(`<tr><td>${u.fullName||''}</td><td>${u.email||''}</td><td>${u.phone||''}</td><td>${u.department||''}</td><td>${u.level||''}</td><td>${u.joinedDate?new Date(u.joinedDate).toLocaleDateString():''}</td></tr>`);
-                    });
-                    printWindow.document.write('</table>');
-                }
-                
-                // Courses
-                printWindow.document.write('<h2>Courses (' + data.courses.length + ')</h2>');
-                if (data.courses.length > 0) {
-                    printWindow.document.write('<table><tr><th>Code</th><th>Name</th><th>Level</th><th>Semester</th></tr>');
-                    data.courses.forEach(c => {
-                        printWindow.document.write(`<tr><td>${c.code}</td><td>${c.name}</td><td>${c.level}</td><td>${c.semester}</td></tr>`);
-                    });
-                    printWindow.document.write('</table>');
-                }
-                
-                printWindow.document.write('</body></html>');
-                printWindow.document.close();
-                setTimeout(() => printWindow.print(), 500);
-            } else if (format === 'excel') {
-                // Create CSV
-                let csv = 'Type,Name,Email,Details,Date\n';
-                data.activities.forEach(a => {
-                    csv += `"${a.action}","${a.userName||''}","${a.userEmail||''}","${a.details||''}","${new Date(a.timestamp).toLocaleString()}"\n`;
-                });
-                
-                const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-                const url = URL.createObjectURL(blob);
-                const link = document.createElement('a');
-                link.href = url;
-                link.download = `gpa_export_${new Date().toISOString().split('T')[0]}.csv`;
-                link.click();
-                URL.revokeObjectURL(url);
-            }
-            
-            showToast(`Data exported as ${format.toUpperCase()}!`, 'success');
-        }
-
-        function exportUsers(format) {
-            const users = getData('users');
-            if (users.length === 0) {
-                showToast('No users to export!', 'warning');
-                return;
-            }
-            
-            if (format === 'excel') {
-                let csv = 'Name,Email,Phone,Department,Level,Joined Date\n';
-                users.forEach(u => {
-                    csv += `"${u.fullName||''}","${u.email||''}","${u.phone||''}","${u.department||''}","${u.level||''}","${u.joinedDate?new Date(u.joinedDate).toLocaleDateString():''}"\n`;
-                });
-                
-                const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-                const url = URL.createObjectURL(blob);
-                const link = document.createElement('a');
-                link.href = url;
-                link.download = `gpa_users_${new Date().toISOString().split('T')[0]}.csv`;
-                link.click();
-                URL.revokeObjectURL(url);
-                showToast('Users exported as CSV!', 'success');
-            } else {
-                exportData('pdf');
-            }
-        }
-
-        function exportActivities(format) {
-            const activities = getData('activities');
-            if (activities.length === 0) {
-                showToast('No activities to export!', 'warning');
-                return;
-            }
-            
-            if (format === 'excel') {
-                let csv = 'Action,User,Email,Details,Timestamp\n';
-                activities.forEach(a => {
-                    csv += `"${a.action}","${a.userName||''}","${a.userEmail||''}","${a.details||''}","${new Date(a.timestamp).toLocaleString()}"\n`;
-                });
-                
-                const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-                const url = URL.createObjectURL(blob);
-                const link = document.createElement('a');
-                link.href = url;
-                link.download = `gpa_activities_${new Date().toISOString().split('T')[0]}.csv`;
-                link.click();
-                URL.revokeObjectURL(url);
-                showToast('Activities exported as CSV!', 'success');
-            } else {
-                exportData('pdf');
-            }
-        }
-
-        // ============ MOBILE SIDEBAR ============
-        document.getElementById('mobileToggle').addEventListener('click', function() {
-            document.getElementById('sidebar').classList.toggle('open');
-            document.getElementById('sidebarBackdrop').classList.toggle('show');
-        });
-
-        document.getElementById('sidebarBackdrop').addEventListener('click', function() {
             document.getElementById('sidebar').classList.remove('open');
-            this.classList.remove('show');
-        });
+            document.getElementById('sidebarBackdrop').classList.remove('show');
+        }
+        if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+            e.preventDefault();
+            if (document.getElementById('courseModal').classList.contains('show')) saveCourse();
+            else if (document.getElementById('tutorModal').classList.contains('show')) saveTutor();
+        }
+    });
 
-        // ============ MODAL CLOSE ON OVERLAY CLICK ============
-        document.querySelectorAll('.modal-overlay').forEach(overlay => {
-            overlay.addEventListener('click', function(e) {
-                if (e.target === this) {
-                    this.classList.remove('show');
-                    if (this.id === 'courseModal') {
-                        document.getElementById('courseForm').reset();
-                        document.getElementById('courseEditId').value = '';
-                    }
-                    if (this.id === 'tutorModal') {
-                        document.getElementById('tutorForm').reset();
-                        document.getElementById('tutorEditId').value = '';
-                    }
-                }
-            });
-        });
-
-        document.getElementById('confirmDialog').addEventListener('click', function(e) {
-            if (e.target === this) {
-                closeConfirmDialog();
-            }
-        });
-
-        // ============ KEYBOARD SHORTCUTS ============
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') {
-                // Close modals
-                document.getElementById('courseModal').classList.remove('show');
-                document.getElementById('tutorModal').classList.remove('show');
-                document.getElementById('confirmDialog').classList.remove('show');
-                confirmCallback = null;
-                
-                // Close sidebar on mobile
-                document.getElementById('sidebar').classList.remove('open');
-                document.getElementById('sidebarBackdrop').classList.remove('show');
-            }
-            
-            // Ctrl+S to save current form
-            if ((e.ctrlKey || e.metaKey) && e.key === 's') {
-                e.preventDefault();
-                if (document.getElementById('courseModal').classList.contains('show')) {
-                    saveCourse();
-                } else if (document.getElementById('tutorModal').classList.contains('show')) {
-                    saveTutor();
-                }
-            }
-        });
-
-        // ============ INITIAL LOAD ============
-        // Load current announcement state
-        loadCurrentAnnouncement();
-        
-        console.log('🔐 GPA Admin Dashboard Ready');
-        console.log('👤 Default Password: TeamGeniusPoint');
-        console.log('📊 All systems initialized');
-    </script>
+    // ============ INITIAL LOAD ============
+    loadCurrentAnnouncement();
+    console.log('🔥 GPA Admin Dashboard - Firebase Connected!');
+    console.log('☁️ All data syncing to Firebase Cloud');
+    console.log('👤 Password: TeamGeniusPoint');
+</script>
 </body>
 </html>
