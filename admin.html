@@ -8,639 +8,120 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
         :root {
-            --admin-primary: #1a1f36;
-            --admin-secondary: #2d3348;
-            --admin-accent: #4f46e5;
-            --admin-accent-light: #6366f1;
-            --admin-success: #10b981;
-            --admin-warning: #f59e0b;
-            --admin-danger: #ef4444;
-            --admin-info: #3b82f6;
-            --admin-text: #e2e8f0;
-            --admin-text-muted: #94a3b8;
-            --admin-border: #374151;
-            --admin-card: #1e2338;
-            --admin-input: #262d40;
-            --admin-hover: #323b54;
-            --admin-gradient: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
-            --admin-sidebar-width: 260px;
-            --admin-header-height: 70px;
-            --shadow-sm: 0 1px 3px rgba(0,0,0,0.3);
-            --shadow-md: 0 4px 15px rgba(0,0,0,0.3);
-            --shadow-lg: 0 10px 30px rgba(0,0,0,0.4);
-            --radius: 12px;
-            --radius-sm: 8px;
+            --admin-primary: #1a1f36; --admin-secondary: #2d3348; --admin-accent: #4f46e5;
+            --admin-accent-light: #6366f1; --admin-success: #10b981; --admin-warning: #f59e0b;
+            --admin-danger: #ef4444; --admin-info: #3b82f6; --admin-text: #e2e8f0;
+            --admin-text-muted: #94a3b8; --admin-border: #374151; --admin-card: #1e2338;
+            --admin-input: #262d40; --admin-hover: #323b54; --admin-gradient: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+            --admin-sidebar-width: 260px; --admin-header-height: 70px;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.3); --shadow-md: 0 4px 15px rgba(0,0,0,0.3);
+            --shadow-lg: 0 10px 30px rgba(0,0,0,0.4); --radius: 12px; --radius-sm: 8px;
         }
-
-        body {
-            background: #0f111a;
-            color: var(--admin-text);
-            min-height: 100vh;
-            display: flex;
-            overflow-x: hidden;
-        }
+        body { background: #0f111a; color: var(--admin-text); min-height: 100vh; display: flex; overflow-x: hidden; }
 
         /* ============ LOGIN OVERLAY ============ */
-        .login-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: #0f111a;
-            z-index: 9999;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-direction: column;
-        }
-
-        .login-overlay.hidden {
-            display: none;
-        }
-
-        .login-container {
-            background: var(--admin-card);
-            border-radius: 20px;
-            /* ENLARGED ADMIN LOGIN BOX */
-            padding: 60px 50px;
-            width: 90%;
-            max-width: 550px; 
-            box-shadow: var(--shadow-lg);
-            border: 1px solid var(--admin-border);
-            animation: slideUp 0.5s ease;
-        }
-
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .login-logo {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-
-        .login-logo .admin-logo-icon {
-            width: 80px;
-            height: 80px;
-            background: var(--admin-gradient);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 15px;
-            font-size: 2rem;
-            color: white;
-            box-shadow: 0 8px 25px rgba(79,70,229,0.3);
-        }
-
-        .login-logo h2 {
-            font-size: 1.5rem;
-            color: white;
-            font-weight: 700;
-        }
-
-        .login-logo p {
-            color: var(--admin-text-muted);
-            font-size: 0.95rem;
-            margin-top: 5px;
-        }
-
-        .login-form .form-group {
-            margin-bottom: 25px;
-        }
-
-        .login-form label {
-            display: block;
-            margin-bottom: 8px;
-            color: var(--admin-text-muted);
-            font-size: 0.9rem;
-            font-weight: 500;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .login-form input {
-            width: 100%;
-            padding: 16px 20px;
-            background: var(--admin-input);
-            border: 2px solid var(--admin-border);
-            border-radius: var(--radius-sm);
-            color: white;
-            font-size: 1.05rem;
-            transition: all 0.3s;
-        }
-
-        .login-form input:focus {
-            outline: none;
-            border-color: var(--admin-accent);
-            box-shadow: 0 0 0 3px rgba(79,70,229,0.15);
-            background: #2a3148;
-        }
-
-        .login-form input::placeholder {
-            color: #555;
-        }
-
-        .login-error {
-            background: rgba(239,68,68,0.1);
-            border: 1px solid rgba(239,68,68,0.3);
-            color: #fca5a5;
-            padding: 12px 15px;
-            border-radius: var(--radius-sm);
-            font-size: 0.9rem;
-            margin-bottom: 20px;
-            display: none;
-            animation: shake 0.5s ease;
-        }
-
-        .login-error.show {
-            display: block;
-        }
-
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-10px); }
-            75% { transform: translateX(10px); }
-        }
-
-        .btn-login {
-            width: 100%;
-            padding: 16px;
-            background: var(--admin-gradient);
-            color: white;
-            border: none;
-            border-radius: var(--radius-sm);
-            font-size: 1.1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-            letter-spacing: 0.5px;
-        }
-
-        .btn-login:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(79,70,229,0.4);
-        }
-
-        .btn-login:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        .login-footer {
-            text-align: center;
-            margin-top: 25px;
-            color: var(--admin-text-muted);
-            font-size: 0.85rem;
-        }
-
-        .login-footer a {
-            color: var(--admin-accent-light);
-            text-decoration: none;
-        }
+        .login-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #0f111a; z-index: 9999; display: flex; align-items: center; justify-content: center; flex-direction: column; }
+        .login-overlay.hidden { display: none; }
+        .login-container { background: var(--admin-card); border-radius: 20px; padding: 60px 50px; width: 90%; max-width: 550px; box-shadow: var(--shadow-lg); border: 1px solid var(--admin-border); animation: slideUp 0.5s ease; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        .login-logo { text-align: center; margin-bottom: 30px; }
+        .login-logo .admin-logo-icon { width: 80px; height: 80px; background: var(--admin-gradient); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 15px; font-size: 2rem; color: white; box-shadow: 0 8px 25px rgba(79,70,229,0.3); }
+        .login-logo h2 { font-size: 1.5rem; color: white; font-weight: 700; }
+        .login-logo p { color: var(--admin-text-muted); font-size: 0.95rem; margin-top: 5px; }
+        .login-form .form-group { margin-bottom: 25px; }
+        .login-form label { display: block; margin-bottom: 8px; color: var(--admin-text-muted); font-size: 0.9rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px; }
+        .login-form input { width: 100%; padding: 16px 20px; background: var(--admin-input); border: 2px solid var(--admin-border); border-radius: var(--radius-sm); color: white; font-size: 1.05rem; transition: all 0.3s; }
+        .login-form input:focus { outline: none; border-color: var(--admin-accent); box-shadow: 0 0 0 3px rgba(79,70,229,0.15); background: #2a3148; }
+        .login-form input::placeholder { color: #555; }
+        .login-error { background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.3); color: #fca5a5; padding: 12px 15px; border-radius: var(--radius-sm); font-size: 0.9rem; margin-bottom: 20px; display: none; animation: shake 0.5s ease; }
+        .login-error.show { display: block; }
+        @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-10px); } 75% { transform: translateX(10px); } }
+        .btn-login { width: 100%; padding: 16px; background: var(--admin-gradient); color: white; border: none; border-radius: var(--radius-sm); font-size: 1.1rem; font-weight: 600; cursor: pointer; transition: all 0.3s; letter-spacing: 0.5px; }
+        .btn-login:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(79,70,229,0.4); }
+        .btn-login:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+        .login-footer { text-align: center; margin-top: 25px; color: var(--admin-text-muted); font-size: 0.85rem; }
+        .login-footer a { color: var(--admin-accent-light); text-decoration: none; }
 
         /* ============ MAIN LAYOUT ============ */
-        .admin-container {
-            display: flex;
-            width: 100%;
-            min-height: 100vh;
-        }
+        .admin-container { display: flex; width: 100%; min-height: 100vh; }
 
         /* ============ SIDEBAR ============ */
-        .sidebar {
-            width: var(--admin-sidebar-width);
-            background: var(--admin-primary);
-            border-right: 1px solid var(--admin-border);
-            position: fixed;
-            top: 0;
-            left: 0;
-            height: 100vh;
-            z-index: 100;
-            display: flex;
-            flex-direction: column;
-            transition: transform 0.3s ease;
-        }
-
-        .sidebar-header {
-            padding: 25px 20px;
-            border-bottom: 1px solid var(--admin-border);
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .sidebar-logo {
-            width: 42px;
-            height: 42px;
-            background: var(--admin-gradient);
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.2rem;
-            color: white;
-            flex-shrink: 0;
-        }
-
-        .sidebar-title h3 {
-            font-size: 0.9rem;
-            color: white;
-            font-weight: 600;
-        }
-
-        .sidebar-title span {
-            font-size: 0.7rem;
-            color: var(--admin-text-muted);
-        }
-
-        .sidebar-nav {
-            flex: 1;
-            overflow-y: auto;
-            padding: 15px 12px;
-        }
-
-        .sidebar-nav .nav-section {
-            margin-bottom: 20px;
-        }
-
-        .sidebar-nav .nav-section-title {
-            font-size: 0.7rem;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            color: var(--admin-text-muted);
-            padding: 0 12px;
-            margin-bottom: 8px;
-            font-weight: 600;
-        }
-
-        .sidebar-nav .nav-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 12px 15px;
-            border-radius: var(--radius-sm);
-            cursor: pointer;
-            color: var(--admin-text-muted);
-            transition: all 0.2s;
-            margin-bottom: 3px;
-            text-decoration: none;
-            border: none;
-            background: none;
-            width: 100%;
-            font-size: 0.9rem;
-            font-weight: 500;
-        }
-
-        .sidebar-nav .nav-item:hover {
-            background: var(--admin-hover);
-            color: white;
-        }
-
-        .sidebar-nav .nav-item.active {
-            background: var(--admin-accent);
-            color: white;
-            box-shadow: 0 4px 12px rgba(79,70,229,0.3);
-        }
-
-        .sidebar-nav .nav-item i {
-            width: 20px;
-            text-align: center;
-            font-size: 1rem;
-        }
-
-        .sidebar-nav .nav-item .badge {
-            margin-left: auto;
-            background: var(--admin-danger);
-            color: white;
-            padding: 2px 8px;
-            border-radius: 10px;
-            font-size: 0.7rem;
-            font-weight: 600;
-        }
-
-        .sidebar-footer {
-            padding: 15px 20px;
-            border-top: 1px solid var(--admin-border);
-        }
-
-        .sidebar-user {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 10px;
-            border-radius: var(--radius-sm);
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .sidebar-user:hover {
-            background: var(--admin-hover);
-        }
-
-        .sidebar-user-avatar {
-            width: 38px;
-            height: 38px;
-            border-radius: 50%;
-            background: var(--admin-gradient);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            color: white;
-            font-size: 0.9rem;
-        }
-
-        .sidebar-user-info {
-            flex: 1;
-        }
-
-        .sidebar-user-info .user-name {
-            font-size: 0.85rem;
-            color: white;
-            font-weight: 500;
-        }
-
-        .sidebar-user-info .user-role {
-            font-size: 0.7rem;
-            color: var(--admin-text-muted);
-        }
-
-        .btn-logout-sidebar {
-            background: none;
-            border: none;
-            color: var(--admin-text-muted);
-            cursor: pointer;
-            padding: 8px;
-            border-radius: 6px;
-            transition: all 0.2s;
-        }
-
-        .btn-logout-sidebar:hover {
-            color: var(--admin-danger);
-            background: rgba(239,68,68,0.1);
-        }
+        .sidebar { width: var(--admin-sidebar-width); background: var(--admin-primary); border-right: 1px solid var(--admin-border); position: fixed; top: 0; left: 0; height: 100vh; z-index: 100; display: flex; flex-direction: column; transition: transform 0.3s ease; }
+        .sidebar-header { padding: 25px 20px; border-bottom: 1px solid var(--admin-border); display: flex; align-items: center; gap: 12px; }
+        .sidebar-logo { width: 42px; height: 42px; background: var(--admin-gradient); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; color: white; flex-shrink: 0; }
+        .sidebar-title h3 { font-size: 0.9rem; color: white; font-weight: 600; }
+        .sidebar-title span { font-size: 0.7rem; color: var(--admin-text-muted); }
+        .sidebar-nav { flex: 1; overflow-y: auto; padding: 15px 12px; }
+        .sidebar-nav .nav-section { margin-bottom: 20px; }
+        .sidebar-nav .nav-section-title { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1.5px; color: var(--admin-text-muted); padding: 0 12px; margin-bottom: 8px; font-weight: 600; }
+        .sidebar-nav .nav-item { display: flex; align-items: center; gap: 12px; padding: 12px 15px; border-radius: var(--radius-sm); cursor: pointer; color: var(--admin-text-muted); transition: all 0.2s; margin-bottom: 3px; text-decoration: none; border: none; background: none; width: 100%; font-size: 0.9rem; font-weight: 500; }
+        .sidebar-nav .nav-item:hover { background: var(--admin-hover); color: white; }
+        .sidebar-nav .nav-item.active { background: var(--admin-accent); color: white; box-shadow: 0 4px 12px rgba(79,70,229,0.3); }
+        .sidebar-nav .nav-item i { width: 20px; text-align: center; font-size: 1rem; }
+        .sidebar-nav .nav-item .badge { margin-left: auto; background: var(--admin-danger); color: white; padding: 2px 8px; border-radius: 10px; font-size: 0.7rem; font-weight: 600; }
+        .sidebar-footer { padding: 15px 20px; border-top: 1px solid var(--admin-border); }
+        .sidebar-user { display: flex; align-items: center; gap: 12px; padding: 10px; border-radius: var(--radius-sm); cursor: pointer; transition: all 0.2s; }
+        .sidebar-user:hover { background: var(--admin-hover); }
+        .sidebar-user-avatar { width: 38px; height: 38px; border-radius: 50%; background: var(--admin-gradient); display: flex; align-items: center; justify-content: center; font-weight: 700; color: white; font-size: 0.9rem; }
+        .sidebar-user-info { flex: 1; }
+        .sidebar-user-info .user-name { font-size: 0.85rem; color: white; font-weight: 500; }
+        .sidebar-user-info .user-role { font-size: 0.7rem; color: var(--admin-text-muted); }
+        .btn-logout-sidebar { background: none; border: none; color: var(--admin-text-muted); cursor: pointer; padding: 8px; border-radius: 6px; transition: all 0.2s; }
+        .btn-logout-sidebar:hover { color: var(--admin-danger); background: rgba(239,68,68,0.1); }
 
         /* ============ MAIN CONTENT ============ */
-        .main-content {
-            margin-left: var(--admin-sidebar-width);
-            flex: 1;
-            min-height: 100vh;
-            padding: 0;
-        }
-
-        .main-header {
-            background: var(--admin-primary);
-            border-bottom: 1px solid var(--admin-border);
-            padding: 20px 30px;
-            position: sticky;
-            top: 0;
-            z-index: 50;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            height: var(--admin-header-height);
-        }
-
-        .main-header .page-title h2 {
-            font-size: 1.3rem;
-            color: white;
-            font-weight: 600;
-        }
-
-        .main-header .page-title p {
-            font-size: 0.8rem;
-            color: var(--admin-text-muted);
-        }
-
-        .header-actions {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .header-btn {
-            background: var(--admin-card);
-            border: 1px solid var(--admin-border);
-            color: white;
-            padding: 10px 18px;
-            border-radius: var(--radius-sm);
-            cursor: pointer;
-            transition: all 0.2s;
-            font-size: 0.85rem;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .header-btn:hover {
-            background: var(--admin-hover);
-        }
-
-        .header-btn.primary {
-            background: var(--admin-accent);
-            border-color: var(--admin-accent);
-        }
-
-        .header-btn.primary:hover {
-            background: var(--admin-accent-light);
-        }
-
-        .main-body {
-            padding: 30px;
-        }
+        .main-content { margin-left: var(--admin-sidebar-width); flex: 1; min-height: 100vh; padding: 0; }
+        .main-header { background: var(--admin-primary); border-bottom: 1px solid var(--admin-border); padding: 20px 30px; position: sticky; top: 0; z-index: 50; display: flex; align-items: center; justify-content: space-between; height: var(--admin-header-height); }
+        .main-header .page-title h2 { font-size: 1.3rem; color: white; font-weight: 600; }
+        .main-header .page-title p { font-size: 0.8rem; color: var(--admin-text-muted); }
+        .header-actions { display: flex; align-items: center; gap: 15px; }
+        .header-btn { background: var(--admin-card); border: 1px solid var(--admin-border); color: white; padding: 10px 18px; border-radius: var(--radius-sm); cursor: pointer; transition: all 0.2s; font-size: 0.85rem; display: flex; align-items: center; gap: 8px; text-decoration: none;}
+        .header-btn:hover { background: var(--admin-hover); }
+        .header-btn.primary { background: var(--admin-accent); border-color: var(--admin-accent); }
+        .header-btn.primary:hover { background: var(--admin-accent-light); }
+        .main-body { padding: 30px; }
 
         /* ============ PAGE SECTIONS ============ */
-        .page-section {
-            display: none;
-            animation: fadeIn 0.3s ease;
-        }
-
-        .page-section.active {
-            display: block;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+        .page-section { display: none; animation: fadeIn 0.3s ease; }
+        .page-section.active { display: block; }
 
         /* ============ STATS CARDS ============ */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-
-        .stat-card {
-            background: var(--admin-card);
-            border: 1px solid var(--admin-border);
-            border-radius: var(--radius);
-            padding: 25px;
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            transition: all 0.3s;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .stat-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            right: 0;
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            opacity: 0.05;
-            transition: all 0.3s;
-        }
-
-        .stat-card:hover::before {
-            transform: scale(1.5);
-        }
-
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; margin-bottom: 30px; }
+        .stat-card { background: var(--admin-card); border: 1px solid var(--admin-border); border-radius: var(--radius); padding: 25px; display: flex; align-items: center; gap: 20px; transition: all 0.3s; position: relative; overflow: hidden; }
+        .stat-card::before { content: ''; position: absolute; top: 0; right: 0; width: 100px; height: 100px; border-radius: 50%; opacity: 0.05; transition: all 0.3s; }
+        .stat-card:hover::before { transform: scale(1.5); }
         .stat-card.users::before { background: var(--admin-info); }
         .stat-card.courses::before { background: var(--admin-success); }
         .stat-card.messages::before { background: var(--admin-warning); }
         .stat-card.bookings::before { background: var(--admin-accent); }
         .stat-card.tutors-card::before { background: #a855f7; }
-
-        .stat-icon {
-            width: 55px;
-            height: 55px;
-            border-radius: 14px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            flex-shrink: 0;
-        }
-
+        .stat-icon { width: 55px; height: 55px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; flex-shrink: 0; }
         .stat-icon.blue { background: rgba(59,130,246,0.15); color: var(--admin-info); }
         .stat-icon.green { background: rgba(16,185,129,0.15); color: var(--admin-success); }
         .stat-icon.yellow { background: rgba(245,158,11,0.15); color: var(--admin-warning); }
         .stat-icon.purple { background: rgba(79,70,229,0.15); color: var(--admin-accent-light); }
         .stat-icon.pink { background: rgba(168,85,247,0.15); color: #a855f7; }
-
-        .stat-info h3 {
-            font-size: 1.8rem;
-            color: white;
-            font-weight: 700;
-        }
-
-        .stat-info p {
-            font-size: 0.8rem;
-            color: var(--admin-text-muted);
-            margin-top: 2px;
-        }
+        .stat-info h3 { font-size: 1.8rem; color: white; font-weight: 700; }
+        .stat-info p { font-size: 0.8rem; color: var(--admin-text-muted); margin-top: 2px; }
 
         /* ============ DATA TABLE ============ */
-        .data-card {
-            background: var(--admin-card);
-            border: 1px solid var(--admin-border);
-            border-radius: var(--radius);
-            overflow: hidden;
-            margin-bottom: 25px;
-        }
+        .data-card { background: var(--admin-card); border: 1px solid var(--admin-border); border-radius: var(--radius); overflow: hidden; margin-bottom: 25px; }
+        .data-card-header { padding: 20px 25px; border-bottom: 1px solid var(--admin-border); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 15px; }
+        .data-card-header h3 { font-size: 1.1rem; color: white; font-weight: 600; display: flex; align-items: center; gap: 10px; }
+        .data-card-header .badge-count { background: var(--admin-accent); color: white; padding: 4px 12px; border-radius: 15px; font-size: 0.75rem; font-weight: 600; }
+        .data-card-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+        .table-container { overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; }
+        table thead { background: rgba(79,70,229,0.05); }
+        table th { padding: 14px 20px; text-align: left; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.8px; color: var(--admin-text-muted); font-weight: 600; border-bottom: 1px solid var(--admin-border); }
+        table td { padding: 14px 20px; font-size: 0.85rem; border-bottom: 1px solid rgba(55,65,81,0.3); color: var(--admin-text); }
+        table tbody tr { transition: all 0.2s; }
+        table tbody tr:hover { background: rgba(79,70,229,0.03); }
+        table tbody tr:last-child td { border-bottom: none; }
 
-        .data-card-header {
-            padding: 20px 25px;
-            border-bottom: 1px solid var(--admin-border);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 15px;
-        }
-
-        .data-card-header h3 {
-            font-size: 1.1rem;
-            color: white;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .data-card-header .badge-count {
-            background: var(--admin-accent);
-            color: white;
-            padding: 4px 12px;
-            border-radius: 15px;
-            font-size: 0.75rem;
-            font-weight: 600;
-        }
-
-        .data-card-actions {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-
-        .table-container {
-            overflow-x: auto;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        table thead {
-            background: rgba(79,70,229,0.05);
-        }
-
-        table th {
-            padding: 14px 20px;
-            text-align: left;
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            letter-spacing: 0.8px;
-            color: var(--admin-text-muted);
-            font-weight: 600;
-            border-bottom: 1px solid var(--admin-border);
-        }
-
-        table td {
-            padding: 14px 20px;
-            font-size: 0.85rem;
-            border-bottom: 1px solid rgba(55,65,81,0.3);
-            color: var(--admin-text);
-        }
-
-        table tbody tr {
-            transition: all 0.2s;
-        }
-
-        table tbody tr:hover {
-            background: rgba(79,70,229,0.03);
-        }
-
-        table tbody tr:last-child td {
-            border-bottom: none;
-        }
-
-        .status-badge {
-            padding: 4px 12px;
-            border-radius: 15px;
-            font-size: 0.7rem;
-            font-weight: 600;
-            display: inline-block;
-        }
-
+        .status-badge { padding: 4px 12px; border-radius: 15px; font-size: 0.7rem; font-weight: 600; display: inline-block; }
         .status-badge.active { background: rgba(16,185,129,0.15); color: #34d399; }
         .status-badge.inactive { background: rgba(239,68,68,0.15); color: #f87171; }
         .status-badge.pending { background: rgba(245,158,11,0.15); color: #fbbf24; }
@@ -648,516 +129,102 @@
         .status-badge.greeting { background: rgba(16,185,129,0.15); color: #34d399; }
         .status-badge.update { background: rgba(59,130,246,0.15); color: #60a5fa; }
         .status-badge.urgent { background: rgba(239,68,68,0.15); color: #f87171; animation: pulseBadge 2s infinite; }
+        @keyframes pulseBadge { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
 
-        @keyframes pulseBadge {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
-        }
+        .action-btns { display: flex; gap: 8px; }
+        .btn-sm { padding: 6px 12px; border-radius: 6px; border: none; cursor: pointer; font-size: 0.75rem; font-weight: 500; transition: all 0.2s; display: inline-flex; align-items: center; gap: 5px; }
+        .btn-sm.edit { background: rgba(59,130,246,0.15); color: #60a5fa; }
+        .btn-sm.edit:hover { background: rgba(59,130,246,0.3); }
+        .btn-sm.delete { background: rgba(239,68,68,0.15); color: #f87171; }
+        .btn-sm.delete:hover { background: rgba(239,68,68,0.3); }
+        .btn-sm.view { background: rgba(16,185,129,0.15); color: #34d399; }
+        .btn-sm.view:hover { background: rgba(16,185,129,0.3); }
 
-        .action-btns {
-            display: flex;
-            gap: 8px;
-        }
-
-        .btn-sm {
-            padding: 6px 12px;
-            border-radius: 6px;
-            border: none;
-            cursor: pointer;
-            font-size: 0.75rem;
-            font-weight: 500;
-            transition: all 0.2s;
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-        }
-
-        .btn-sm.edit {
-            background: rgba(59,130,246,0.15);
-            color: #60a5fa;
-        }
-
-        .btn-sm.edit:hover {
-            background: rgba(59,130,246,0.3);
-        }
-
-        .btn-sm.delete {
-            background: rgba(239,68,68,0.15);
-            color: #f87171;
-        }
-
-        .btn-sm.delete:hover {
-            background: rgba(239,68,68,0.3);
-        }
-
-        .btn-sm.view {
-            background: rgba(16,185,129,0.15);
-            color: #34d399;
-        }
-
-        .btn-sm.view:hover {
-            background: rgba(16,185,129,0.3);
-        }
-
-        .btn-sm.send {
-            background: rgba(79,70,229,0.15);
-            color: #818cf8;
-        }
-
-        .btn-sm.send:hover {
-            background: rgba(79,70,229,0.3);
-        }
-
-        .empty-state {
-            text-align: center;
-            padding: 50px 20px;
-            color: var(--admin-text-muted);
-        }
-
-        .empty-state i {
-            font-size: 3rem;
-            margin-bottom: 15px;
-            opacity: 0.3;
-        }
-
-        .empty-state p {
-            font-size: 0.9rem;
-        }
+        .empty-state { text-align: center; padding: 50px 20px; color: var(--admin-text-muted); }
+        .empty-state i { font-size: 3rem; margin-bottom: 15px; opacity: 0.3; }
+        .empty-state p { font-size: 0.9rem; }
 
         /* ============ SEARCH BAR ============ */
-        .search-bar {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            background: var(--admin-input);
-            border: 1px solid var(--admin-border);
-            border-radius: var(--radius-sm);
-            padding: 10px 18px;
-            transition: all 0.3s;
-        }
-
-        .search-bar:focus-within {
-            border-color: var(--admin-accent);
-            box-shadow: 0 0 0 3px rgba(79,70,229,0.1);
-        }
-
-        .search-bar i {
-            color: var(--admin-text-muted);
-            font-size: 0.9rem;
-        }
-
-        .search-bar input {
-            background: none;
-            border: none;
-            color: white;
-            font-size: 0.9rem;
-            outline: none;
-            width: 200px;
-        }
-
-        .search-bar input::placeholder {
-            color: #555;
-        }
+        .search-bar { display: flex; align-items: center; gap: 10px; background: var(--admin-input); border: 1px solid var(--admin-border); border-radius: var(--radius-sm); padding: 10px 18px; transition: all 0.3s; }
+        .search-bar:focus-within { border-color: var(--admin-accent); box-shadow: 0 0 0 3px rgba(79,70,229,0.1); }
+        .search-bar i { color: var(--admin-text-muted); font-size: 0.9rem; }
+        .search-bar input { background: none; border: none; color: white; font-size: 0.9rem; outline: none; width: 200px; }
+        .search-bar input::placeholder { color: #555; }
 
         /* ============ ENLARGED MODAL ============ */
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.7);
-            z-index: 1000;
-            display: none;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .modal-overlay.show {
-            display: flex;
-        }
-
-        .modal-dialog {
-            background: var(--admin-card);
-            border: 1px solid var(--admin-border);
-            border-radius: var(--radius);
-            width: 95%; /* Wider modal */
-            max-width: 750px; /* Increased max-width */
-            max-height: 85vh;
-            overflow-y: auto;
-            animation: modalSlideIn 0.3s ease;
-            box-shadow: var(--shadow-lg);
-        }
-
-        @keyframes modalSlideIn {
-            from { opacity: 0; transform: translateY(-30px) scale(0.95); }
-            to { opacity: 1; transform: translateY(0) scale(1); }
-        }
-
-        .modal-header {
-            padding: 25px 30px;
-            border-bottom: 1px solid var(--admin-border);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            position: sticky;
-            top: 0;
-            background: var(--admin-card);
-            z-index: 10;
-        }
-
-        .modal-header h3 {
-            font-size: 1.2rem;
-            color: white;
-            font-weight: 600;
-        }
-
-        .modal-close {
-            background: none;
-            border: none;
-            color: var(--admin-text-muted);
-            cursor: pointer;
-            font-size: 1.3rem;
-            padding: 5px;
-            border-radius: 50%;
-            transition: all 0.2s;
-            width: 35px;
-            height: 35px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .modal-close:hover {
-            background: var(--admin-hover);
-            color: white;
-        }
-
-        .modal-body {
-            padding: 35px 40px; /* Slightly more padding inside modal */
-        }
-
-        .modal-body .form-group {
-            margin-bottom: 20px;
-        }
-
-        .modal-body .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            color: var(--admin-text-muted);
-            font-size: 0.9rem; /* Slightly larger text */
-            font-weight: 500;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .modal-body .form-group input,
-        .modal-body .form-group select,
-        .modal-body .form-group textarea {
-            width: 100%;
-            padding: 14px 18px; /* Bigger inputs */
-            background: var(--admin-input);
-            border: 2px solid var(--admin-border);
-            border-radius: var(--radius-sm);
-            color: white;
-            font-size: 1rem;
-            transition: all 0.3s;
-        }
-
-        .modal-body .form-group textarea {
-            resize: vertical;
-            min-height: 120px;
-        }
-
-        .modal-body .form-group input:focus,
-        .modal-body .form-group select:focus,
-        .modal-body .form-group textarea:focus {
-            outline: none;
-            border-color: var(--admin-accent);
-            box-shadow: 0 0 0 3px rgba(79,70,229,0.15);
-        }
-
-        .modal-body .form-group select option {
-            background: var(--admin-card);
-            color: white;
-        }
-
-        .form-hint {
-            font-size: 0.8rem;
-            color: var(--admin-text-muted);
-            margin-top: 5px;
-        }
-
-        .modal-footer {
-            padding: 20px 30px;
-            border-top: 1px solid var(--admin-border);
-            display: flex;
-            justify-content: flex-end;
-            gap: 12px;
-            position: sticky;
-            bottom: 0;
-            background: var(--admin-card);
-        }
-
-        .btn-cancel {
-            padding: 12px 25px;
-            background: transparent;
-            border: 1px solid var(--admin-border);
-            color: var(--admin-text-muted);
-            border-radius: var(--radius-sm);
-            cursor: pointer;
-            font-weight: 500;
-            font-size: 1rem;
-            transition: all 0.2s;
-        }
-
-        .btn-cancel:hover {
-            background: var(--admin-hover);
-            color: white;
-        }
-
-        .btn-save {
-            padding: 12px 30px;
-            background: var(--admin-accent);
-            border: none;
-            color: white;
-            border-radius: var(--radius-sm);
-            cursor: pointer;
-            font-weight: 600;
-            font-size: 1rem;
-            transition: all 0.2s;
-        }
-
-        .btn-save:hover {
-            background: var(--admin-accent-light);
-            transform: translateY(-1px);
-        }
-
-        .btn-danger-modal {
-            padding: 12px 30px;
-            background: var(--admin-danger);
-            border: none;
-            color: white;
-            border-radius: var(--radius-sm);
-            cursor: pointer;
-            font-weight: 600;
-            font-size: 1rem;
-            transition: all 0.2s;
-        }
-
-        .btn-danger-modal:hover {
-            background: #dc2626;
-        }
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 1000; display: none; align-items: center; justify-content: center; }
+        .modal-overlay.show { display: flex; }
+        .modal-dialog { background: var(--admin-card); border: 1px solid var(--admin-border); border-radius: var(--radius); width: 95%; max-width: 750px; max-height: 85vh; overflow-y: auto; animation: modalSlideIn 0.3s ease; box-shadow: var(--shadow-lg); }
+        @keyframes modalSlideIn { from { opacity: 0; transform: translateY(-30px) scale(0.95); } to { opacity: 1; transform: translateY(0) scale(1); } }
+        .modal-header { padding: 25px 30px; border-bottom: 1px solid var(--admin-border); display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; background: var(--admin-card); z-index: 10; }
+        .modal-header h3 { font-size: 1.2rem; color: white; font-weight: 600; }
+        .modal-close { background: none; border: none; color: var(--admin-text-muted); cursor: pointer; font-size: 1.3rem; padding: 5px; border-radius: 50%; transition: all 0.2s; width: 35px; height: 35px; display: flex; align-items: center; justify-content: center; }
+        .modal-close:hover { background: var(--admin-hover); color: white; }
+        .modal-body { padding: 35px 40px; }
+        .modal-body .form-group { margin-bottom: 20px; }
+        .modal-body .form-group label { display: block; margin-bottom: 8px; color: var(--admin-text-muted); font-size: 0.9rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px; }
+        .modal-body .form-group input, .modal-body .form-group select, .modal-body .form-group textarea { width: 100%; padding: 14px 18px; background: var(--admin-input); border: 2px solid var(--admin-border); border-radius: var(--radius-sm); color: white; font-size: 1rem; transition: all 0.3s; }
+        .modal-body .form-group textarea { resize: vertical; min-height: 120px; }
+        .modal-body .form-group input:focus, .modal-body .form-group select:focus, .modal-body .form-group textarea:focus { outline: none; border-color: var(--admin-accent); box-shadow: 0 0 0 3px rgba(79,70,229,0.15); }
+        .modal-body .form-group select option { background: var(--admin-card); color: white; }
+        .form-hint { font-size: 0.8rem; color: var(--admin-text-muted); margin-top: 5px; display: block; }
+        .modal-footer { padding: 20px 30px; border-top: 1px solid var(--admin-border); display: flex; justify-content: flex-end; gap: 12px; position: sticky; bottom: 0; background: var(--admin-card); }
+        .btn-cancel { padding: 12px 25px; background: transparent; border: 1px solid var(--admin-border); color: var(--admin-text-muted); border-radius: var(--radius-sm); cursor: pointer; font-weight: 500; font-size: 1rem; transition: all 0.2s; }
+        .btn-cancel:hover { background: var(--admin-hover); color: white; }
+        .btn-save { padding: 12px 30px; background: var(--admin-accent); border: none; color: white; border-radius: var(--radius-sm); cursor: pointer; font-weight: 600; font-size: 1rem; transition: all 0.2s; }
+        .btn-save:hover { background: var(--admin-accent-light); transform: translateY(-1px); }
+        .btn-danger-modal { padding: 12px 30px; background: var(--admin-danger); border: none; color: white; border-radius: var(--radius-sm); cursor: pointer; font-weight: 600; font-size: 1rem; transition: all 0.2s; }
+        .btn-danger-modal:hover { background: #dc2626; }
 
         /* ============ TOAST ============ */
-        .toast-container {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 9999;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .toast {
-            padding: 16px 22px;
-            border-radius: var(--radius-sm);
-            color: white;
-            font-weight: 500;
-            font-size: 0.9rem;
-            animation: toastSlideIn 0.4s ease;
-            box-shadow: var(--shadow-lg);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            max-width: 400px;
-        }
-
+        .toast-container { position: fixed; top: 20px; right: 20px; z-index: 9999; display: flex; flex-direction: column; gap: 10px; }
+        .toast { padding: 16px 22px; border-radius: var(--radius-sm); color: white; font-weight: 500; font-size: 0.9rem; animation: toastSlideIn 0.4s ease; box-shadow: var(--shadow-lg); display: flex; align-items: center; gap: 10px; max-width: 400px; }
         .toast.success { background: #059669; }
         .toast.error { background: #dc2626; }
         .toast.warning { background: #d97706; }
         .toast.info { background: #2563eb; }
-
-        @keyframes toastSlideIn {
-            from { opacity: 0; transform: translateX(100px); }
-            to { opacity: 1; transform: translateX(0); }
-        }
-
-        .toast .toast-close {
-            margin-left: auto;
-            cursor: pointer;
-            opacity: 0.7;
-            background: none;
-            border: none;
-            color: white;
-            font-size: 1rem;
-        }
-
-        .toast .toast-close:hover {
-            opacity: 1;
-        }
+        @keyframes toastSlideIn { from { opacity: 0; transform: translateX(100px); } to { opacity: 1; transform: translateX(0); } }
+        .toast .toast-close { margin-left: auto; cursor: pointer; opacity: 0.7; background: none; border: none; color: white; font-size: 1rem; }
+        .toast .toast-close:hover { opacity: 1; }
 
         /* ============ CONFIRM DIALOG ============ */
-        .confirm-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.7);
-            z-index: 2000;
-            display: none;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .confirm-overlay.show {
-            display: flex;
-        }
-
-        .confirm-dialog {
-            background: var(--admin-card);
-            border: 1px solid var(--admin-border);
-            border-radius: var(--radius);
-            padding: 35px;
-            text-align: center;
-            max-width: 450px;
-            width: 90%;
-            animation: modalSlideIn 0.3s ease;
-        }
-
-        .confirm-dialog i {
-            font-size: 3.5rem;
-            color: var(--admin-warning);
-            margin-bottom: 15px;
-        }
-
-        .confirm-dialog h4 {
-            color: white;
-            margin-bottom: 10px;
-            font-size: 1.2rem;
-        }
-
-        .confirm-dialog p {
-            color: var(--admin-text-muted);
-            font-size: 0.9rem;
-            margin-bottom: 25px;
-        }
-
-        .confirm-dialog .confirm-actions {
-            display: flex;
-            gap: 12px;
-            justify-content: center;
-        }
+        .confirm-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 2000; display: none; align-items: center; justify-content: center; }
+        .confirm-overlay.show { display: flex; }
+        .confirm-dialog { background: var(--admin-card); border: 1px solid var(--admin-border); border-radius: var(--radius); padding: 35px; text-align: center; max-width: 450px; width: 90%; animation: modalSlideIn 0.3s ease; }
+        .confirm-dialog i { font-size: 3.5rem; color: var(--admin-warning); margin-bottom: 15px; }
+        .confirm-dialog h4 { color: white; margin-bottom: 10px; font-size: 1.2rem; }
+        .confirm-dialog p { color: var(--admin-text-muted); font-size: 0.9rem; margin-bottom: 25px; }
+        .confirm-dialog .confirm-actions { display: flex; gap: 12px; justify-content: center; }
 
         /* ============ ACTIVITY LOG ============ */
-        .activity-timeline {
-            padding: 10px 0;
-        }
-
-        .activity-item {
-            padding: 15px 20px;
-            border-left: 3px solid var(--admin-border);
-            margin-left: 20px;
-            position: relative;
-            margin-bottom: 15px;
-            transition: all 0.2s;
-        }
-
-        .activity-item:hover {
-            border-left-color: var(--admin-accent);
-            background: rgba(79,70,229,0.02);
-        }
-
-        .activity-item::before {
-            content: '';
-            position: absolute;
-            left: -9px;
-            top: 20px;
-            width: 15px;
-            height: 15px;
-            border-radius: 50%;
-            background: var(--admin-border);
-            border: 3px solid var(--admin-card);
-        }
-
-        .activity-item:hover::before {
-            background: var(--admin-accent);
-        }
-
-        .activity-item .activity-header {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 5px;
-            flex-wrap: wrap;
-        }
-
-        .activity-item .activity-action {
-            font-weight: 600;
-            color: white;
-            font-size: 0.85rem;
-        }
-
-        .activity-item .activity-time {
-            font-size: 0.75rem;
-            color: var(--admin-text-muted);
-        }
-
-        .activity-item .activity-details {
-            font-size: 0.85rem;
-            color: var(--admin-text-muted);
-        }
+        .activity-timeline { padding: 10px 0; }
+        .activity-item { padding: 15px 20px; border-left: 3px solid var(--admin-border); margin-left: 20px; position: relative; margin-bottom: 15px; transition: all 0.2s; }
+        .activity-item:hover { border-left-color: var(--admin-accent); background: rgba(79,70,229,0.02); }
+        .activity-item::before { content: ''; position: absolute; left: -9px; top: 20px; width: 15px; height: 15px; border-radius: 50%; background: var(--admin-border); border: 3px solid var(--admin-card); }
+        .activity-item:hover::before { background: var(--admin-accent); }
+        .activity-item .activity-header { display: flex; align-items: center; gap: 10px; margin-bottom: 5px; flex-wrap: wrap; }
+        .activity-item .activity-action { font-weight: 600; color: white; font-size: 0.85rem; text-transform: capitalize;}
+        .activity-item .activity-time { font-size: 0.75rem; color: var(--admin-text-muted); }
+        .activity-item .activity-details { font-size: 0.85rem; color: var(--admin-text-muted); }
 
         /* ============ EXPORT BUTTONS ============ */
-        .export-btn {
-            padding: 8px 16px;
-            border-radius: 6px;
-            border: 1px solid var(--admin-border);
-            background: var(--admin-card);
-            color: white;
-            cursor: pointer;
-            font-size: 0.85rem;
-            transition: all 0.2s;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .export-btn:hover {
-            background: var(--admin-hover);
-        }
-
+        .export-btn { padding: 8px 16px; border-radius: 6px; border: 1px solid var(--admin-border); background: var(--admin-card); color: white; cursor: pointer; font-size: 0.85rem; transition: all 0.2s; display: inline-flex; align-items: center; gap: 6px; }
+        .export-btn:hover { background: var(--admin-hover); }
         .export-btn.pdf { color: #f87171; border-color: rgba(239,68,68,0.3); }
         .export-btn.pdf:hover { background: rgba(239,68,68,0.1); }
         .export-btn.excel { color: #34d399; border-color: rgba(16,185,129,0.3); }
         .export-btn.excel:hover { background: rgba(16,185,129,0.1); }
 
         /* ============ MOBILE TOGGLE ============ */
-        .mobile-toggle {
-            display: none;
-            background: none;
-            border: none;
-            color: white;
-            font-size: 1.5rem;
-            cursor: pointer;
-        }
+        .mobile-toggle { display: none; background: none; border: none; color: white; font-size: 1.5rem; cursor: pointer; }
+        .sidebar-backdrop { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 99; }
+        .sidebar-backdrop.show { display: block; }
 
-        .sidebar-backdrop {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.5);
-            z-index: 99;
-        }
-
-        .sidebar-backdrop.show {
-            display: block;
-        }
+        /* ============ TABS ============ */
+        .admin-tabs { display: flex; gap: 5px; margin-bottom: 25px; border-bottom: 2px solid var(--admin-border); padding-bottom: 0; flex-wrap: wrap; }
+        .admin-tab { padding: 10px 20px; cursor: pointer; border: none; background: none; color: var(--admin-text-muted); font-weight: 500; font-size: 0.85rem; border-bottom: 3px solid transparent; margin-bottom: -2px; transition: all 0.2s; }
+        .admin-tab:hover { color: white; }
+        .admin-tab.active { color: var(--admin-accent-light); border-bottom-color: var(--admin-accent); }
 
         /* ============ RESPONSIVE ============ */
         @media (max-width: 992px) {
@@ -1171,7 +238,6 @@
             .data-card-header { flex-direction: column; align-items: flex-start; }
             .search-bar input { width: 150px; }
         }
-
         @media (max-width: 576px) {
             .stats-grid { grid-template-columns: 1fr; }
             .header-actions { flex-wrap: wrap; gap: 8px; }
@@ -1182,60 +248,16 @@
             .modal-dialog { width: 95%; max-height: 90vh; }
             .modal-body { padding: 20px; }
         }
-
-        /* ============ SCROLLBAR ============ */
-        ::-webkit-scrollbar { width: 6px; height: 6px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: var(--admin-border); border-radius: 3px; }
-        ::-webkit-scrollbar-thumb:hover { background: #555; }
-
-        /* ============ LOADING SPINNER ============ */
-        .spinner {
-            display: inline-block;
-            width: 18px;
-            height: 18px;
-            border: 3px solid rgba(255,255,255,0.2);
-            border-radius: 50%;
-            border-top-color: white;
-            animation: spin 0.8s ease-in-out infinite;
-        }
+        
+        .spinner { display: inline-block; width: 18px; height: 18px; border: 3px solid rgba(255,255,255,0.2); border-radius: 50%; border-top-color: white; animation: spin 0.8s ease-in-out infinite; }
         @keyframes spin { to { transform: rotate(360deg); } }
-
-        /* ============ TABS ============ */
-        .admin-tabs {
-            display: flex;
-            gap: 5px;
-            margin-bottom: 25px;
-            border-bottom: 2px solid var(--admin-border);
-            padding-bottom: 0;
-            flex-wrap: wrap;
-        }
-
-        .admin-tab {
-            padding: 10px 20px;
-            cursor: pointer;
-            border: none;
-            background: none;
-            color: var(--admin-text-muted);
-            font-weight: 500;
-            font-size: 0.85rem;
-            border-bottom: 3px solid transparent;
-            margin-bottom: -2px;
-            transition: all 0.2s;
-        }
-
-        .admin-tab:hover { color: white; }
-        .admin-tab.active { color: var(--admin-accent-light); border-bottom-color: var(--admin-accent); }
     </style>
 </head>
 <body>
-    <!-- ============ LOGIN OVERLAY ============ -->
     <div class="login-overlay" id="loginOverlay">
         <div class="login-container">
             <div class="login-logo">
-                <div class="admin-logo-icon">
-                    <i class="fas fa-shield-haltered"></i>
-                </div>
+                <div class="admin-logo-icon"><i class="fas fa-shield-haltered"></i></div>
                 <h2>Admin Dashboard</h2>
                 <p>Genius Point Academy Management</p>
             </div>
@@ -1260,18 +282,13 @@
         </div>
     </div>
 
-    <!-- ============ ADMIN CONTAINER (Hidden until login) ============ -->
     <div class="admin-container" id="adminContainer" style="display: none;">
         
-        <!-- ============ SIDEBAR BACKDROP (Mobile) ============ -->
         <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
 
-        <!-- ============ SIDEBAR ============ -->
         <aside class="sidebar" id="sidebar">
             <div class="sidebar-header">
-                <div class="sidebar-logo">
-                    <i class="fas fa-graduation-cap"></i>
-                </div>
+                <div class="sidebar-logo"><i class="fas fa-graduation-cap"></i></div>
                 <div class="sidebar-title">
                     <h3>GPA Admin</h3>
                     <span>Management Panel</span>
@@ -1281,40 +298,26 @@
             <nav class="sidebar-nav">
                 <div class="nav-section">
                     <div class="nav-section-title">Main</div>
-                    <button class="nav-item active" data-page="dashboard">
-                        <i class="fas fa-th-large"></i> Dashboard
-                    </button>
+                    <button class="nav-item active" data-page="dashboard"><i class="fas fa-th-large"></i> Dashboard</button>
                     <button class="nav-item" data-page="users">
-                        <i class="fas fa-users"></i> Users
-                        <span class="badge" id="sidebarUserCount">0</span>
+                        <i class="fas fa-users"></i> Users <span class="badge" id="sidebarUserCount">0</span>
                     </button>
                 </div>
 
                 <div class="nav-section">
                     <div class="nav-section-title">Content Management</div>
-                    <button class="nav-item" data-page="courses">
-                        <i class="fas fa-book"></i> Courses
-                    </button>
-                    <button class="nav-item" data-page="tutors">
-                        <i class="fas fa-chalkboard-teacher"></i> Tutors
-                    </button>
+                    <button class="nav-item" data-page="courses"><i class="fas fa-book"></i> Courses</button>
+                    <button class="nav-item" data-page="tutors"><i class="fas fa-chalkboard-teacher"></i> Tutors</button>
                     <button class="nav-item" data-page="messages">
-                        <i class="fas fa-envelope"></i> Messages
-                        <span class="badge" id="sidebarMsgCount">0</span>
+                        <i class="fas fa-envelope"></i> Messages <span class="badge" id="sidebarMsgCount">0</span>
                     </button>
-                    <button class="nav-item" data-page="announcement">
-                        <i class="fas fa-bullhorn"></i> Announcement
-                    </button>
+                    <button class="nav-item" data-page="announcement"><i class="fas fa-bullhorn"></i> Announcement</button>
                 </div>
 
                 <div class="nav-section">
                     <div class="nav-section-title">Monitoring</div>
-                    <button class="nav-item" data-page="activities">
-                        <i class="fas fa-history"></i> Activity Log
-                    </button>
-                    <button class="nav-item" data-page="bookings">
-                        <i class="fas fa-calendar-check"></i> Bookings
-                    </button>
+                    <button class="nav-item" data-page="activities"><i class="fas fa-history"></i> Activity Log</button>
+                    <button class="nav-item" data-page="bookings"><i class="fas fa-calendar-check"></i> Bookings</button>
                 </div>
             </nav>
 
@@ -1325,118 +328,65 @@
                         <div class="user-name" id="sidebarAdminName">Admin</div>
                         <div class="user-role">Administrator</div>
                     </div>
-                    <button class="btn-logout-sidebar" id="sidebarLogoutBtn" title="Logout">
-                        <i class="fas fa-sign-out-alt"></i>
-                    </button>
+                    <button class="btn-logout-sidebar" id="sidebarLogoutBtn" title="Logout"><i class="fas fa-sign-out-alt"></i></button>
                 </div>
             </div>
         </aside>
 
-        <!-- ============ MAIN CONTENT ============ -->
         <main class="main-content">
-            <!-- Header -->
             <div class="main-header">
                 <div style="display: flex; align-items: center; gap: 15px;">
-                    <button class="mobile-toggle" id="mobileToggle">
-                        <i class="fas fa-bars"></i>
-                    </button>
+                    <button class="mobile-toggle" id="mobileToggle"><i class="fas fa-bars"></i></button>
                     <div class="page-title">
                         <h2 id="pageTitle">Dashboard</h2>
                         <p id="pageSubtitle">Overview of all activities</p>
                     </div>
                 </div>
                 <div class="header-actions">
-                    <button class="header-btn" onclick="window.refreshAllData()" title="Refresh Data">
-                        <i class="fas fa-sync-alt"></i> Refresh
-                    </button>
-                    <button class="header-btn primary" onclick="window.openAddModal()" id="headerAddBtn" style="display: none;">
-                        <i class="fas fa-plus"></i> Add New
-                    </button>
-                    <a href="index.html" class="header-btn" target="_blank" title="View Website">
-                        <i class="fas fa-external-link-alt"></i> View Site
-                    </a>
+                    <button class="header-btn" onclick="refreshAllData()" title="Refresh Data"><i class="fas fa-sync-alt"></i> Refresh</button>
+                    <button class="header-btn primary" onclick="openAddModal()" id="headerAddBtn" style="display: none;"><i class="fas fa-plus"></i> Add New</button>
+                    <a href="index.html" class="header-btn" target="_blank" title="View Website"><i class="fas fa-external-link-alt"></i> View Site</a>
                 </div>
             </div>
 
-            <!-- Body -->
             <div class="main-body">
                 
-                <!-- ============ DASHBOARD PAGE ============ -->
                 <div class="page-section active" id="page-dashboard">
-                    <!-- Stats Grid -->
                     <div class="stats-grid">
                         <div class="stat-card users">
-                            <div class="stat-icon blue">
-                                <i class="fas fa-users"></i>
-                            </div>
-                            <div class="stat-info">
-                                <h3 id="statUsers">0</h3>
-                                <p>Registered Users</p>
-                            </div>
+                            <div class="stat-icon blue"><i class="fas fa-users"></i></div>
+                            <div class="stat-info"><h3 id="statUsers">0</h3><p>Registered Users</p></div>
                         </div>
                         <div class="stat-card courses">
-                            <div class="stat-icon green">
-                                <i class="fas fa-book"></i>
-                            </div>
-                            <div class="stat-info">
-                                <h3 id="statCourses">0</h3>
-                                <p>Total Courses</p>
-                            </div>
+                            <div class="stat-icon green"><i class="fas fa-book"></i></div>
+                            <div class="stat-info"><h3 id="statCourses">0</h3><p>Total Courses</p></div>
                         </div>
                         <div class="stat-card tutors-card">
-                            <div class="stat-icon purple">
-                                <i class="fas fa-chalkboard-teacher"></i>
-                            </div>
-                            <div class="stat-info">
-                                <h3 id="statTutors">0</h3>
-                                <p>Active Tutors</p>
-                            </div>
+                            <div class="stat-icon purple"><i class="fas fa-chalkboard-teacher"></i></div>
+                            <div class="stat-info"><h3 id="statTutors">0</h3><p>Active Tutors</p></div>
                         </div>
                         <div class="stat-card messages">
-                            <div class="stat-icon yellow">
-                                <i class="fas fa-envelope"></i>
-                            </div>
-                            <div class="stat-info">
-                                <h3 id="statMessages">0</h3>
-                                <p>Messages Sent</p>
-                            </div>
+                            <div class="stat-icon yellow"><i class="fas fa-envelope"></i></div>
+                            <div class="stat-info"><h3 id="statMessages">0</h3><p>Messages Sent</p></div>
                         </div>
                         <div class="stat-card bookings">
-                            <div class="stat-icon pink">
-                                <i class="fas fa-calendar-check"></i>
-                            </div>
-                            <div class="stat-info">
-                                <h3 id="statActivities">0</h3>
-                                <p>Total Bookings</p>
-                            </div>
+                            <div class="stat-icon pink"><i class="fas fa-calendar-check"></i></div>
+                            <div class="stat-info"><h3 id="statActivities">0</h3><p>Total Bookings</p></div>
                         </div>
                     </div>
 
-                    <!-- Recent Activity -->
                     <div class="data-card">
                         <div class="data-card-header">
                             <h3><i class="fas fa-clock"></i> Recent Activity</h3>
-                            <div class="data-card-actions">
-                                <button class="export-btn pdf" onclick="window.exportData('pdf')">
-                                    <i class="fas fa-file-pdf"></i> PDF
-                                </button>
-                                <button class="export-btn excel" onclick="window.exportData('excel')">
-                                    <i class="fas fa-file-excel"></i> Excel
-                                </button>
-                            </div>
                         </div>
                         <div class="table-container">
                             <div class="activity-timeline" id="dashboardActivity">
-                                <div class="empty-state">
-                                    <i class="fas fa-history"></i>
-                                    <p>No activities recorded yet</p>
-                                </div>
+                                <div class="empty-state"><i class="fas fa-history"></i><p>No activities recorded yet</p></div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- ============ USERS PAGE ============ -->
                 <div class="page-section" id="page-users">
                     <div class="data-card">
                         <div class="data-card-header">
@@ -1446,50 +396,30 @@
                                     <i class="fas fa-search"></i>
                                     <input type="text" id="userSearch" placeholder="Search users..." oninput="window.renderUsers()">
                                 </div>
-                                <button class="export-btn pdf" onclick="window.exportUsers('pdf')">
-                                    <i class="fas fa-file-pdf"></i> PDF
-                                </button>
-                                <button class="export-btn excel" onclick="window.exportUsers('excel')">
-                                    <i class="fas fa-file-excel"></i> Excel
-                                </button>
+                                <button class="export-btn pdf" onclick="window.exportUsers('pdf')"><i class="fas fa-file-pdf"></i> PDF</button>
+                                <button class="export-btn excel" onclick="window.exportUsers('excel')"><i class="fas fa-file-excel"></i> Excel</button>
                             </div>
                         </div>
                         <div class="table-container">
                             <table>
                                 <thead>
                                     <tr>
-                                        <th>Name</th>
-                                        <th>Email</th>
-                                        <th>Phone</th>
-                                        <th>Department</th>
-                                        <th>Level</th>
-                                        <th>Joined</th>
-                                        <th>Status</th>
-                                        <th>Actions</th>
+                                        <th>Name</th><th>Email</th><th>Phone</th><th>Department</th><th>Level</th><th>Joined</th><th>Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody id="usersTableBody">
-                                    <tr>
-                                        <td colspan="8">
-                                            <div class="empty-state">
-                                                <i class="fas fa-user-slash"></i>
-                                                <p>No users registered yet</p>
-                                            </div>
-                                        </td>
-                                    </tr>
+                                    <tr><td colspan="7"><div class="empty-state"><i class="fas fa-user-slash"></i><p>No users registered yet</p></div></td></tr>
                                 </tbody>
                             </table>
                         </div>
                     </div>
                 </div>
 
-                <!-- ============ COURSES PAGE ============ -->
                 <div class="page-section" id="page-courses">
                     <div class="admin-tabs">
                         <button class="admin-tab active" data-course-tab="first">First Semester</button>
                         <button class="admin-tab" data-course-tab="second">Second Semester</button>
                     </div>
-
                     <div class="data-card">
                         <div class="data-card-header">
                             <h3><i class="fas fa-book"></i> <span id="courseTableTitle">First Semester</span> Courses <span class="badge-count" id="courseCountBadge">0</span></h3>
@@ -1498,45 +428,29 @@
                                     <i class="fas fa-search"></i>
                                     <input type="text" id="courseSearch" placeholder="Search courses..." oninput="window.renderCourses()">
                                 </div>
-                                <button class="header-btn primary" onclick="window.openCourseModal()">
-                                    <i class="fas fa-plus"></i> Add Course
-                                </button>
+                                <button class="header-btn primary" onclick="window.openCourseModal()"><i class="fas fa-plus"></i> Add Course</button>
                             </div>
                         </div>
                         <div class="table-container">
                             <table>
                                 <thead>
                                     <tr>
-                                        <th>Course Code</th>
-                                        <th>Course Name</th>
-                                        <th>Level</th>
-                                        <th>Semester</th>
-                                        <th>Tutors</th>
-                                        <th>Actions</th>
+                                        <th>Code</th><th>Name</th><th>Level</th><th>Semester</th><th>Tutors</th><th>Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody id="coursesTableBody">
-                                    <tr>
-                                        <td colspan="6">
-                                            <div class="empty-state">
-                                                <i class="fas fa-book-open"></i>
-                                                <p>No courses added yet</p>
-                                            </div>
-                                        </td>
-                                    </tr>
+                                    <tr><td colspan="6"><div class="empty-state"><i class="fas fa-book-open"></i><p>No courses added yet</p></div></td></tr>
                                 </tbody>
                             </table>
                         </div>
                     </div>
                 </div>
 
-                <!-- ============ TUTORS PAGE ============ -->
                 <div class="page-section" id="page-tutors">
                     <div class="admin-tabs">
                         <button class="admin-tab active" data-tutor-tab="first">First Semester</button>
                         <button class="admin-tab" data-tutor-tab="second">Second Semester</button>
                     </div>
-
                     <div class="data-card">
                         <div class="data-card-header">
                             <h3><i class="fas fa-chalkboard-teacher"></i> <span id="tutorTableTitle">First Semester</span> Tutors <span class="badge-count" id="tutorCountBadge">0</span></h3>
@@ -1545,41 +459,24 @@
                                     <i class="fas fa-search"></i>
                                     <input type="text" id="tutorSearch" placeholder="Search tutors..." oninput="window.renderTutors()">
                                 </div>
-                                <button class="header-btn primary" onclick="window.openTutorModal()">
-                                    <i class="fas fa-plus"></i> Add Tutor
-                                </button>
+                                <button class="header-btn primary" onclick="window.openTutorModal()"><i class="fas fa-plus"></i> Add Tutor</button>
                             </div>
                         </div>
                         <div class="table-container">
                             <table>
                                 <thead>
                                     <tr>
-                                        <th>Nickname</th>
-                                        <th>Full Name</th>
-                                        <th>Department</th>
-                                        <th>Level</th>
-                                        <th>Price/Session</th>
-                                        <th>Semester</th>
-                                        <th>Courses</th>
-                                        <th>Actions</th>
+                                        <th>Nickname</th><th>Full Name</th><th>Department</th><th>Level</th><th>Price</th><th>Semester</th><th>Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody id="tutorsTableBody">
-                                    <tr>
-                                        <td colspan="8">
-                                            <div class="empty-state">
-                                                <i class="fas fa-user-graduate"></i>
-                                                <p>No tutors added yet</p>
-                                            </div>
-                                        </td>
-                                    </tr>
+                                    <tr><td colspan="7"><div class="empty-state"><i class="fas fa-user-graduate"></i><p>No tutors added yet</p></div></td></tr>
                                 </tbody>
                             </table>
                         </div>
                     </div>
                 </div>
 
-                <!-- ============ MESSAGES PAGE ============ -->
                 <div class="page-section" id="page-messages">
                     <div class="data-card">
                         <div class="data-card-header">
@@ -1603,58 +500,33 @@
                                 <div class="form-group">
                                     <label>Message Body</label>
                                     <textarea id="messageBody" rows="5" placeholder="Enter the full message content..." required></textarea>
-                                    <span class="form-hint">This message will appear on all users' message panels on the main website.</span>
                                 </div>
                                 <div style="display: flex; gap: 10px;">
-                                    <button type="submit" class="btn-save">
-                                        <i class="fas fa-paper-plane"></i> Send Message to All Users
-                                    </button>
-                                    <button type="button" class="btn-cancel" onclick="window.previewMessage()">
-                                        <i class="fas fa-eye"></i> Preview
-                                    </button>
+                                    <button type="submit" class="btn-save"><i class="fas fa-paper-plane"></i> Send Global Message</button>
                                 </div>
                             </form>
                         </div>
                     </div>
 
-                    <!-- Sent Messages History -->
                     <div class="data-card" style="margin-top: 25px;">
                         <div class="data-card-header">
                             <h3><i class="fas fa-history"></i> Sent Messages History <span class="badge-count" id="sentMsgCount">0</span></h3>
-                            <div class="data-card-actions">
-                                <button class="header-btn" onclick="window.clearAllMessages()" style="color: #f87171;">
-                                    <i class="fas fa-trash-alt"></i> Clear All
-                                </button>
-                            </div>
                         </div>
                         <div class="table-container">
                             <table>
                                 <thead>
                                     <tr>
-                                        <th>Type</th>
-                                        <th>Title</th>
-                                        <th>Preview</th>
-                                        <th>Date Sent</th>
-                                        <th>Read By</th>
-                                        <th>Actions</th>
+                                        <th>Type</th><th>Title</th><th>Preview</th><th>Date Sent</th><th>Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody id="sentMessagesBody">
-                                    <tr>
-                                        <td colspan="6">
-                                            <div class="empty-state">
-                                                <i class="fas fa-inbox"></i>
-                                                <p>No messages sent yet</p>
-                                            </div>
-                                        </td>
-                                    </tr>
+                                    <tr><td colspan="5"><div class="empty-state"><i class="fas fa-inbox"></i><p>No messages sent yet</p></div></td></tr>
                                 </tbody>
                             </table>
                         </div>
                     </div>
                 </div>
 
-                <!-- ============ ANNOUNCEMENT PAGE ============ -->
                 <div class="page-section" id="page-announcement">
                     <div class="data-card">
                         <div class="data-card-header">
@@ -1672,16 +544,11 @@
                                 </div>
                                 <div class="form-group">
                                     <label>Announcement Text</label>
-                                    <textarea id="announcementText" rows="3" placeholder="Enter the announcement text that will scroll at the top of the website..." required></textarea>
-                                    <span class="form-hint">This will appear as a scrolling bar at the top of the main website. Users can dismiss it.</span>
+                                    <textarea id="announcementText" rows="3" placeholder="Enter the announcement text..." required></textarea>
                                 </div>
                                 <div style="display: flex; gap: 10px;">
-                                    <button type="submit" class="btn-save">
-                                        <i class="fas fa-bullhorn"></i> Publish Announcement
-                                    </button>
-                                    <button type="button" class="btn-danger-modal" onclick="window.removeAnnouncement()">
-                                        <i class="fas fa-times"></i> Remove Announcement
-                                    </button>
+                                    <button type="submit" class="btn-save"><i class="fas fa-bullhorn"></i> Publish</button>
+                                    <button type="button" class="btn-danger-modal" onclick="window.removeAnnouncement()"><i class="fas fa-times"></i> Remove</button>
                                 </div>
                             </form>
                             <div id="currentAnnouncementInfo" style="margin-top: 20px; padding: 15px; background: var(--admin-input); border-radius: 8px; display: none;">
@@ -1692,63 +559,38 @@
                     </div>
                 </div>
 
-                <!-- ============ ACTIVITIES PAGE ============ -->
                 <div class="page-section" id="page-activities">
                     <div class="data-card">
                         <div class="data-card-header">
-                            <h3><i class="fas fa-history"></i> Activity Log <span class="badge-count" id="activityCountBadge">0</span></h3>
+                            <h3><i class="fas fa-history"></i> Global Activity Log <span class="badge-count" id="activityCountBadge">0</span></h3>
                             <div class="data-card-actions">
-                                <button class="export-btn pdf" onclick="window.exportActivities('pdf')">
-                                    <i class="fas fa-file-pdf"></i> PDF
-                                </button>
-                                <button class="export-btn excel" onclick="window.exportActivities('excel')">
-                                    <i class="fas fa-file-excel"></i> Excel
-                                </button>
-                                <button class="header-btn" onclick="window.clearActivities()" style="color: #f87171;">
-                                    <i class="fas fa-trash-alt"></i> Clear Log
-                                </button>
+                                <button class="export-btn pdf" onclick="window.exportActivities('pdf')"><i class="fas fa-file-pdf"></i> PDF</button>
+                                <button class="export-btn excel" onclick="window.exportActivities('excel')"><i class="fas fa-file-excel"></i> Excel</button>
+                                <button class="header-btn" onclick="window.clearActivities()" style="color: #f87171;"><i class="fas fa-trash-alt"></i> Clear Log</button>
                             </div>
                         </div>
                         <div class="table-container">
                             <div class="activity-timeline" id="activitiesTimeline">
-                                <div class="empty-state">
-                                    <i class="fas fa-history"></i>
-                                    <p>No activities recorded yet</p>
-                                </div>
+                                <div class="empty-state"><i class="fas fa-history"></i><p>No activities recorded yet</p></div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- ============ BOOKINGS PAGE ============ -->
                 <div class="page-section" id="page-bookings">
                     <div class="data-card">
                         <div class="data-card-header">
                             <h3><i class="fas fa-calendar-check"></i> Booking Submissions</h3>
-                            <div class="data-card-actions">
-                                <span class="form-hint">Bookings are received via email (FormSubmit). This page shows local booking logs.</span>
-                            </div>
                         </div>
                         <div class="table-container">
                             <table>
                                 <thead>
                                     <tr>
-                                        <th>User</th>
-                                        <th>Email</th>
-                                        <th>Type</th>
-                                        <th>Details</th>
-                                        <th>Date</th>
+                                        <th>Student</th><th>Email</th><th>Type</th><th>Details</th><th>Date</th>
                                     </tr>
                                 </thead>
                                 <tbody id="bookingsTableBody">
-                                    <tr>
-                                        <td colspan="5">
-                                            <div class="empty-state">
-                                                <i class="fas fa-calendar-times"></i>
-                                                <p>No bookings logged yet</p>
-                                            </div>
-                                        </td>
-                                    </tr>
+                                    <tr><td colspan="5"><div class="empty-state"><i class="fas fa-calendar-times"></i><p>No bookings logged yet</p></div></td></tr>
                                 </tbody>
                             </table>
                         </div>
@@ -1759,7 +601,6 @@
         </main>
     </div>
 
-    <!-- ============ COURSE MODAL ============ -->
     <div class="modal-overlay" id="courseModal">
         <div class="modal-dialog">
             <div class="modal-header">
@@ -1800,14 +641,11 @@
             </div>
             <div class="modal-footer">
                 <button class="btn-cancel" onclick="window.closeCourseModal()">Cancel</button>
-                <button class="btn-save" onclick="window.saveCourse()">
-                    <i class="fas fa-save"></i> Save Course
-                </button>
+                <button class="btn-save" onclick="window.saveCourse()"><i class="fas fa-save"></i> Save</button>
             </div>
         </div>
     </div>
 
-    <!-- ============ TUTOR MODAL ============ -->
     <div class="modal-overlay" id="tutorModal">
         <div class="modal-dialog">
             <div class="modal-header">
@@ -1819,15 +657,15 @@
                     <input type="hidden" id="tutorEditId">
                     <div class="form-group">
                         <label>Nickname *</label>
-                        <input type="text" id="tutorNickname" placeholder="e.g. E-Simple" required>
+                        <input type="text" id="tutorNickname" required>
                     </div>
                     <div class="form-group">
                         <label>Full Name *</label>
-                        <input type="text" id="tutorFullName" placeholder="e.g. Amusan Emmanuel Oluwapelumi" required>
+                        <input type="text" id="tutorFullName" required>
                     </div>
                     <div class="form-group">
                         <label>Department *</label>
-                        <input type="text" id="tutorDepartment" placeholder="e.g. Electrical & Electronics Engineering" required>
+                        <input type="text" id="tutorDepartment" required>
                     </div>
                     <div class="form-group">
                         <label>Level *</label>
@@ -1842,7 +680,7 @@
                     </div>
                     <div class="form-group">
                         <label>Price per Session (₦) *</label>
-                        <input type="number" id="tutorPrice" placeholder="e.g. 2000" required min="500">
+                        <input type="number" id="tutorPrice" required min="500">
                     </div>
                     <div class="form-group">
                         <label>Semester *</label>
@@ -1854,43 +692,39 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label>Courses (comma-separated course codes) *</label>
-                        <input type="text" id="tutorCourses" placeholder="e.g. MTH 101, PHY 101, MTS 201" required>
-                        <span class="form-hint">Enter course codes separated by commas.</span>
+                        <label>Courses (comma-separated codes) *</label>
+                        <input type="text" id="tutorCourses" required>
                     </div>
                     <div class="form-group">
                         <label>Email</label>
-                        <input type="email" id="tutorEmail" placeholder="e.g. tutor@email.com">
+                        <input type="email" id="tutorEmail">
                     </div>
                     <div class="form-group">
                         <label>WhatsApp Number</label>
-                        <input type="text" id="tutorWhatsApp" placeholder="e.g. 08109807833">
+                        <input type="text" id="tutorWhatsApp">
                     </div>
                     <div class="form-group">
                         <label>Image URL</label>
                         <input type="text" id="tImg" placeholder="Link to photo">
                     </div>
                     <div class="form-group">
-                        <label>Bio / Description</label>
-                        <textarea id="tutorBio" rows="3" placeholder="Brief description of the tutor..."></textarea>
+                        <label>Bio</label>
+                        <textarea id="tutorBio" rows="2"></textarea>
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
                 <button class="btn-cancel" onclick="window.closeTutorModal()">Cancel</button>
-                <button class="btn-save" onclick="window.saveTutor()">
-                    <i class="fas fa-save"></i> Save Tutor
-                </button>
+                <button class="btn-save" onclick="window.saveTutor()"><i class="fas fa-save"></i> Save</button>
             </div>
         </div>
     </div>
 
-    <!-- ============ CONFIRM DELETE DIALOG ============ -->
     <div class="confirm-overlay" id="confirmDialog">
         <div class="confirm-dialog">
             <i class="fas fa-exclamation-triangle"></i>
             <h4 id="confirmTitle">Confirm Deletion</h4>
-            <p id="confirmMessage">Are you sure you want to delete this item? This action cannot be undone.</p>
+            <p id="confirmMessage">Are you sure?</p>
             <div class="confirm-actions">
                 <button class="btn-cancel" onclick="window.closeConfirmDialog()">Cancel</button>
                 <button class="btn-danger-modal" id="confirmDeleteBtn">Delete</button>
@@ -1898,15 +732,12 @@
         </div>
     </div>
 
-    <!-- ============ TOAST CONTAINER ============ -->
     <div class="toast-container" id="toastContainer"></div>
 
-    <!-- ============ FIREBASE COMPAT SCRIPTS ============ -->
     <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore-compat.js"></script>
 
     <script>
-        // ============ FIREBASE INITIALIZATION ============
         const firebaseConfig = {
             apiKey: "AIzaSyBoQQwFUf0YQNbSNgMkLzR8NcuOVKvlN3g",
             authDomain: "genius-point-academy.firebaseapp.com",
@@ -1919,7 +750,6 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
-        // ============ GLOBAL STATE ============
         let globalUsers = [];
         let globalCourses = [];
         let globalTutors = [];
@@ -1931,47 +761,6 @@
         let currentAdmin = null;
         let confirmCallback = null;
 
-        // ============ MAKE FUNCTIONS GLOBAL FOR HTML ============
-        window.openCourseModal = openCourseModal;
-        window.closeCourseModal = closeCourseModal;
-        window.saveCourse = saveCourse;
-        window.editCourse = editCourse;
-        window.deleteCourse = deleteCourse;
-        
-        window.openTutorModal = openTutorModal;
-        window.closeTutorModal = closeTutorModal;
-        window.saveTutor = saveTutor;
-        window.editTutor = editTutor;
-        window.deleteTutor = deleteTutor;
-        
-        window.closeConfirmDialog = closeConfirmDialog;
-        window.refreshAllData = refreshAllData;
-        window.renderUsers = renderUsers;
-        window.renderCourses = renderCourses;
-        window.renderTutors = renderTutors;
-        
-        window.viewUser = viewUser;
-        window.deleteUser = deleteUser;
-        window.viewTutorDetails = viewTutorDetails;
-        
-        window.previewMessage = previewMessage;
-        window.previewSentMessage = previewSentMessage;
-        window.deleteMessage = deleteMessage;
-        window.clearAllMessages = clearAllMessages;
-        window.removeAnnouncement = removeAnnouncement;
-        
-        window.exportData = exportData;
-        window.exportUsers = exportUsers;
-        window.exportActivities = exportActivities;
-        window.clearActivities = clearActivities;
-        
-        window.openAddModal = function() {
-            const activePage = document.querySelector('.page-section.active');
-            if (activePage && activePage.id === 'page-courses') openCourseModal();
-            else if (activePage && activePage.id === 'page-tutors') openTutorModal();
-        };
-
-        // ============ INITIALIZATION ============
         document.addEventListener('DOMContentLoaded', function() {
             const savedAdmin = sessionStorage.getItem('gpa_admin_session');
             if (savedAdmin === 'true') {
@@ -1980,7 +769,6 @@
             }
         });
 
-        // ============ LOGIN SYSTEM ============
         document.getElementById('adminLoginForm').addEventListener('submit', function(e) {
             e.preventDefault(); 
             const adminName = document.getElementById('adminName').value.trim();
@@ -2035,44 +823,42 @@
             });
         });
 
-        // ============ FIREBASE REAL-TIME LISTENERS ============
         function startFirebaseListeners() {
             db.collection("users").onSnapshot((snapshot) => {
                 globalUsers = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
                 document.getElementById('sidebarUserCount').textContent = globalUsers.length;
-                if(document.getElementById('page-users').classList.contains('active')) renderUsers();
+                if(document.getElementById('page-users').classList.contains('active')) window.renderUsers();
                 updateDashboardStats();
             });
 
             db.collection("messages").orderBy("timestamp", "desc").onSnapshot((snapshot) => {
                 globalMessages = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
                 document.getElementById('sidebarMsgCount').textContent = globalMessages.length;
-                if(document.getElementById('page-messages').classList.contains('active')) renderSentMessages();
+                if(document.getElementById('page-messages').classList.contains('active')) window.renderSentMessages();
                 updateDashboardStats();
             });
 
             db.collection("bookings").orderBy("timestamp", "desc").onSnapshot((snapshot) => {
                 globalBookings = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-                if(document.getElementById('page-bookings').classList.contains('active')) renderBookings();
+                if(document.getElementById('page-bookings').classList.contains('active')) window.renderBookings();
                 updateDashboardStats();
             });
 
             db.collection("activities").orderBy("timestamp", "desc").onSnapshot((snapshot) => {
                 globalActivities = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-                if(document.getElementById('page-activities').classList.contains('active')) renderActivities();
-                if(document.getElementById('page-dashboard').classList.contains('active')) renderDashboardActivity();
+                if(document.getElementById('page-activities').classList.contains('active')) window.renderActivities();
+                if(document.getElementById('page-dashboard').classList.contains('active')) window.renderDashboardActivity();
             });
             
             db.collection("courses").onSnapshot((snapshot) => {
-                globalCourses = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-                if(document.getElementById('page-courses').classList.contains('active')) renderCourses();
+                if(!snapshot.empty) globalCourses = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                if(document.getElementById('page-courses').classList.contains('active')) window.renderCourses();
                 updateDashboardStats();
             });
 
             db.collection("tutors").onSnapshot((snapshot) => {
-                globalTutors = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-                if(document.getElementById('page-tutors').classList.contains('active')) renderTutors();
-                if(document.getElementById('page-courses').classList.contains('active')) renderCourses();
+                if(!snapshot.empty) globalTutors = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                if(document.getElementById('page-tutors').classList.contains('active')) window.renderTutors();
                 updateDashboardStats();
             });
             
@@ -2102,7 +888,6 @@
             } catch (e) { console.error("Logging error", e); }
         }
 
-        // ============ NAVIGATION ============
         document.querySelectorAll('.sidebar-nav .nav-item').forEach(item => {
             item.addEventListener('click', function() {
                 navigateTo(this.getAttribute('data-page'));
@@ -2125,7 +910,7 @@
                 dashboard: ['Dashboard', 'Overview of all activities'],
                 users: ['Users Management', 'Manage registered users'],
                 courses: ['Courses Management', 'Add, edit, or remove courses'],
-                tutors: ['Tutors Management', 'Manage tutor profiles and assignments'],
+                tutors: ['Tutors Management', 'Manage tutor profiles'],
                 messages: ['Send Messages', 'Communicate with website users'],
                 announcement: ['Announcement Bar', 'Manage the scrolling announcement'],
                 activities: ['Activity Log', 'Monitor all actions and events'],
@@ -2139,28 +924,29 @@
             const addBtn = document.getElementById('headerAddBtn');
             if (page === 'courses' || page === 'tutors') {
                 addBtn.style.display = 'flex';
+                addBtn.onclick = page === 'courses' ? window.openCourseModal : window.openTutorModal;
                 addBtn.innerHTML = '<i class="fas fa-plus"></i> Add ' + (page === 'courses' ? 'Course' : 'Tutor');
             } else {
                 addBtn.style.display = 'none';
             }
             
-            refreshPageData(page);
+            window.refreshPageData(page);
         }
 
-        function refreshPageData(page) {
-            if(page === 'dashboard') { updateDashboardStats(); renderDashboardActivity(); }
-            if(page === 'users') renderUsers();
-            if(page === 'courses') renderCourses();
-            if(page === 'tutors') renderTutors();
-            if(page === 'messages') renderSentMessages();
-            if(page === 'activities') renderActivities();
-            if(page === 'bookings') renderBookings();
+        window.refreshPageData = function(page) {
+            if(page === 'dashboard') { updateDashboardStats(); window.renderDashboardActivity(); }
+            if(page === 'users') window.renderUsers();
+            if(page === 'courses') window.renderCourses();
+            if(page === 'tutors') window.renderTutors();
+            if(page === 'messages') window.renderSentMessages();
+            if(page === 'activities') window.renderActivities();
+            if(page === 'bookings') window.renderBookings();
         }
 
-        function refreshAllData() {
+        window.refreshAllData = function() {
             showToast('Syncing with Cloud Database...', 'info');
             const activePage = document.querySelector('.page-section.active');
-            if (activePage) refreshPageData(activePage.id.replace('page-', ''));
+            if (activePage) window.refreshPageData(activePage.id.replace('page-', ''));
         }
 
         function updateDashboardStats() {
@@ -2171,14 +957,13 @@
             document.getElementById('statActivities').textContent = globalBookings.length;
         }
 
-        // ============ RENDER DATA FUNCTIONS ============
-        function renderDashboardActivity() {
+        window.renderDashboardActivity = function() {
             const container = document.getElementById('dashboardActivity');
             if (globalActivities.length === 0) {
                 container.innerHTML = '<div class="empty-state"><i class="fas fa-history"></i><p>No activities recorded yet</p></div>';
                 return;
             }
-            container.innerHTML = globalActivities.slice(0, 10).map(act => {
+            container.innerHTML = globalActivities.slice(0, 8).map(act => {
                 const time = new Date(act.timestamp).toLocaleString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
                 return `<div class="activity-item">
                             <div class="activity-header"><span class="activity-action">${act.action.replace('_', ' ')}</span><span class="activity-time">${time}</span></div>
@@ -2187,35 +972,62 @@
             }).join('');
         }
 
-        function renderUsers() {
+        window.renderUsers = function() {
             const searchTerm = (document.getElementById('userSearch')?.value || '').toLowerCase();
             const tbody = document.getElementById('usersTableBody');
+            
             let filtered = globalUsers;
-            if (searchTerm) filtered = filtered.filter(u => (u.fullName||'').toLowerCase().includes(searchTerm) || (u.email||'').toLowerCase().includes(searchTerm));
+            if (searchTerm) {
+                filtered = filtered.filter(u => (u.fullName||'').toLowerCase().includes(searchTerm) || (u.email||'').toLowerCase().includes(searchTerm));
+            }
+            
             document.getElementById('userCountBadge').textContent = filtered.length;
             if (filtered.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="8"><div class="empty-state"><p>No users found</p></div></td></tr>';
+                tbody.innerHTML = '<tr><td colspan="7"><div class="empty-state"><i class="fas fa-user-slash"></i><p>No users found</p></div></td></tr>';
                 return;
             }
-            tbody.innerHTML = filtered.map(u => `<tr><td><strong>${u.fullName || 'N/A'}</strong></td><td>${u.email}</td><td>${u.phone || 'N/A'}</td><td>${u.department || 'N/A'}</td><td>${u.level ? u.level + 'L' : 'N/A'}</td><td>${u.joinedDate ? new Date(u.joinedDate).toLocaleDateString() : 'N/A'}</td><td><span class="status-badge active">Active</span></td><td><div class="action-btns"><button class="btn-sm view" onclick="window.viewUser('${u.id}')"><i class="fas fa-eye"></i></button><button class="btn-sm delete" onclick="window.deleteUser('${u.id}')"><i class="fas fa-trash-alt"></i></button></div></td></tr>`).join('');
+            
+            tbody.innerHTML = filtered.map(u => {
+                const joined = u.joinedDate ? new Date(u.joinedDate).toLocaleDateString() : 'N/A';
+                return `<tr>
+                            <td><strong>${u.fullName || 'Student'}</strong></td>
+                            <td>${u.email}</td><td>${u.phone || 'N/A'}</td><td>${u.department || 'N/A'}</td>
+                            <td>${u.level ? u.level + 'L' : 'N/A'}</td><td>${joined}</td>
+                            <td>
+                                <button class="btn-sm delete" onclick="window.deleteUserRecord('${u.id}')" title="Delete User"><i class="fas fa-trash-alt"></i></button>
+                            </td>
+                        </tr>`;
+            }).join('');
         }
 
-        function viewUser(id) {
-            const u = globalUsers.find(x => x.id === id);
-            if(u) alert(`User Details:\nName: ${u.fullName}\nEmail: ${u.email}\nPhone: ${u.phone}\nDepartment: ${u.department}\nLevel: ${u.level}`);
-        }
-
-        function deleteUser(id) {
-            showConfirmDialog('Delete User', 'Remove this user from the database?', async function() {
+        window.deleteUserRecord = function(id) {
+            showConfirmDialog('Delete User Record', 'Remove this user from the database? (This does not delete their auth login)', async function() {
                 try {
                     await db.collection("users").doc(id).delete();
                     logAdminActivity('delete_user', 'Deleted user record');
-                    showToast('User deleted', 'success');
+                    showToast('User record removed', 'success');
                 } catch(e) { showToast('Error deleting', 'error'); }
             });
         }
 
-        // --- COURSES ---
+        window.renderBookings = function() {
+            const tbody = document.getElementById('bookingsTableBody');
+            if (globalBookings.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5"><div class="empty-state"><i class="fas fa-calendar-times"></i><p>No bookings yet</p></div></td></tr>';
+                return;
+            }
+            tbody.innerHTML = globalBookings.map(b => {
+                const time = new Date(b.timestamp).toLocaleString();
+                return `<tr>
+                            <td><strong>${b.name}</strong><br><small>${b.level}L, ${b.department}</small></td>
+                            <td>${b.email}<br><small>${b.phone}</small></td>
+                            <td><span class="status-badge ${b.booking_type === 'personal' ? 'active' : 'info'}">${b.booking_type}</span><br><small>${b.student_count} student(s)</small></td>
+                            <td><strong>Course:</strong> ${b.courses ? b.courses.join(', ') : ''} <br><strong>Tutor:</strong> ${b.preferred_tutors && b.preferred_tutors.length ? b.preferred_tutors.join(', ') : 'Any'}</td>
+                            <td>${time}</td>
+                        </tr>`;
+            }).join('');
+        }
+
         let currentCourseTab = 'first';
         document.querySelectorAll('[data-course-tab]').forEach(t => t.addEventListener('click', function() {
             document.querySelectorAll('[data-course-tab]').forEach(x => x.classList.remove('active'));
@@ -2225,10 +1037,11 @@
             window.renderCourses();
         }));
 
-        function renderCourses() {
+        window.renderCourses = function() {
             const searchTerm = (document.getElementById('courseSearch')?.value || '').toLowerCase();
             const tbody = document.getElementById('coursesTableBody');
             let filtered = globalCourses.filter(c => c.semester === currentCourseTab);
+            
             if (searchTerm) filtered = filtered.filter(c => c.code.toLowerCase().includes(searchTerm) || c.name.toLowerCase().includes(searchTerm));
             filtered.sort((a,b) => parseInt(a.level)-parseInt(b.level) || a.code.localeCompare(b.code));
             document.getElementById('courseCountBadge').textContent = filtered.length;
@@ -2237,16 +1050,25 @@
                 tbody.innerHTML = '<tr><td colspan="6"><div class="empty-state"><p>No courses found</p></div></td></tr>';
                 return;
             }
+            
             tbody.innerHTML = filtered.map(c => {
-                const tNames = globalTutors.filter(t => t.courses && t.courses.includes(c.code)).map(t => t.nickname).join(', ') || 'No tutors';
-                return `<tr><td><strong>${c.code}</strong></td><td>${c.name}</td><td>${c.level}L</td><td><span class="status-badge ${c.semester === 'first' ? 'info' : 'active'}">${c.semester} Sem</span></td><td>${tNames}</td><td><div class="action-btns"><button class="btn-sm edit" onclick="window.editCourse('${c.id}')"><i class="fas fa-edit"></i></button><button class="btn-sm delete" onclick="window.deleteCourse('${c.id}')"><i class="fas fa-trash-alt"></i></button></div></td></tr>`;
+                const tNames = globalTutors.filter(t => t.courses && t.courses.includes(c.code)).map(t => t.nickname).join(', ') || 'None';
+                return `<tr>
+                            <td><strong>${c.code}</strong></td><td>${c.name}</td><td>${c.level}L</td>
+                            <td><span class="status-badge ${c.semester === 'first' ? 'info' : 'active'}">${c.semester}</span></td>
+                            <td>${tNames}</td>
+                            <td>
+                                <button class="btn-sm edit" onclick="window.openCourseModal('${c.id}')"><i class="fas fa-edit"></i></button>
+                                <button class="btn-sm delete" onclick="window.deleteCourse('${c.id}')"><i class="fas fa-trash-alt"></i></button>
+                            </td>
+                        </tr>`;
             }).join('');
-        }
+        };
 
-        function openCourseModal(id = null) {
+        window.openCourseModal = function(id = null) {
             document.getElementById('courseForm').reset();
             document.getElementById('courseEditId').value = '';
-            document.getElementById('courseModalTitle').textContent = id ? 'Edit Course' : 'Add New Course';
+            document.getElementById('courseModalTitle').textContent = id ? 'Edit Course' : 'Add Course';
             if(id) {
                 const c = globalCourses.find(x => x.id === id);
                 if(c) {
@@ -2260,9 +1082,9 @@
             document.getElementById('courseModal').classList.add('show');
         }
 
-        function closeCourseModal() { document.getElementById('courseModal').classList.remove('show'); }
+        window.closeCourseModal = function() { document.getElementById('courseModal').classList.remove('show'); }
 
-        async function saveCourse() {
+        window.saveCourse = async function() {
             const form = document.getElementById('courseForm');
             if (!form.checkValidity()) { form.reportValidity(); return; }
             
@@ -2277,30 +1099,27 @@
             try {
                 if (id) {
                     await db.collection("courses").doc(id).set(data, {merge: true});
-                    logAdminActivity("edit_course", `Updated course "${data.code}"`);
-                    showToast("Course updated!", "success");
+                    logAdminActivity("edit_course", `Edited ${data.code}`);
                 } else {
                     await db.collection("courses").add(data);
-                    logAdminActivity("add_course", `Added new course "${data.code}"`);
-                    showToast("Course added!", "success");
+                    logAdminActivity("add_course", `Added ${data.code}`);
                 }
                 window.closeCourseModal();
+                showToast("Course Saved!", "success");
             } catch(e) { showToast("Error saving", "error"); }
-        }
+        };
 
-        function deleteCourse(id) {
+        window.deleteCourse = function(id) {
             const c = globalCourses.find(x => x.id === id);
-            if(!c) return;
-            showConfirmDialog('Delete Course', `Are you sure you want to delete "${c.code}"?`, async function() {
+            showConfirmDialog('Delete', `Delete "${c?.code}"?`, async function() {
                 try {
                     await db.collection("courses").doc(id).delete();
-                    logAdminActivity('delete_course', `Deleted course "${c.code}"`);
-                    showToast('Course deleted', 'success');
+                    logAdminActivity('delete_course', `Deleted course ${c?.code}`);
+                    showToast('Course Deleted', 'success');
                 } catch(e) {}
             });
-        }
+        };
 
-        // --- TUTORS ---
         let currentTutorTab = 'first';
         document.querySelectorAll('[data-tutor-tab]').forEach(t => t.addEventListener('click', function() {
             document.querySelectorAll('[data-tutor-tab]').forEach(x => x.classList.remove('active'));
@@ -2310,33 +1129,36 @@
             window.renderTutors();
         }));
 
-        function renderTutors() {
-            const search = (document.getElementById('tutorSearch')?.value || '').toLowerCase();
+        window.renderTutors = function() {
+            const searchTerm = (document.getElementById('tutorSearch')?.value || '').toLowerCase();
             const tbody = document.getElementById('tutorsTableBody');
-            let filtered = globalTutors.filter(t => currentTutorTab === 'first' ? (t.semester === 'first' || t.semester === 'both') : (t.semester === 'second' || t.semester === 'both'));
-            if (search) filtered = filtered.filter(t => t.nickname.toLowerCase().includes(search) || t.fullName.toLowerCase().includes(search));
-            document.getElementById('tutorCountBadge').textContent = filtered.length;
+            let filtered = globalTutors.filter(t => t.semester === currentTutorTab || t.semester === 'both');
             
+            if (searchTerm) filtered = filtered.filter(t => t.nickname.toLowerCase().includes(searchTerm) || t.fullName.toLowerCase().includes(searchTerm));
+            document.getElementById('tutorCountBadge').textContent = filtered.length;
+
             if (filtered.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="8"><div class="empty-state"><p>No tutors found</p></div></td></tr>';
+                tbody.innerHTML = '<tr><td colspan="7"><div class="empty-state"><p>No tutors found</p></div></td></tr>';
                 return;
             }
+            
             tbody.innerHTML = filtered.map(t => {
-                const semLabel = t.semester === 'both' ? 'Both' : (t.semester === 'first' ? '1st' : '2nd');
-                return `<tr><td><strong>${t.nickname}</strong></td><td>${t.fullName}</td><td>${t.department}</td><td>${t.level}L</td><td>₦${parseInt(t.price).toLocaleString()}</td><td><span class="status-badge info">${semLabel} Sem</span></td><td>${t.courses ? t.courses.join(', ') : 'N/A'}</td><td><div class="action-btns"><button class="btn-sm view" onclick="window.viewTutorDetails('${t.id}')"><i class="fas fa-eye"></i></button><button class="btn-sm edit" onclick="window.editTutor('${t.id}')"><i class="fas fa-edit"></i></button><button class="btn-sm delete" onclick="window.deleteTutor('${t.id}')"><i class="fas fa-trash-alt"></i></button></div></td></tr>`;
+                return `<tr>
+                            <td><strong>${t.nickname}</strong></td><td>${t.fullName}</td><td>${t.department}</td>
+                            <td>${t.level}L</td><td>₦${t.price}</td>
+                            <td><span class="status-badge info">${t.semester}</span></td>
+                            <td>
+                                <button class="btn-sm edit" onclick="window.openTutorModal('${t.id}')"><i class="fas fa-edit"></i></button>
+                                <button class="btn-sm delete" onclick="window.deleteTutor('${t.id}')"><i class="fas fa-trash-alt"></i></button>
+                            </td>
+                        </tr>`;
             }).join('');
-        }
+        };
 
-        function viewTutorDetails(id) {
-            const t = globalTutors.find(x => x.id === id);
-            if (!t) return;
-            alert(`Tutor Details:\n\nNickname: ${t.nickname}\nFull Name: ${t.fullName}\nDepartment: ${t.department}\nLevel: ${t.level}L\nPrice: ₦${parseInt(t.price).toLocaleString()}/session\nSemester: ${t.semester}\nCourses: ${t.courses ? t.courses.join(', ') : 'N/A'}\nEmail: ${t.email || 'N/A'}\nWhatsApp: ${t.whatsapp || 'N/A'}\nImage URL: ${t.imageUrl ? 'Yes' : 'No'}\n\nBio: ${t.bio || 'N/A'}`);
-        }
-
-        function openTutorModal(id = null) {
+        window.openTutorModal = function(id = null) {
             document.getElementById('tutorForm').reset();
             document.getElementById('tutorEditId').value = '';
-            document.getElementById('tutorModalTitle').textContent = id ? 'Edit Tutor' : 'Add New Tutor';
+            document.getElementById('tutorModalTitle').textContent = id ? 'Edit Tutor' : 'Add Tutor';
             if(id) {
                 const t = globalTutors.find(x => x.id === id);
                 if(t) {
@@ -2357,108 +1179,98 @@
             document.getElementById('tutorModal').classList.add('show');
         }
 
-        function closeTutorModal() { document.getElementById('tutorModal').classList.remove('show'); }
+        window.closeTutorModal = function() { document.getElementById('tutorModal').classList.remove('show'); }
 
-        async function saveTutor() {
+        window.saveTutor = async function() {
             const form = document.getElementById('tutorForm');
             if (!form.checkValidity()) { form.reportValidity(); return; }
-            
+
             const id = document.getElementById('tutorEditId').value;
-            const cRaw = document.getElementById('tutorCourses').value.trim();
+            const coursesRaw = document.getElementById('tutorCourses').value;
             const data = {
-                nickname: document.getElementById('tutorNickname').value.trim(),
-                fullName: document.getElementById('tutorFullName').value.trim(),
-                department: document.getElementById('tutorDepartment').value.trim(),
+                nickname: document.getElementById('tutorNickname').value,
+                fullName: document.getElementById('tutorFullName').value,
+                department: document.getElementById('tutorDepartment').value,
                 level: document.getElementById('tutorLevel').value,
                 price: document.getElementById('tutorPrice').value,
                 semester: document.getElementById('tutorSemester').value,
-                courses: cRaw ? cRaw.split(',').map(x => x.trim()).filter(x => x) : [],
-                email: document.getElementById('tutorEmail').value.trim(),
-                whatsapp: document.getElementById('tutorWhatsApp').value.trim(),
-                imageUrl: document.getElementById('tImg').value.trim(),
-                bio: document.getElementById('tutorBio').value.trim()
+                courses: coursesRaw ? coursesRaw.split(',').map(c=>c.trim()) : [],
+                email: document.getElementById('tutorEmail').value,
+                whatsapp: document.getElementById('tutorWhatsApp').value,
+                imageUrl: document.getElementById('tImg').value,
+                bio: document.getElementById('tutorBio').value
             };
             
             try {
                 if (id) {
                     await db.collection("tutors").doc(id).set(data, {merge: true});
-                    logAdminActivity('edit_tutor', `Updated tutor "${data.nickname}"`);
-                    showToast('Tutor updated!', 'success');
+                    logAdminActivity("edit_tutor", `Edited ${data.nickname}`);
                 } else {
                     await db.collection("tutors").add(data);
-                    logAdminActivity('add_tutor', `Added tutor "${data.nickname}"`);
-                    showToast('Tutor added!', 'success');
+                    logAdminActivity("add_tutor", `Added ${data.nickname}`);
                 }
                 window.closeTutorModal();
+                showToast("Tutor Saved!", "success");
             } catch(e) { showToast("Error saving", "error"); }
-        }
+        };
 
-        function deleteTutor(id) {
+        window.deleteTutor = function(id) {
             const t = globalTutors.find(x => x.id === id);
-            if(!t) return;
-            showConfirmDialog('Delete Tutor', `Delete "${t.nickname} (${t.fullName})"?`, async function() {
+            showConfirmDialog('Delete', `Delete tutor ${t?.nickname}?`, async function() {
                 try {
                     await db.collection("tutors").doc(id).delete();
-                    logAdminActivity('delete_tutor', `Deleted tutor "${t.nickname}"`);
-                    showToast('Tutor deleted', 'success');
+                    logAdminActivity('delete_tutor', `Deleted tutor ${t?.nickname}`);
+                    showToast('Tutor Deleted', 'success');
                 } catch(e) {}
             });
-        }
+        };
 
-        // --- MESSAGES AND ANNOUNCEMENTS ---
         document.getElementById('sendMessageForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             const type = document.getElementById('messageType').value;
             const title = document.getElementById('messageTitle').value.trim();
             const body = document.getElementById('messageBody').value.trim();
-            if (!title || !body) return;
             
+            const btn = this.querySelector('.btn-save');
+            btn.innerHTML = '<span class="spinner"></span> Sending...';
             try {
-                await db.collection("messages").add({ type, title, body, timestamp: new Date().toISOString(), readBy: [], sentBy: currentAdmin });
+                await db.collection("messages").add({
+                    type: type, title: title, body: body, timestamp: new Date().toISOString(), sentBy: currentAdmin, readBy: []
+                });
                 logAdminActivity('send_message', `Sent ${type} message: "${title}"`);
                 this.reset();
                 showToast('Message sent to all users!', 'success');
-            } catch(e) {}
+            } catch(e) { showToast('Error sending message', 'error'); }
+            finally { btn.innerHTML = '<i class="fas fa-paper-plane"></i> Send Global Message'; }
         });
 
-        function renderSentMessages() {
+        window.renderSentMessages = function() {
             const tbody = document.getElementById('sentMessagesBody');
-            document.getElementById('sentMsgCount').textContent = globalMessages.length;
-            if (!globalMessages.length) {
-                tbody.innerHTML = '<tr><td colspan="6"><div class="empty-state"><p>No messages sent yet</p></div></td></tr>';
+            if (globalMessages.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5"><div class="empty-state"><i class="fas fa-inbox"></i><p>No messages sent yet</p></div></td></tr>';
                 return;
             }
-            tbody.innerHTML = globalMessages.map(m => `<tr><td><span class="status-badge ${m.type}">${m.type}</span></td><td><strong>${m.title}</strong></td><td>${m.body.substring(0,60)}...</td><td>${new Date(m.timestamp).toLocaleString()}</td><td>${m.readBy?m.readBy.length:0} users</td><td><div class="action-btns"><button class="btn-sm view" onclick="window.previewSentMessage('${m.id}')"><i class="fas fa-eye"></i></button><button class="btn-sm delete" onclick="window.deleteMessage('${m.id}')"><i class="fas fa-trash-alt"></i></button></div></td></tr>`).join('');
+            tbody.innerHTML = globalMessages.map(msg => {
+                const time = new Date(msg.timestamp).toLocaleString();
+                return `<tr>
+                            <td><span class="status-badge ${msg.type}">${msg.type}</span></td>
+                            <td><strong>${msg.title}</strong></td>
+                            <td>${msg.body.substring(0, 40)}...</td>
+                            <td>${time}</td>
+                            <td>
+                                <button class="btn-sm delete" onclick="window.deleteGlobalMsg('${msg.id}')" title="Delete"><i class="fas fa-trash-alt"></i></button>
+                            </td>
+                        </tr>`;
+            }).join('');
         }
 
-        function previewMessage() {
-            const type = document.getElementById('messageType').value;
-            const title = document.getElementById('messageTitle').value.trim();
-            const body = document.getElementById('messageBody').value.trim();
-            if (!title || !body) { showToast('Please fill in title and body first.', 'warning'); return; }
-            alert(`Message Preview:\n\nType: ${type}\nTitle: ${title}\n\nBody:\n${body}`);
-        }
-
-        function previewSentMessage(id) {
-            const m = globalMessages.find(x => x.id === id);
-            if (!m) return;
-            alert(`Type: ${m.type}\nTitle: ${m.title}\nRead by: ${m.readBy?m.readBy.length:0} users\n\nFull Body:\n${m.body}`);
-        }
-
-        function deleteMessage(id) {
-            showConfirmDialog('Delete Message', 'Are you sure you want to delete this message?', async function() {
+        window.deleteGlobalMsg = function(id) {
+            showConfirmDialog('Delete Message', 'Remove this message from the cloud? Users will no longer see it.', async function() {
                 try {
                     await db.collection("messages").doc(id).delete();
-                    logAdminActivity('delete_message', 'Deleted a message');
-                    showToast('Message deleted!', 'success');
-                } catch(e) {}
-            });
-        }
-
-        function clearAllMessages() {
-            showConfirmDialog('Clear All Messages', 'Are you sure you want to delete ALL sent messages? (Must be done manually in Firebase console for security)', function() {
-                alert('For security reasons, bulk deletion is disabled in the UI. Please delete messages individually or use the Firebase Console.');
-                closeConfirmDialog();
+                    logAdminActivity('delete_message', 'Deleted a global message');
+                    showToast('Message deleted', 'success');
+                } catch(e) { showToast('Error deleting', 'error'); }
             });
         }
 
@@ -2466,60 +1278,58 @@
             e.preventDefault();
             const type = document.getElementById('announcementType').value;
             const text = document.getElementById('announcementText').value.trim();
+            const btn = this.querySelector('.btn-save');
+            btn.innerHTML = '<span class="spinner"></span> Publishing...';
             try {
-                await db.collection("settings").doc("announcement").set({ text, type, active: true, timestamp: new Date().toISOString(), sentBy: currentAdmin });
-                logAdminActivity('publish_announcement', `Published ${type} announcement`);
+                await db.collection("settings").doc("announcement").set({
+                    text: text, type: type, active: true, timestamp: new Date().toISOString(), sentBy: currentAdmin
+                });
+                logAdminActivity('publish_announcement', `Published announcement`);
                 this.reset();
-                showToast('Announcement published!', 'success');
-            } catch(e) {}
+                showToast('Announcement Live!', 'success');
+            } catch(e) { showToast('Error publishing', 'error'); }
+            finally { btn.innerHTML = '<i class="fas fa-bullhorn"></i> Publish'; }
         });
 
-        function removeAnnouncement() {
-            showConfirmDialog('Remove Announcement', 'Remove the active announcement bar?', async function() {
-                try {
-                    await db.collection("settings").doc("announcement").set({ active: false }, {merge:true});
-                    logAdminActivity('remove_announcement', 'Removed announcement bar');
-                    showToast('Announcement removed!', 'info');
-                } catch(e) {}
-            });
+        window.removeAnnouncement = async function() {
+            try {
+                await db.collection("settings").doc("announcement").set({ active: false }, { merge: true });
+                logAdminActivity('remove_announcement', `Removed announcement`);
+                showToast('Announcement removed', 'info');
+            } catch(e) { showToast('Error removing', 'error'); }
         }
 
-        // --- BOOKINGS & ACTIVITIES ---
-        function renderBookings() {
-            const tbody = document.getElementById('bookingsTableBody');
-            if (!globalBookings.length) {
-                tbody.innerHTML = '<tr><td colspan="5"><div class="empty-state"><p>No bookings logged yet</p></div></td></tr>';
-                return;
-            }
-            tbody.innerHTML = globalBookings.map(b => `<tr><td><strong>${b.name}</strong><br><small>${b.level}L, ${b.department}</small></td><td>${b.email}<br><small>${b.phone}</small></td><td><span class="status-badge ${b.booking_type==='personal'?'active':'info'}">${b.booking_type}</span><br><small>${b.student_count} student(s)</small></td><td><strong>Course:</strong> ${b.courses?b.courses.join(', '):''}<br><strong>Tutor:</strong> ${b.preferred_tutors?.length?b.preferred_tutors.join(', '):'Any'}</td><td>${new Date(b.timestamp).toLocaleString()}</td></tr>`).join('');
-        }
-
-        function renderActivities() {
-            const c = document.getElementById('activitiesTimeline');
+        window.renderActivities = function() {
+            const container = document.getElementById('activitiesTimeline');
             document.getElementById('activityCountBadge').textContent = globalActivities.length;
-            if (!globalActivities.length) {
-                c.innerHTML = '<div class="empty-state"><p>No activities recorded yet</p></div>';
+            if (globalActivities.length === 0) {
+                container.innerHTML = '<div class="empty-state"><i class="fas fa-history"></i><p>No activities found</p></div>';
                 return;
             }
-            c.innerHTML = globalActivities.map(a => `<div class="activity-item"><div class="activity-header"><span class="activity-action">${a.action.replace('_',' ')}</span><span class="activity-time">${new Date(a.timestamp).toLocaleString()}</span></div><div class="activity-details"><strong>${a.userName||'System'}</strong> - ${a.details||''}</div></div>`).join('');
+            container.innerHTML = globalActivities.map(act => {
+                const time = new Date(act.timestamp).toLocaleString();
+                return `<div class="activity-item">
+                            <div class="activity-header"><span class="activity-action">${act.action}</span><span class="activity-time">${time}</span></div>
+                            <div class="activity-details"><strong>${act.userName || 'User'}</strong> - ${act.details || ''}</div>
+                        </div>`;
+            }).join('');
         }
 
-        function clearActivities() {
+        window.clearActivities = function() {
             showConfirmDialog('Clear Log', 'Clearing activity logs must be done manually in Firebase console to prevent accidental deletion of audit trails.', function() {
-                closeConfirmDialog();
+                window.closeConfirmDialog();
             });
         }
 
-        // --- UTILS ---
         function showConfirmDialog(title, message, callback) {
             document.getElementById('confirmTitle').textContent = title;
             document.getElementById('confirmMessage').textContent = message;
             document.getElementById('confirmDialog').classList.add('show');
             confirmCallback = callback;
+            document.getElementById('confirmDeleteBtn').onclick = () => { if(confirmCallback) confirmCallback(); window.closeConfirmDialog(); };
         }
-
-        function closeConfirmDialog() { document.getElementById('confirmDialog').classList.remove('show'); confirmCallback = null; }
-
+        window.closeConfirmDialog = function() { document.getElementById('confirmDialog').classList.remove('show'); confirmCallback = null; }
+        
         function showToast(message, type = 'info') {
             const container = document.getElementById('toastContainer');
             const toast = document.createElement('div');
@@ -2530,11 +1340,10 @@
             setTimeout(() => { if (toast.parentElement) { toast.style.opacity = '0'; setTimeout(() => toast.remove(), 300); } }, 4000);
         }
 
-        // --- EXPORT ---
-        function exportData(format) {
+        window.exportData = function(format) {
             if (format === 'pdf') {
                 const w = window.open('', '_blank');
-                w.document.write(`<html><head><title>GPA Export</title><style>body{font-family:Arial;padding:20px}table{width:100%;border-collapse:collapse}th,td{border:1px solid #ddd;padding:8px;text-align:left}</style></head><body><h1>GPA Admin Export</h1><h2>Users</h2><table><tr><th>Name</th><th>Email</th></tr>${globalUsers.map(u=>`<tr><td>${u.fullName||''}</td><td>${u.email||''}</td></tr>`).join('')}</table><h2>Courses</h2><table><tr><th>Code</th><th>Name</th></tr>${globalCourses.map(c=>`<tr><td>${c.code}</td><td>${c.name}</td></tr>`).join('')}</table></body></html>`);
+                w.document.write(`<html><head><title>GPA Export</title><style>body{font-family:Arial;padding:20px}table{width:100%;border-collapse:collapse}th,td{border:1px solid #ddd;padding:8px;text-align:left}</style></head><body><h1>GPA Admin Export</h1><h2>Activities</h2><table><tr><th>Action</th><th>User</th><th>Details</th><th>Date</th></tr>${globalActivities.map(a=>`<tr><td>${a.action}</td><td>${a.userName||''}</td><td>${a.details||''}</td><td>${new Date(a.timestamp).toLocaleString()}</td></tr>`).join('')}</table></body></html>`);
                 w.document.close(); setTimeout(() => w.print(), 500);
             } else {
                 let csv = 'Action,User,Details,Date\n';
@@ -2545,19 +1354,22 @@
             showToast(`Exported!`, 'success');
         }
 
-        function exportUsers(format) {
-            if (!globalUsers.length) { showToast('No users!', 'warning'); return; }
+        window.exportUsers = function(format) {
+            if (!globalUsers.length) return showToast('No users!', 'warning');
             if (format === 'excel') {
                 let csv = 'Name,Email,Phone,Department,Level\n';
                 globalUsers.forEach(u => csv += `"${u.fullName||''}","${u.email||''}","${u.phone||''}","${u.department||''}","${u.level||''}"\n`);
                 const blob = new Blob([csv], { type: 'text/csv' });
                 const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `gpa_users.csv`; a.click();
-            } else exportData('pdf');
+            } else {
+                const w = window.open('', '_blank');
+                w.document.write(`<html><head><title>GPA Users</title><style>body{font-family:Arial;padding:20px}table{width:100%;border-collapse:collapse}th,td{border:1px solid #ddd;padding:8px;text-align:left}</style></head><body><h1>GPA Users</h1><table><tr><th>Name</th><th>Email</th><th>Phone</th><th>Department</th></tr>${globalUsers.map(u=>`<tr><td>${u.fullName||''}</td><td>${u.email||''}</td><td>${u.phone||''}</td><td>${u.department||''}</td></tr>`).join('')}</table></body></html>`);
+                w.document.close(); setTimeout(() => w.print(), 500);
+            }
         }
 
-        function exportActivities(format) { exportData(format); }
+        window.exportActivities = function(format) { window.exportData(format); }
 
-        // Interactions
         document.getElementById('mobileToggle').addEventListener('click', () => { document.getElementById('sidebar').classList.toggle('open'); document.getElementById('sidebarBackdrop').classList.toggle('show'); });
         document.getElementById('sidebarBackdrop').addEventListener('click', function() { document.getElementById('sidebar').classList.remove('open'); this.classList.remove('show'); });
         document.querySelectorAll('.modal-overlay').forEach(o => { o.addEventListener('click', function(e) { if (e.target === this) this.classList.remove('show'); }); });
