@@ -4337,900 +4337,948 @@
         </div>
     </div>
    
-<script>
-    // ============ FIREBASE INITIALIZATION ============
-    const firebaseConfig = {
-        apiKey: "AIzaSyBoQQwFUf0YQNbSNgMkLzR8NcuOVKvlN3g",
-        authDomain: "genius-point-academy.firebaseapp.com",
-        projectId: "genius-point-academy",
-        storageBucket: "genius-point-academy.firebasestorage.app",
-        messagingSenderId: "963510545735",
-        appId: "1:963510545735:web:b3672dc5e7b7ba42317062"
-    };
+<script type="module">
+        // ============ FIREBASE SETUP ============
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+        import { getFirestore, collection, addDoc, doc, setDoc, getDoc, onSnapshot, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.firestore();
-
-    // ============ FIRESTORE HELPERS (replaces localStorage) ============
-    const COLLECTIONS = {
-        'users': 'users',
-        'sessions': 'sessions', 
-        'messages': 'messages',
-        'announcements': 'announcements',
-        'activities': 'activities',
-        'courses': 'courses',
-        'tutors': 'tutors'
-    };
-
-    // Save data to Firestore
-    async function saveToFirestore(collection, docId, data) {
-        try {
-            await db.collection(collection).doc(docId).set({
-                data: data,
-                updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-            });
-            return true;
-        } catch(e) {
-            console.log('Firestore save error:', e);
-            return false;
-        }
-    }
-
-    // Get data from Firestore
-    async function getFromFirestore(collection, docId) {
-        try {
-            const doc = await db.collection(collection).doc(docId).get();
-            return doc.exists ? doc.data().data : null;
-        } catch(e) {
-            console.log('Firestore get error:', e);
-            return null;
-        }
-    }
-
-    // Delete from Firestore
-    async function deleteFromFirestore(collection, docId) {
-        try {
-            await db.collection(collection).doc(docId).delete();
-            return true;
-        } catch(e) {
-            return false;
-        }
-    }
-
-    // ============ GLOBAL STATE ============
-    let currentUser = null;
-    let messages = [];
-    let unreadCount = 0;
-    let currentMessageView = 'list';
-    let currentDetailMessage = null;
-    let messageTabFilter = 'all';
-
-    // Cache for data
-    let cachedUsers = [];
-    let cachedCourses = [];
-    let cachedTutors = [];
-    let cachedActivities = [];
-    let cachedMessages = [];
-
-    // ============ INITIALIZATION ============
-    document.addEventListener('DOMContentLoaded', async function() {
-        console.log('🔥 Loading data from Firebase...');
-        
-        // Load all data from Firestore
-        await Promise.all([
-            loadUsersFromFirestore(),
-            loadMessagesFromFirestore(),
-            loadActivitiesFromFirestore(),
-            loadAnnouncementFromFirestore(),
-            loadSessionFromFirestore()
-        ]);
-        
-        // Initialize UI
-        updateAuthUI();
-        checkUnreadMessages();
-        
-        if (currentUser) {
-            showWelcomeToast();
-        }
-        
-        console.log('✅ All data loaded from Firebase Cloud!');
-    });
-
-    // ============ FIREBASE DATA LOADERS ============
-    async function loadUsersFromFirestore() {
-        const data = await getFromFirestore('users', 'all');
-        cachedUsers = data || [];
-    }
-
-    async function loadMessagesFromFirestore() {
-        const data = await getFromFirestore('messages', 'all');
-        messages = data || [];
-        if (messages.length === 0) {
-            seedInitialMessages();
-        }
-        updateUnreadCount();
-    }
-
-    async function loadActivitiesFromFirestore() {
-        const data = await getFromFirestore('activities', 'all');
-        cachedActivities = data || [];
-    }
-
-    async function loadAnnouncementFromFirestore() {
-        const data = await getFromFirestore('announcements', 'active');
-        if (data && data.active) {
-            showAnnouncementBar(data);
-        }
-    }
-
-    async function loadSessionFromFirestore() {
-        const data = await getFromFirestore('sessions', 'current');
-        if (data) {
-            currentUser = data;
-        }
-    }
-
-    // ============ USER AUTHENTICATION ============
-    function loadUserSession() {
-        // Already loaded from Firestore in initialization
-    }
-
-    async function saveUserSession(user) {
-        currentUser = user;
-        await saveToFirestore('sessions', 'current', user);
-    }
-
-    async function clearUserSession() {
-        currentUser = null;
-        await deleteFromFirestore('sessions', 'current');
-    }
-
-    function getUsers() {
-        return cachedUsers;
-    }
-
-    async function saveUsers(users) {
-        cachedUsers = users;
-        await saveToFirestore('users', 'all', users);
-    }
-
-    async function registerUser(userData) {
-        const users = getUsers();
-        
-        if (users.find(u => u.email === userData.email)) {
-            return { success: false, message: 'An account with this email already exists. Please login instead.' };
-        }
-        
-        const newUser = {
-            id: Date.now().toString(),
-            fullName: userData.fullName,
-            email: userData.email,
-            phone: userData.phone,
-            department: userData.department || '',
-            level: userData.level || '',
-            password: userData.password,
-            joinedDate: new Date().toISOString(),
-            bookings: []
+        const firebaseConfig = {
+            apiKey: "AIzaSyBoQQwFUf0YQNbSNgMkLzR8NcuOVKvlN3g",
+            authDomain: "genius-point-academy.firebaseapp.com",
+            projectId: "genius-point-academy",
+            storageBucket: "genius-point-academy.firebasestorage.app",
+            messagingSenderId: "963510545735",
+            appId: "1:963510545735:web:b3672dc5e7b7ba42317062",
+            measurementId: "G-CPL4RHJJEW"
         };
-        
-        users.push(newUser);
-        await saveUsers(users);
-        await logActivity('register', newUser.fullName, newUser.email);
-        
-        const loggedInUser = { ...newUser };
-        delete loggedInUser.password;
-        await saveUserSession(loggedInUser);
-        
-        return { success: true, user: loggedInUser };
-    }
 
-    async function loginUser(email, password) {
-        const users = getUsers();
-        const user = users.find(u => u.email === email && u.password === password);
-        
-        if (!user) {
-            return { success: false, message: 'Invalid email or password. Please try again.' };
-        }
-        
-        const loggedInUser = { ...user };
-        delete loggedInUser.password;
-        await saveUserSession(loggedInUser);
-        await logActivity('login', loggedInUser.fullName, loggedInUser.email);
-        
-        return { success: true, user: loggedInUser };
-    }
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
 
-    async function logActivity(action, name, email, details = '') {
-        cachedActivities.push({
-            id: Date.now().toString(),
-            action: action,
-            userName: name,
-            userEmail: email,
-            details: details,
-            timestamp: new Date().toISOString(),
-            ipInfo: 'Visitor'
-        });
-        if (cachedActivities.length > 500) {
-            cachedActivities.splice(0, cachedActivities.length - 500);
-        }
-        await saveToFirestore('activities', 'all', cachedActivities);
-    }
+        // ============ GLOBAL STATE ============
+        let currentUser = null;
+        let messages = [];
+        let unreadCount = 0;
+        let currentMessageView = 'list';
+        let currentDetailMessage = null;
+        let messageTabFilter = 'all';
 
-    // ============ AUTH UI ============
-    function updateAuthUI() {
-        const loginPromptBtn = document.getElementById('loginPromptBtn');
-        const userMenuContainer = document.getElementById('userMenuContainer');
-        const userDisplayName = document.getElementById('userDisplayName');
-        const userAvatarInitial = document.getElementById('userAvatarInitial');
-        const dropdownName = document.getElementById('dropdownName');
-        const dropdownEmail = document.getElementById('dropdownEmail');
-        const dropdownAvatar = document.getElementById('dropdownAvatar');
-        
-        if (currentUser) {
-            loginPromptBtn.classList.add('hide');
-            userMenuContainer.classList.add('show');
-            
-            const initial = currentUser.fullName ? currentUser.fullName.charAt(0).toUpperCase() : 'G';
-            userDisplayName.textContent = currentUser.fullName || 'User';
-            userAvatarInitial.textContent = initial;
-            dropdownName.textContent = currentUser.fullName || 'User';
-            dropdownEmail.textContent = currentUser.email || '';
-            dropdownAvatar.textContent = initial;
-        } else {
-            loginPromptBtn.classList.remove('hide');
-            userMenuContainer.classList.remove('show');
-        }
-    }
+        // ============ COURSE & TUTOR DATA (FULLY RESTORED) ============ 
+        const coursesDataFirst = {
+            '100': [
+                { code: 'MTH 101', name: 'Introductory Mathematics I', tutors: ['Muzzle (₦1,800)', 'O\'yemi (₦1,500)', 'Absamie (₦1,700)', 'E-Simple (₦2,000)', 'Tomi (₦1,500)'] },
+                { code: 'FMTH 103', name: 'Elementary Mathematics III', tutors: ['Absamie (₦1,700)', 'Tomi (₦1,500)'] },
+                { code: 'FCHE 101', name: 'General Chemistry I', tutors: ['E-Simple (₦2,000)', 'Physiobrain (₦1,500)', 'Davero (₦1,500)', 'Tomi (₦1,500)'] },
+                { code: 'PHY 101', name: 'General Physics I', tutors: ['E-Simple (₦2,000)', 'O\'yemi (₦1,500)', 'Absamie (₦1,700)', 'Physiobrain (₦1,500)', 'Muzzle (₦1,800)', 'Tomi (₦1,500)'] },
+                { code: 'PHY 103', name: 'General Physics III', tutors: ['E-Simple (₦2,000)', 'Absamie (₦1,700)', 'Muzzle (₦1,800)', 'Tomi (₦1,500)'] },
+                { code: 'BIO 101', name: 'General Biology I', tutors: ['Physiobrain (₦1,500)', 'Davero (₦1,500)', 'Favour (₦1,500)'] },
+                { code: 'MEE 101', name: 'Engineering Drawing I', tutors: [] }
+            ],
+            '200': [
+                { code: 'MTS 201', name: 'Mathematical Methods', tutors: ['E-Simple (₦2,000)', 'O\'yemi (₦1,500)', 'Muzzle (₦1,800)', 'Absamie (₦1,700)'] },
+                { code: 'EEE 201', name: 'Basic Electrical and Electronics Engineering I', tutors: ['Absamie (₦1,700)', 'O\'yemi (₦1,500)', 'E-Simple (₦2,000)'] },
+                { code: 'MEE 207', name: 'Elementary Mechanics', tutors: ['Muzzle (₦1,800)', 'O\'yemi (₦1,500)'] },
+                { code: 'MME 201', name: 'Science of Materials', tutors: ['O\'yemi (₦1,500)'] },
+                { code: 'BIO 201', name: 'Introduction to Genetics I', tutors: ['Favour (₦1,500)'] },
+                { code: 'MCB 201', name: 'General Microbiology I', tutors: ['Favour (₦1,500)'] },
+                { code: 'CHE 205', name: 'Physical Chemistry I', tutors: [] }
+            ],
+            '300': [
+                { code: 'EEE 305', name: 'Electrical Machines', tutors: ['E-Simple (₦2,000)'] },
+                { code: 'EEE 307', name: 'Electrical Machines II', tutors: ['E-Simple (₦2,000)'] },
+                { code: 'MTS 315', name: 'Engineering Mathematics I', tutors: ['E-Simple (₦2,000)', 'Muzzle (₦1,800)'] }
+            ],
+            '400': [
+                { code: 'EEE 401', name: 'Advanced Electrical Engineering I', tutors: ['E-Simple (₦2,000)'] },
+                { code: 'EEE 403', name: 'Advanced Electrical Engineering III', tutors: ['E-Simple (₦2,000)'] }
+            ],
+            '500': [
+                { code: 'NO_COURSES', name: 'No courses available for 500 level', tutors: [] }
+            ]
+        };
 
-    function showWelcomeToast() {
-        if (!currentUser) return;
-        const newToast = document.createElement('div');
-        newToast.className = 'welcome-toast show';
-        newToast.id = 'welcomeToast';
-        newToast.innerHTML = `
-            <button class="toast-close" onclick="this.parentElement.remove()">&times;</button>
-            <h4>👋 Welcome back, ${currentUser.fullName.split(' ')[0]}!</h4>
-            <p>Ready to achieve your academic breakthrough today?</p>
-        `;
-        document.body.appendChild(newToast);
-        setTimeout(() => { if (newToast.parentElement) newToast.remove(); }, 5000);
-    }
+        const coursesDataSecond = {
+            '100': [
+                { code: 'MTH 102', name: 'Introductory Mathematics II', tutors: ['Tomi (₦1,500)', 'Muzzle (₦1,800)', 'Absamie (₦1,700)', 'O\'yemi (₦1,500)'] },
+                { code: 'MTS 104', name: 'Introductory Applied Mathematics', tutors: ['Tomi (₦1,500)', 'Muzzle (₦1,800)', 'Absamie (₦1,700)'] },
+                { code: 'PHY 102', name: 'Basic General Physics II', tutors: ['Tomi (₦1,500)', 'Physiobrain (₦1,500)'] },
+                { code: 'BIO 102', name: 'General Biology II', tutors: [] },
+                { code: 'CHE 102', name: 'General Chemistry II', tutors: ['Tomi (₦1,500)'] },
+                { code: 'CHM 102', name: 'Chemistry II', tutors: ['Davero (₦1,500)', 'Physiobrain (₦1,500)', 'E-Simple (₦2,000)'] }
+            ],
+            '200': [
+                { code: 'MTS 202', name: 'Numerical Analysis', tutors: ['Absamie (₦1,700)', 'O\'yemi (₦1,500)'] },
+                { code: 'CVE 202', name: 'Strength of Materials', tutors: ['O\'yemi (₦1,500)'] },
+                { code: 'MEE 206', name: 'Engineering Thermodynamics', tutors: ['Muzzle (₦1,800)'] },
+                { code: 'EEE 202', name: 'Basic Electricity II', tutors: ['Absamie (₦1,700)'] }
+            ],
+            '300': [
+                { code: 'MTS 316', name: 'Engineering Mathematics II', tutors: ['E-Simple (₦2,000)', 'Muzzle (₦1,800)'] },
+                { code: 'EEE 302', name: 'Electronics Engineering II', tutors: ['E-Simple (₦2,000)'] }
+            ],
+            '400': [],
+            '500': []
+        };
 
-    // ============ AUTH MODAL ============
-    const authOverlay = document.getElementById('authOverlay');
-    const loginPromptBtn = document.getElementById('loginPromptBtn');
-    const authClose = document.getElementById('authClose');
-    const authTabs = document.querySelectorAll('.auth-tab');
-    const authForms = document.querySelectorAll('.auth-form');
-    const loginForm = document.getElementById('loginForm');
-    const registerForm = document.getElementById('registerForm');
-    const authError = document.getElementById('authError');
-    const authSuccess = document.getElementById('authSuccess');
-
-    function showAuthModal(tab = 'login') {
-        authOverlay.classList.add('show');
-        document.body.style.overflow = 'hidden';
-        switchAuthTab(tab);
-        clearAuthMessages();
-    }
-
-    loginPromptBtn.addEventListener('click', () => showAuthModal('login'));
-    
-    authClose.addEventListener('click', () => {
-        authOverlay.classList.remove('show');
-        document.body.style.overflow = '';
-    });
-
-    authOverlay.addEventListener('click', function(e) {
-        if (e.target === authOverlay) {
-            authOverlay.classList.remove('show');
-            document.body.style.overflow = '';
-        }
-    });
-
-    authTabs.forEach(tab => {
-        tab.addEventListener('click', function() {
-            switchAuthTab(this.getAttribute('data-auth-tab'));
-        });
-    });
-
-    function switchAuthTab(tabName) {
-        authTabs.forEach(t => t.classList.remove('active'));
-        authForms.forEach(f => f.classList.remove('active'));
-        const targetTab = document.querySelector(`.auth-tab[data-auth-tab="${tabName}"]`);
-        const targetForm = document.getElementById(`${tabName}Form`);
-        if (targetTab) targetTab.classList.add('active');
-        if (targetForm) targetForm.classList.add('active');
-        clearAuthMessages();
-    }
-
-    function clearAuthMessages() {
-        authError.classList.remove('show');
-        authError.textContent = '';
-        authSuccess.classList.remove('show');
-        authSuccess.textContent = '';
-    }
-
-    function showAuthError(message) {
-        authError.textContent = message;
-        authError.classList.add('show');
-        authSuccess.classList.remove('show');
-    }
-
-    function showAuthSuccess(message) {
-        authSuccess.textContent = message;
-        authSuccess.classList.add('show');
-        authError.classList.remove('show');
-    }
-
-    // Login Form Submit
-    loginForm.addEventListener('submit', async function(e) {
-        e.preventDefault();
-        clearAuthMessages();
-        
-        const email = document.getElementById('loginEmail').value.trim();
-        const password = document.getElementById('loginPassword').value;
-        
-        if (!email || !password) {
-            showAuthError('Please fill in all fields.');
-            return;
-        }
-        
-        const result = await loginUser(email, password);
-        
-        if (result.success) {
-            updateAuthUI();
-            showAuthSuccess('Login successful! Welcome back.');
-            setTimeout(() => {
-                authOverlay.classList.remove('show');
-                document.body.style.overflow = '';
-                clearAuthMessages();
-                loginForm.reset();
-                showWelcomeToast();
-            }, 1000);
-        } else {
-            showAuthError(result.message);
-        }
-    });
-
-    // Register Form Submit
-    registerForm.addEventListener('submit', async function(e) {
-        e.preventDefault();
-        clearAuthMessages();
-        
-        const fullName = document.getElementById('regFullName').value.trim();
-        const email = document.getElementById('regEmail').value.trim();
-        const phone = document.getElementById('regPhone').value.trim();
-        const department = document.getElementById('regDepartment').value.trim();
-        const level = document.getElementById('regLevel').value;
-        const password = document.getElementById('regPassword').value;
-        const confirmPassword = document.getElementById('regConfirmPassword').value;
-        
-        if (!fullName || !email || !phone || !password || !confirmPassword) {
-            showAuthError('Please fill in all required fields.');
-            return;
-        }
-        
-        if (password.length < 6) {
-            showAuthError('Password must be at least 6 characters.');
-            return;
-        }
-        
-        if (password !== confirmPassword) {
-            showAuthError('Passwords do not match.');
-            return;
-        }
-        
-        const result = await registerUser({ fullName, email, phone, department, level, password });
-        
-        if (result.success) {
-            updateAuthUI();
-            showAuthSuccess('Account created successfully! You are now logged in.');
-            setTimeout(() => {
-                authOverlay.classList.remove('show');
-                document.body.style.overflow = '';
-                clearAuthMessages();
-                registerForm.reset();
-                document.getElementById('passwordStrengthBar').className = 'password-strength-bar';
-            }, 1000);
-        } else {
-            showAuthError(result.message);
-        }
-    });
-
-    // Password strength indicator
-    document.getElementById('regPassword').addEventListener('input', function() {
-        const password = this.value;
-        const bar = document.getElementById('passwordStrengthBar');
-        if (password.length === 0) bar.className = 'password-strength-bar';
-        else if (password.length < 4) bar.className = 'password-strength-bar strength-weak';
-        else if (password.length < 8) bar.className = 'password-strength-bar strength-medium';
-        else bar.className = 'password-strength-bar strength-strong';
-    });
-
-    document.getElementById('forgotPasswordLink').addEventListener('click', function(e) {
-        e.preventDefault();
-        showAuthError('Please contact admin at academygeniuspoint@gmail.com to reset your password.');
-    });
-
-    // ============ USER MENU DROPDOWN ============
-    const userMenuTrigger = document.getElementById('userMenuTrigger');
-    const userDropdown = document.getElementById('userDropdown');
-
-    userMenuTrigger.addEventListener('click', function(e) {
-        e.stopPropagation();
-        userDropdown.classList.toggle('show');
-    });
-
-    document.addEventListener('click', function(e) {
-        if (!userMenuTrigger.contains(e.target) && !userDropdown.contains(e.target)) {
-            userDropdown.classList.remove('show');
-        }
-    });
-
-    document.getElementById('viewProfileBtn').addEventListener('click', function() {
-        userDropdown.classList.remove('show');
-        if (!currentUser) { showAuthModal('login'); return; }
-        showProfile();
-    });
-
-    document.getElementById('viewMessagesBtn').addEventListener('click', function() {
-        userDropdown.classList.remove('show');
-        openMessagePanel();
-    });
-
-    document.getElementById('myBookingsBtn').addEventListener('click', function() {
-        userDropdown.classList.remove('show');
-        if (!currentUser) { showAuthModal('login'); return; }
-        document.getElementById('booking').scrollIntoView({ behavior: 'smooth' });
-        alert('Your booking history will be displayed here. Currently under development.');
-    });
-
-    document.getElementById('logoutBtn').addEventListener('click', async function() {
-        userDropdown.classList.remove('show');
-        await clearUserSession();
-        updateAuthUI();
-        document.getElementById('profileSection').style.display = 'none';
-        alert('You have been logged out successfully.');
-    });
-
-    document.getElementById('profileLogoutBtn').addEventListener('click', async function() {
-        await clearUserSession();
-        updateAuthUI();
-        document.getElementById('profileSection').style.display = 'none';
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-        alert('You have been logged out successfully.');
-    });
-
-    // ============ PROFILE ============
-    function showProfile() {
-        if (!currentUser) return;
-        const profileSection = document.getElementById('profileSection');
-        document.getElementById('profileName').textContent = currentUser.fullName || 'N/A';
-        document.getElementById('profileEmail').textContent = currentUser.email || 'N/A';
-        document.getElementById('profilePhone').textContent = currentUser.phone || 'Not provided';
-        document.getElementById('profileDept').textContent = currentUser.department || 'Not provided';
-        document.getElementById('profileLevel').textContent = currentUser.level ? `${currentUser.level} Level` : 'Not provided';
-        document.getElementById('profileJoined').textContent = currentUser.joinedDate ? new Date(currentUser.joinedDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) : 'N/A';
-        document.getElementById('profileAvatarLarge').textContent = currentUser.fullName ? currentUser.fullName.charAt(0).toUpperCase() : 'G';
-        profileSection.style.display = 'block';
-        profileSection.scrollIntoView({ behavior: 'smooth' });
-    }
-
-    // ============ MESSAGE SYSTEM ============
-    function seedInitialMessages() {
-        messages = [
-            {
-                id: 'msg_001', type: 'greeting',
-                title: 'Welcome to Genius Point Academy! 🎓',
-                body: 'We are thrilled to have you here! Genius Point Academy is dedicated to helping FUTA students achieve academic excellence through personalized tutoring.',
-                timestamp: new Date(Date.now() - 86400000 * 2).toISOString(), readBy: []
-            },
-            {
-                id: 'msg_002', type: 'update',
-                title: '📚 Second Semester Courses Now Available!',
-                body: 'Great news! We have added second semester courses to our catalog. Check the semester toggle in Tutors or Courses section.',
-                timestamp: new Date(Date.now() - 86400000).toISOString(), readBy: []
-            },
-            {
-                id: 'msg_003', type: 'info',
-                title: '💡 How to Get the Most Out of Tutoring',
-                body: 'Prepare specific questions before your session and don\'t hesitate to ask your tutor to explain concepts differently if needed.',
-                timestamp: new Date(Date.now() - 43200000).toISOString(), readBy: []
-            }
-        ];
-        saveMessages();
-        updateUnreadCount();
-    }
-
-    async function saveMessages() {
-        await saveToFirestore('messages', 'all', messages);
-    }
-
-    function updateUnreadCount() {
-        if (!currentUser) {
-            unreadCount = messages.length;
-        } else {
-            unreadCount = messages.filter(msg => !msg.readBy.includes(currentUser.email)).length;
-        }
-        updateUnreadBadges();
-    }
-
-    function updateUnreadBadges() {
-        const badge = document.getElementById('notificationBadge');
-        const bellLabel = document.getElementById('messageBellLabel');
-        const panelUnreadCount = document.getElementById('panelUnreadCount');
-        const dropdownBadge = document.getElementById('dropdownUnreadBadge');
-        const tabAllCount = document.getElementById('tabAllCount');
-        const tabUnreadCount = document.getElementById('tabUnreadCount');
-        
-        if (unreadCount > 0) {
-            badge.textContent = unreadCount > 99 ? '99+' : unreadCount;
-            badge.classList.add('show', 'pulse-badge');
-            bellLabel.classList.add('show');
-            panelUnreadCount.textContent = unreadCount;
-            panelUnreadCount.style.display = 'inline';
-            dropdownBadge.textContent = unreadCount;
-            dropdownBadge.style.display = 'inline';
-        } else {
-            badge.classList.remove('show', 'pulse-badge');
-            bellLabel.classList.remove('show');
-            panelUnreadCount.style.display = 'none';
-            dropdownBadge.style.display = 'none';
-        }
-        tabAllCount.textContent = messages.length;
-        tabUnreadCount.textContent = unreadCount;
-    }
-
-    function checkUnreadMessages() {
-        updateUnreadCount();
-        if (unreadCount > 0 && currentUser) {
-            const unreadMessages = messages.filter(msg => !msg.readBy.includes(currentUser.email));
-            if (unreadMessages.length > 0) {
-                showNewMessagePopup(unreadMessages[unreadMessages.length - 1]);
-            }
-        }
-    }
-
-    function showNewMessagePopup(message) {
-        const popup = document.getElementById('newMessagePopup');
-        document.getElementById('popupTitle').textContent = message.title;
-        document.getElementById('popupText').textContent = message.body.substring(0, 100) + '...';
-        const popupIcon = popup.querySelector('.popup-icon i');
-        popupIcon.className = 'fas';
-        switch(message.type) {
-            case 'greeting': popupIcon.classList.add('fa-smile'); break;
-            case 'update': popupIcon.classList.add('fa-bell'); break;
-            case 'urgent': popupIcon.classList.add('fa-exclamation-triangle'); break;
-            default: popupIcon.classList.add('fa-info-circle');
-        }
-        popup.classList.add('show');
-        setTimeout(() => popup.classList.remove('show'), 8000);
-    }
-
-    document.getElementById('popupClose').addEventListener('click', () => {
-        document.getElementById('newMessagePopup').classList.remove('show');
-    });
-
-    document.getElementById('popupAction').addEventListener('click', () => {
-        document.getElementById('newMessagePopup').classList.remove('show');
-        openMessagePanel();
-    });
-
-    document.getElementById('messageBellBtn').addEventListener('click', openMessagePanel);
-
-    // ============ MESSAGE PANEL ============
-    const messagePanel = document.getElementById('messagePanel');
-    const messagePanelOverlay = document.getElementById('messagePanelOverlay');
-
-    function openMessagePanel() {
-        messagePanel.classList.add('open');
-        messagePanelOverlay.classList.add('show');
-        document.body.style.overflow = 'hidden';
-        showMessageListView();
-        renderMessageList();
-    }
-
-    function closeMessagePanel() {
-        messagePanel.classList.remove('open');
-        messagePanelOverlay.classList.remove('show');
-        document.body.style.overflow = '';
-    }
-
-    document.getElementById('messagePanelClose').addEventListener('click', closeMessagePanel);
-    messagePanelOverlay.addEventListener('click', closeMessagePanel);
-
-    document.querySelectorAll('.message-panel-tab').forEach(tab => {
-        tab.addEventListener('click', function() {
-            document.querySelectorAll('.message-panel-tab').forEach(t => t.classList.remove('active'));
-            this.classList.add('active');
-            messageTabFilter = this.getAttribute('data-tab');
-            renderMessageList();
-        });
-    });
-
-    function showMessageListView() {
-        currentMessageView = 'list';
-        document.getElementById('messageList').style.display = 'block';
-        document.getElementById('messageDetailView').style.display = 'none';
-    }
-
-    function showMessageDetailView(message) {
-        currentMessageView = 'detail';
-        currentDetailMessage = message;
-        document.getElementById('messageList').style.display = 'none';
-        document.getElementById('messageDetailView').style.display = 'flex';
-        document.getElementById('detailTitle').textContent = message.title;
-        document.getElementById('detailTime').textContent = formatMessageTime(message.timestamp);
-        document.getElementById('detailBody').textContent = message.body;
-        const detailBadge = document.getElementById('detailBadge');
-        detailBadge.textContent = message.type;
-        detailBadge.className = 'message-type-badge ' + message.type;
-        
-        if (currentUser && !message.readBy.includes(currentUser.email)) {
-            message.readBy.push(currentUser.email);
-            saveMessages();
-            updateUnreadCount();
-            updateUnreadBadges();
-            renderMessageList();
-        }
-    }
-
-    document.getElementById('messageDetailBack').addEventListener('click', () => {
-        showMessageListView();
-        renderMessageList();
-    });
-
-    function renderMessageList() {
-        const messageList = document.getElementById('messageList');
-        let filteredMessages = messages;
-        
-        if (messageTabFilter === 'unread') {
-            filteredMessages = currentUser 
-                ? messages.filter(msg => !msg.readBy.includes(currentUser.email))
-                : messages.filter(msg => !msg.readBy.includes('guest'));
-        }
-        
-        filteredMessages.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
-        
-        if (filteredMessages.length === 0) {
-            messageList.innerHTML = `<div class="message-empty"><i class="fas fa-inbox"></i><p>${messageTabFilter === 'unread' ? 'No unread messages' : 'No messages yet'}</p><small>Updates from GPA will appear here</small></div>`;
-            return;
-        }
-        
-        messageList.innerHTML = filteredMessages.map(msg => {
-            const isUnread = currentUser ? !msg.readBy.includes(currentUser.email) : !msg.readBy.includes('guest');
-            return `
-                <div class="message-item ${isUnread ? 'unread' : ''}" data-message-id="${msg.id}">
-                    <span class="message-type-badge ${msg.type}">${msg.type}</span>
-                    <button class="message-delete" data-delete-id="${msg.id}" title="Delete"><i class="fas fa-trash-alt"></i></button>
-                    <div class="message-title">${msg.title}</div>
-                    <div class="message-preview">${msg.body.substring(0, 120)}...</div>
-                    <div class="message-time">${formatMessageTime(msg.timestamp)}</div>
-                </div>
-            `;
-        }).join('');
-        
-        messageList.querySelectorAll('.message-item').forEach(item => {
-            item.addEventListener('click', function(e) {
-                if (e.target.closest('.message-delete')) return;
-                const msg = messages.find(m => m.id === this.getAttribute('data-message-id'));
-                if (msg) showMessageDetailView(msg);
+        // ============ FIREBASE REAL-TIME LISTENERS ============
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check Auth State
+            onAuthStateChanged(auth, async (user) => {
+                if (user) {
+                    const userDoc = await getDoc(doc(db, "users", user.uid));
+                    if (userDoc.exists()) {
+                        currentUser = { id: user.uid, email: user.email, ...userDoc.data() };
+                    } else {
+                        currentUser = { id: user.uid, email: user.email, fullName: 'Student' };
+                    }
+                    updateAuthUI();
+                    checkUnreadMessages();
+                    showWelcomeToast();
+                } else {
+                    currentUser = null;
+                    updateAuthUI();
+                }
             });
-        });
-        
-        messageList.querySelectorAll('.message-delete').forEach(btn => {
-            btn.addEventListener('click', function(e) {
-                e.stopPropagation();
-                if (confirm('Delete this message?')) {
-                    messages = messages.filter(m => m.id !== this.getAttribute('data-delete-id'));
-                    saveMessages();
-                    updateUnreadCount();
-                    updateUnreadBadges();
+
+            // Fetch Real-time Messages
+            const msgQuery = query(collection(db, "messages"), orderBy("timestamp", "desc"));
+            onSnapshot(msgQuery, (snapshot) => {
+                messages = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                updateUnreadCount();
+                if (document.getElementById('messagePanel').classList.contains('open')) {
                     renderMessageList();
                 }
             });
+
+            // Fetch Real-time Announcements
+            onSnapshot(doc(db, "settings", "announcement"), (docSnap) => {
+                if (docSnap.exists() && docSnap.data().active) {
+                    showAnnouncementBar(docSnap.data());
+                } else {
+                    hideAnnouncementBar();
+                }
+            });
+
+            // Initialize UI Default States
+            updateAuthUI();
+            checkUnreadMessages();
         });
-    }
 
-    function formatMessageTime(timestamp) {
-        const date = new Date(timestamp);
-        const now = new Date();
-        const diffMins = Math.floor((now - date) / 60000);
-        const diffHours = Math.floor((now - date) / 3600000);
-        const diffDays = Math.floor((now - date) / 86400000);
-        if (diffMins < 1) return 'Just now';
-        if (diffMins < 60) return `${diffMins} min ago`;
-        if (diffHours < 24) return `${diffHours} hour${diffHours > 1 ? 's' : ''} ago`;
-        if (diffDays < 7) return `${diffDays} day${diffDays > 1 ? 's' : ''} ago`;
-        return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
-    }
-
-    // ============ MESSAGE TOAST ============
-    function showMessageToast(message) {
-        const toast = document.getElementById('messageToast');
-        const toastIcon = document.getElementById('toastIcon');
-        toastIcon.className = 'fas';
-        switch(message.type) {
-            case 'greeting': toastIcon.classList.add('fa-smile', 'greeting-icon'); break;
-            case 'update': toastIcon.classList.add('fa-bell', 'update-icon'); break;
-            case 'urgent': toastIcon.classList.add('fa-exclamation-triangle', 'urgent-icon'); toast.classList.add('urgent-toast'); break;
-            default: toastIcon.classList.add('fa-info-circle', 'info-icon');
-        }
-        document.getElementById('toastTitle').textContent = message.title;
-        document.getElementById('toastBody').textContent = message.body.substring(0, 150) + '...';
-        toast.classList.add('show');
-        setTimeout(() => { toast.classList.remove('show', 'urgent-toast'); }, 5000);
-    }
-
-    document.getElementById('toastCloseBtn').addEventListener('click', () => {
-        document.getElementById('messageToast').classList.remove('show');
-    });
-
-    // ============ ANNOUNCEMENT BAR ============
-    async function loadAnnouncementFromFirestore() {
-        const data = await getFromFirestore('announcements', 'active');
-        if (data && data.active) showAnnouncementBar(data);
-    }
-
-    function showAnnouncementBar(announcement) {
-        const bar = document.getElementById('announcementBar');
-        bar.className = 'announcement-bar';
-        if (announcement.type === 'urgent') bar.classList.add('urgent');
-        else if (announcement.type === 'info') bar.classList.add('info-bar');
-        else if (announcement.type === 'greeting') bar.classList.add('greeting-bar');
-        document.getElementById('announcementText').textContent = announcement.text;
-        bar.classList.add('show');
-        document.body.classList.add('has-announcement');
-    }
-
-    async function hideAnnouncementBar() {
-        document.getElementById('announcementBar').classList.remove('show');
-        document.body.classList.remove('has-announcement');
-        const announcement = await getFromFirestore('announcements', 'active');
-        if (announcement) {
-            announcement.active = false;
-            await saveToFirestore('announcements', 'active', announcement);
-        }
-    }
-
-    document.getElementById('announcementClose').addEventListener('click', hideAnnouncementBar);
-
-    // ============ ADMIN COMMUNICATION ============
-    window.receiveAdminMessage = async function(messageData) {
-        const newMessage = {
-            id: 'msg_' + Date.now(),
-            type: messageData.type || 'update',
-            title: messageData.title || 'New Update',
-            body: messageData.body || 'You have a new message from GPA.',
-            timestamp: new Date().toISOString(),
-            readBy: []
-        };
-        messages.push(newMessage);
-        await saveMessages();
-        updateUnreadCount();
-        updateUnreadBadges();
-        showMessageToast(newMessage);
-        if (unreadCount > 0) showNewMessagePopup(newMessage);
-    };
-
-    window.receiveAnnouncement = async function(announcementData) {
-        const announcement = {
-            text: announcementData.text || 'New announcement',
-            type: announcementData.type || 'info',
-            active: true,
-            timestamp: new Date().toISOString()
-        };
-        await saveToFirestore('announcements', 'active', announcement);
-        showAnnouncementBar(announcement);
-    };
-
-    // ============ SEMESTER TOGGLE FOR TUTORS ============
-    const tutorSemFirstBtn = document.getElementById('tutorSemFirstBtn');
-    const tutorSemSecondBtn = document.getElementById('tutorSemSecondBtn');
-
-    function switchTutorSemester(semester) {
-        tutorSemFirstBtn.classList.remove('active');
-        tutorSemSecondBtn.classList.remove('active');
-        document.getElementById('tutorSemFirst').classList.remove('active');
-        document.getElementById('tutorSemSecond').classList.remove('active');
-        if (semester === 'first') {
-            tutorSemFirstBtn.classList.add('active');
-            document.getElementById('tutorSemFirst').classList.add('active');
-        } else {
-            tutorSemSecondBtn.classList.add('active');
-            document.getElementById('tutorSemSecond').classList.add('active');
-        }
-    }
-
-    tutorSemFirstBtn.addEventListener('click', () => switchTutorSemester('first'));
-    tutorSemSecondBtn.addEventListener('click', () => switchTutorSemester('second'));
-
-    // ============ SEMESTER TOGGLE FOR COURSES ============
-    const courseSemFirstBtn = document.getElementById('courseSemFirstBtn');
-    const courseSemSecondBtn = document.getElementById('courseSemSecondBtn');
-
-    function switchCourseSemester(semester) {
-        courseSemFirstBtn.classList.remove('active');
-        courseSemSecondBtn.classList.remove('active');
-        document.getElementById('courseSemFirst').classList.remove('active');
-        document.getElementById('courseSemSecond').classList.remove('active');
-        if (semester === 'first') {
-            courseSemFirstBtn.classList.add('active');
-            document.getElementById('courseSemFirst').classList.add('active');
-            resetLevelTabs('first');
-        } else {
-            courseSemSecondBtn.classList.add('active');
-            document.getElementById('courseSemSecond').classList.add('active');
-            resetLevelTabs('second');
-        }
-    }
-
-    courseSemFirstBtn.addEventListener('click', () => switchCourseSemester('first'));
-    courseSemSecondBtn.addEventListener('click', () => switchCourseSemester('second'));
-
-    function resetLevelTabs(semester) {
-        const levelTabs = document.querySelectorAll('#courses .level-tab');
-        const activeSemester = semester === 'first' ? document.getElementById('courseSemFirst') : document.getElementById('courseSemSecond');
-        levelTabs.forEach(t => t.classList.remove('active'));
-        if (levelTabs[0]) levelTabs[0].classList.add('active');
-        activeSemester.querySelectorAll('.courses-content').forEach(c => c.classList.remove('active'));
-        const firstContent = activeSemester.querySelector('.courses-content');
-        if (firstContent) firstContent.classList.add('active');
-    }
-
-    // ============ LEVEL TABS ============
-    document.querySelectorAll('#courses .level-tab').forEach(tab => {
-        tab.addEventListener('click', function() {
-            const level = this.getAttribute('data-level');
-            const activeContainer = document.getElementById('courseSemFirst').classList.contains('active') 
-                ? document.getElementById('courseSemFirst') : document.getElementById('courseSemSecond');
-            document.querySelectorAll('#courses .level-tab').forEach(t => t.classList.remove('active'));
-            this.classList.add('active');
-            activeContainer.querySelectorAll('.courses-content').forEach(c => c.classList.remove('active'));
-            const target = activeContainer.querySelector(`[id*="level-${level}"]`);
-            if (target) target.classList.add('active');
-        });
-    });
-
-    // ============ FAQ ============
-    document.querySelectorAll('.faq-item').forEach(item => {
-        item.querySelector('.faq-question').addEventListener('click', () => {
-            document.querySelectorAll('.faq-item').forEach(other => { if (other !== item) other.classList.remove('active'); });
-            item.classList.toggle('active');
-        });
-    });
-
-    // ============ COURSE DATA ============
-    const coursesDataFirst = { /* ... SAME AS BEFORE ... */ };
-    const coursesDataSecond = { /* ... SAME AS BEFORE ... */ };
-
-    function getActiveCourseData() {
-        return document.getElementById('courseSemFirst').classList.contains('active') ? coursesDataFirst : coursesDataSecond;
-    }
-
-    // ============ BOOKING FORM ============
-    function updateBookingCourses() {
-        const level = document.getElementById('level').value;
-        const semester = document.getElementById('bookingSemester')?.value || 'first';
-        const courseData = semester === 'second' ? coursesDataSecond : coursesDataFirst;
-        document.querySelectorAll('select[name="course[]"]').forEach(select => {
-            select.innerHTML = '<option value="">Select Course</option>';
-            if (level && courseData[level]) {
-                courseData[level].forEach(course => {
-                    select.innerHTML += `<option value="${course.code}">${course.code} - ${course.name}</option>`;
+        // ============ LOG ACTIVITY TO FIREBASE ============
+        async function logActivity(action, name, email, details = '') {
+            try {
+                await addDoc(collection(db, "activities"), {
+                    action: action,
+                    userName: name,
+                    userEmail: email,
+                    details: details,
+                    timestamp: new Date().toISOString(),
+                    ipInfo: 'Visitor'
                 });
+            } catch (e) {
+                console.error("Error logging activity: ", e);
+            }
+        }
+
+        // ============ AUTH UI & TOASTS ============
+        function updateAuthUI() {
+            const loginPromptBtn = document.getElementById('loginPromptBtn');
+            const userMenuContainer = document.getElementById('userMenuContainer');
+            const userDisplayName = document.getElementById('userDisplayName');
+            const userAvatarInitial = document.getElementById('userAvatarInitial');
+            const dropdownName = document.getElementById('dropdownName');
+            const dropdownEmail = document.getElementById('dropdownEmail');
+            const dropdownAvatar = document.getElementById('dropdownAvatar');
+            
+            if (currentUser) {
+                loginPromptBtn.classList.add('hide');
+                userMenuContainer.classList.add('show');
+                
+                const initial = currentUser.fullName ? currentUser.fullName.charAt(0).toUpperCase() : 'G';
+                userDisplayName.textContent = currentUser.fullName || 'User';
+                userAvatarInitial.textContent = initial;
+                dropdownName.textContent = currentUser.fullName || 'User';
+                dropdownEmail.textContent = currentUser.email || '';
+                dropdownAvatar.textContent = initial;
+            } else {
+                loginPromptBtn.classList.remove('hide');
+                userMenuContainer.classList.remove('show');
+            }
+        }
+
+        function showWelcomeToast() {
+            if (!currentUser) return;
+            const toast = document.getElementById('welcomeToast');
+            if (!toast) {
+                const newToast = document.createElement('div');
+                newToast.className = 'welcome-toast show';
+                newToast.id = 'welcomeToast';
+                newToast.innerHTML = `
+                    <button class="toast-close" id="welcomeToastClose">&times;</button>
+                    <h4>👋 Welcome back, ${currentUser.fullName ? currentUser.fullName.split(' ')[0] : 'Student'}!</h4>
+                    <p>Ready to achieve your academic breakthrough today?</p>
+                `;
+                document.body.appendChild(newToast);
+                
+                document.getElementById('welcomeToastClose').addEventListener('click', function() {
+                    newToast.classList.remove('show');
+                    setTimeout(() => newToast.remove(), 300);
+                });
+                
+                setTimeout(() => {
+                    if (newToast.classList.contains('show')) {
+                        newToast.classList.remove('show');
+                        setTimeout(() => newToast.remove(), 300);
+                    }
+                }, 5000);
+            }
+        }
+
+        // ============ AUTH MODAL CONTROLS ============
+        const authOverlay = document.getElementById('authOverlay');
+        const loginPromptBtn = document.getElementById('loginPromptBtn');
+        const authClose = document.getElementById('authClose');
+        const authTabs = document.querySelectorAll('.auth-tab');
+        const authForms = document.querySelectorAll('.auth-form');
+        const loginForm = document.getElementById('loginForm');
+        const registerForm = document.getElementById('registerForm');
+        const authError = document.getElementById('authError');
+        const authSuccess = document.getElementById('authSuccess');
+
+        function showAuthModal(tab = 'login') {
+            authOverlay.classList.add('show');
+            document.body.style.overflow = 'hidden';
+            switchAuthTab(tab);
+            clearAuthMessages();
+        }
+
+        loginPromptBtn.addEventListener('click', () => showAuthModal('login'));
+        
+        authClose.addEventListener('click', () => {
+            authOverlay.classList.remove('show');
+            document.body.style.overflow = '';
+        });
+
+        authOverlay.addEventListener('click', function(e) {
+            if (e.target === authOverlay) {
+                authOverlay.classList.remove('show');
+                document.body.style.overflow = '';
             }
         });
-    }
 
-    document.getElementById('level').addEventListener('change', updateBookingCourses);
-    if (document.getElementById('bookingSemester')) {
+        authTabs.forEach(tab => {
+            tab.addEventListener('click', function() {
+                switchAuthTab(this.getAttribute('data-auth-tab'));
+            });
+        });
+
+        function switchAuthTab(tabName) {
+            authTabs.forEach(t => t.classList.remove('active'));
+            authForms.forEach(f => f.classList.remove('active'));
+            const targetTab = document.querySelector(`.auth-tab[data-auth-tab="${tabName}"]`);
+            const targetForm = document.getElementById(`${tabName}Form`);
+            if (targetTab) targetTab.classList.add('active');
+            if (targetForm) targetForm.classList.add('active');
+            clearAuthMessages();
+        }
+
+        function clearAuthMessages() {
+            authError.classList.remove('show');
+            authError.textContent = '';
+            authSuccess.classList.remove('show');
+            authSuccess.textContent = '';
+        }
+
+        function showAuthError(message) {
+            authError.textContent = message;
+            authError.classList.add('show');
+            authSuccess.classList.remove('show');
+        }
+
+        function showAuthSuccess(message) {
+            authSuccess.textContent = message;
+            authSuccess.classList.add('show');
+            authError.classList.remove('show');
+        }
+
+        // ============ FIREBASE LOGIN ============
+        loginForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            clearAuthMessages();
+            
+            const email = document.getElementById('loginEmail').value.trim();
+            const password = document.getElementById('loginPassword').value;
+            const btn = document.getElementById('loginBtn');
+            btn.innerHTML = '<span class="spinner"></span> Logging in...';
+            btn.disabled = true;
+            
+            try {
+                await signInWithEmailAndPassword(auth, email, password);
+                logActivity('login', email, email);
+                showAuthSuccess('Login successful! Welcome back.');
+                setTimeout(() => {
+                    authOverlay.classList.remove('show');
+                    document.body.style.overflow = '';
+                    clearAuthMessages();
+                    loginForm.reset();
+                }, 1000);
+            } catch (error) {
+                showAuthError("Login failed: " + error.message.replace('Firebase: ', ''));
+            } finally {
+                btn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Login';
+                btn.disabled = false;
+            }
+        });
+
+        // ============ FIREBASE REGISTER ============
+        registerForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            clearAuthMessages();
+            
+            const fullName = document.getElementById('regFullName').value.trim();
+            const email = document.getElementById('regEmail').value.trim();
+            const phone = document.getElementById('regPhone').value.trim();
+            const department = document.getElementById('regDepartment').value.trim();
+            const level = document.getElementById('regLevel').value;
+            const password = document.getElementById('regPassword').value;
+            const confirmPassword = document.getElementById('regConfirmPassword').value;
+            
+            if (password !== confirmPassword) {
+                showAuthError('Passwords do not match.');
+                return;
+            }
+            
+            const btn = document.getElementById('registerBtn');
+            btn.innerHTML = '<span class="spinner"></span> Creating Account...';
+            btn.disabled = true;
+
+            try {
+                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                const user = userCredential.user;
+
+                await setDoc(doc(db, "users", user.uid), {
+                    fullName: fullName,
+                    email: email,
+                    phone: phone,
+                    department: department,
+                    level: level,
+                    joinedDate: new Date().toISOString()
+                });
+
+                logActivity('register', fullName, email);
+                showAuthSuccess('Account created successfully!');
+                
+                setTimeout(() => {
+                    authOverlay.classList.remove('show');
+                    document.body.style.overflow = '';
+                    clearAuthMessages();
+                    registerForm.reset();
+                    document.getElementById('passwordStrengthBar').className = 'password-strength-bar';
+                }, 1000);
+
+            } catch (error) {
+                showAuthError("Registration failed: " + error.message.replace('Firebase: ', ''));
+            } finally {
+                btn.innerHTML = '<i class="fas fa-user-plus"></i> Create Account';
+                btn.disabled = false;
+            }
+        });
+
+        // Password strength indicator
+        document.getElementById('regPassword').addEventListener('input', function() {
+            const password = this.value;
+            const bar = document.getElementById('passwordStrengthBar');
+            if (password.length === 0) bar.className = 'password-strength-bar';
+            else if (password.length < 4) bar.className = 'password-strength-bar strength-weak';
+            else if (password.length < 8) bar.className = 'password-strength-bar strength-medium';
+            else bar.className = 'password-strength-bar strength-strong';
+        });
+
+        document.getElementById('forgotPasswordLink').addEventListener('click', function(e) {
+            e.preventDefault();
+            showAuthError('Please contact admin at academygeniuspoint@gmail.com to reset your password.');
+        });
+
+        // ============ USER MENU DROPDOWN ============
+        const userMenuTrigger = document.getElementById('userMenuTrigger');
+        const userDropdown = document.getElementById('userDropdown');
+
+        userMenuTrigger.addEventListener('click', function(e) {
+            e.stopPropagation();
+            userDropdown.classList.toggle('show');
+        });
+
+        document.addEventListener('click', function(e) {
+            if (!userMenuTrigger.contains(e.target) && !userDropdown.contains(e.target)) {
+                userDropdown.classList.remove('show');
+            }
+        });
+
+        document.getElementById('viewProfileBtn').addEventListener('click', function() {
+            userDropdown.classList.remove('show');
+            if (!currentUser) return showAuthModal('login');
+            showProfile();
+        });
+
+        document.getElementById('viewMessagesBtn').addEventListener('click', function() {
+            userDropdown.classList.remove('show');
+            openMessagePanel();
+        });
+
+        document.getElementById('myBookingsBtn').addEventListener('click', function() {
+            userDropdown.classList.remove('show');
+            if (!currentUser) return showAuthModal('login');
+            document.getElementById('booking').scrollIntoView({ behavior: 'smooth' });
+            alert('Your booking history will be displayed here. Currently under development.');
+        });
+
+        async function handleLogout() {
+            userDropdown.classList.remove('show');
+            try {
+                await signOut(auth);
+                document.getElementById('profileSection').style.display = 'none';
+                alert('You have been logged out successfully.');
+            } catch (error) {
+                console.error("Error logging out: ", error);
+            }
+        }
+
+        document.getElementById('logoutBtn').addEventListener('click', handleLogout);
+        document.getElementById('profileLogoutBtn').addEventListener('click', handleLogout);
+
+        // ============ PROFILE ============
+        function showProfile() {
+            if (!currentUser) return;
+            const profileSection = document.getElementById('profileSection');
+            document.getElementById('profileName').textContent = currentUser.fullName || 'N/A';
+            document.getElementById('profileEmail').textContent = currentUser.email || 'N/A';
+            document.getElementById('profilePhone').textContent = currentUser.phone || 'Not provided';
+            document.getElementById('profileDept').textContent = currentUser.department || 'Not provided';
+            document.getElementById('profileLevel').textContent = currentUser.level ? `${currentUser.level} Level` : 'Not provided';
+            document.getElementById('profileJoined').textContent = currentUser.joinedDate ? new Date(currentUser.joinedDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) : 'N/A';
+            document.getElementById('profileAvatarLarge').textContent = currentUser.fullName ? currentUser.fullName.charAt(0).toUpperCase() : 'G';
+            
+            profileSection.style.display = 'block';
+            profileSection.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // ============ MESSAGE SYSTEM ============
+        function updateUnreadCount() {
+            if (!currentUser) {
+                unreadCount = messages.length;
+            } else {
+                unreadCount = messages.filter(msg => !msg.readBy || !msg.readBy.includes(currentUser.email)).length;
+            }
+            updateUnreadBadges();
+        }
+
+        function updateUnreadBadges() {
+            const badge = document.getElementById('notificationBadge');
+            const bellLabel = document.getElementById('messageBellLabel');
+            const panelUnreadCount = document.getElementById('panelUnreadCount');
+            const dropdownBadge = document.getElementById('dropdownUnreadBadge');
+            const tabAllCount = document.getElementById('tabAllCount');
+            const tabUnreadCount = document.getElementById('tabUnreadCount');
+            
+            if (unreadCount > 0) {
+                badge.textContent = unreadCount > 99 ? '99+' : unreadCount;
+                badge.classList.add('show', 'pulse-badge');
+                bellLabel.classList.add('show');
+                panelUnreadCount.textContent = unreadCount;
+                panelUnreadCount.style.display = 'inline';
+                dropdownBadge.textContent = unreadCount;
+                dropdownBadge.style.display = 'inline';
+            } else {
+                badge.classList.remove('show', 'pulse-badge');
+                bellLabel.classList.remove('show');
+                panelUnreadCount.style.display = 'none';
+                dropdownBadge.style.display = 'none';
+            }
+            tabAllCount.textContent = messages.length;
+            tabUnreadCount.textContent = unreadCount;
+        }
+
+        function checkUnreadMessages() {
+            updateUnreadCount();
+            if (unreadCount > 0 && currentUser) {
+                const unreadMessages = messages.filter(msg => !msg.readBy || !msg.readBy.includes(currentUser.email));
+                if (unreadMessages.length > 0) {
+                    showNewMessagePopup(unreadMessages[0]);
+                }
+            }
+        }
+
+        function showNewMessagePopup(message) {
+            const popup = document.getElementById('newMessagePopup');
+            document.getElementById('popupTitle').textContent = message.title;
+            document.getElementById('popupText').textContent = message.body.substring(0, 100) + '...';
+            
+            const popupIcon = popup.querySelector('.popup-icon i');
+            popupIcon.className = 'fas';
+            switch(message.type) {
+                case 'greeting': popupIcon.classList.add('fa-smile'); break;
+                case 'update': popupIcon.classList.add('fa-bell'); break;
+                case 'urgent': popupIcon.classList.add('fa-exclamation-triangle'); break;
+                default: popupIcon.classList.add('fa-info-circle');
+            }
+            
+            popup.classList.add('show');
+            setTimeout(() => { popup.classList.remove('show'); }, 8000);
+        }
+
+        document.getElementById('popupClose').addEventListener('click', function() {
+            document.getElementById('newMessagePopup').classList.remove('show');
+        });
+
+        document.getElementById('popupAction').addEventListener('click', function() {
+            document.getElementById('newMessagePopup').classList.remove('show');
+            openMessagePanel();
+        });
+
+        document.getElementById('messageBellBtn').addEventListener('click', openMessagePanel);
+
+        // ============ MESSAGE PANEL ============
+        const messagePanel = document.getElementById('messagePanel');
+        const messagePanelOverlay = document.getElementById('messagePanelOverlay');
+
+        function openMessagePanel() {
+            messagePanel.classList.add('open');
+            messagePanelOverlay.classList.add('show');
+            document.body.style.overflow = 'hidden';
+            showMessageListView();
+            renderMessageList();
+        }
+
+        function closeMessagePanel() {
+            messagePanel.classList.remove('open');
+            messagePanelOverlay.classList.remove('show');
+            document.body.style.overflow = '';
+        }
+
+        document.getElementById('messagePanelClose').addEventListener('click', closeMessagePanel);
+        messagePanelOverlay.addEventListener('click', closeMessagePanel);
+
+        document.querySelectorAll('.message-panel-tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                document.querySelectorAll('.message-panel-tab').forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+                messageTabFilter = this.getAttribute('data-tab');
+                renderMessageList();
+            });
+        });
+
+        function showMessageListView() {
+            currentMessageView = 'list';
+            document.getElementById('messageList').style.display = 'block';
+            document.getElementById('messageDetailView').style.display = 'none';
+        }
+
+        async function showMessageDetailView(message) {
+            currentMessageView = 'detail';
+            currentDetailMessage = message;
+            document.getElementById('messageList').style.display = 'none';
+            document.getElementById('messageDetailView').style.display = 'flex';
+            
+            document.getElementById('detailTitle').textContent = message.title;
+            document.getElementById('detailTime').textContent = formatMessageTime(message.timestamp);
+            document.getElementById('detailBody').textContent = message.body;
+            
+            const detailBadge = document.getElementById('detailBadge');
+            detailBadge.textContent = message.type;
+            detailBadge.className = 'message-type-badge ' + message.type;
+            
+            if (currentUser && (!message.readBy || !message.readBy.includes(currentUser.email))) {
+                try {
+                    const readByArray = message.readBy || [];
+                    readByArray.push(currentUser.email);
+                    await setDoc(doc(db, "messages", message.id), { readBy: readByArray }, { merge: true });
+                } catch (e) {
+                    console.error("Error updating read status:", e);
+                }
+            }
+        }
+
+        document.getElementById('messageDetailBack').addEventListener('click', function() {
+            showMessageListView();
+            renderMessageList();
+        });
+
+        function renderMessageList() {
+            const messageList = document.getElementById('messageList');
+            let filteredMessages = messages;
+            
+            if (messageTabFilter === 'unread') {
+                if (currentUser) {
+                    filteredMessages = messages.filter(msg => !msg.readBy || !msg.readBy.includes(currentUser.email));
+                } else {
+                    filteredMessages = messages.filter(msg => !msg.readBy || !msg.readBy.includes('guest'));
+                }
+            }
+            
+            if (filteredMessages.length === 0) {
+                messageList.innerHTML = `
+                    <div class="message-empty">
+                        <i class="fas fa-inbox"></i>
+                        <p>${messageTabFilter === 'unread' ? 'No unread messages' : 'No messages yet'}</p>
+                        <small>Updates from GPA will appear here</small>
+                    </div>
+                `;
+                return;
+            }
+            
+            messageList.innerHTML = filteredMessages.map(msg => {
+                const isUnread = currentUser ? (!msg.readBy || !msg.readBy.includes(currentUser.email)) : (!msg.readBy || !msg.readBy.includes('guest'));
+                return `
+                    <div class="message-item ${isUnread ? 'unread' : ''}" data-message-id="${msg.id}">
+                        <span class="message-type-badge ${msg.type}">${msg.type}</span>
+                        <div class="message-title">${msg.title}</div>
+                        <div class="message-preview">${msg.body.substring(0, 120)}...</div>
+                        <div class="message-time">${formatMessageTime(msg.timestamp)}</div>
+                    </div>
+                `;
+            }).join('');
+            
+            messageList.querySelectorAll('.message-item').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    const messageId = this.getAttribute('data-message-id');
+                    const message = messages.find(m => m.id === messageId);
+                    if (message) showMessageDetailView(message);
+                });
+            });
+        }
+
+        function formatMessageTime(timestamp) {
+            const date = new Date(timestamp);
+            const now = new Date();
+            const diffMs = now - date;
+            const diffMins = Math.floor(diffMs / 60000);
+            const diffHours = Math.floor(diffMs / 3600000);
+            const diffDays = Math.floor(diffMs / 86400000);
+            
+            if (diffMins < 1) return 'Just now';
+            if (diffMins < 60) return `${diffMins} min ago`;
+            if (diffHours < 24) return `${diffHours} hour${diffHours > 1 ? 's' : ''} ago`;
+            if (diffDays < 7) return `${diffDays} day${diffDays > 1 ? 's' : ''} ago`;
+            
+            return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+        }
+
+        // ============ ANNOUNCEMENT BAR ============
+        function showAnnouncementBar(announcement) {
+            const bar = document.getElementById('announcementBar');
+            const text = document.getElementById('announcementText');
+            bar.className = 'announcement-bar';
+            if (announcement.type === 'urgent') bar.classList.add('urgent');
+            else if (announcement.type === 'info') bar.classList.add('info-bar');
+            else if (announcement.type === 'greeting') bar.classList.add('greeting-bar');
+            
+            text.textContent = announcement.text;
+            bar.classList.add('show');
+            document.body.classList.add('has-announcement');
+        }
+
+        function hideAnnouncementBar() {
+            const bar = document.getElementById('announcementBar');
+            bar.classList.remove('show');
+            document.body.classList.remove('has-announcement');
+        }
+
+        document.getElementById('announcementClose').addEventListener('click', hideAnnouncementBar);
+
+        // ============ SEMESTER TOGGLES (TUTORS) ============
+        const tutorSemFirstBtn = document.getElementById('tutorSemFirstBtn');
+        const tutorSemSecondBtn = document.getElementById('tutorSemSecondBtn');
+        const tutorSemFirst = document.getElementById('tutorSemFirst');
+        const tutorSemSecond = document.getElementById('tutorSemSecond');
+
+        function switchTutorSemester(semester) {
+            tutorSemFirstBtn.classList.remove('active');
+            tutorSemSecondBtn.classList.remove('active');
+            tutorSemFirst.classList.remove('active');
+            tutorSemSecond.classList.remove('active');
+            
+            if (semester === 'first') {
+                tutorSemFirstBtn.classList.add('active');
+                tutorSemFirst.classList.add('active');
+            } else {
+                tutorSemSecondBtn.classList.add('active');
+                tutorSemSecond.classList.add('active');
+            }
+        }
+
+        tutorSemFirstBtn.addEventListener('click', () => switchTutorSemester('first'));
+        tutorSemSecondBtn.addEventListener('click', () => switchTutorSemester('second'));
+
+        // ============ SEMESTER TOGGLES (COURSES) ============
+        const courseSemFirstBtn = document.getElementById('courseSemFirstBtn');
+        const courseSemSecondBtn = document.getElementById('courseSemSecondBtn');
+        const courseSemFirst = document.getElementById('courseSemFirst');
+        const courseSemSecond = document.getElementById('courseSemSecond');
+
+        function switchCourseSemester(semester) {
+            courseSemFirstBtn.classList.remove('active');
+            courseSemSecondBtn.classList.remove('active');
+            courseSemFirst.classList.remove('active');
+            courseSemSecond.classList.remove('active');
+            
+            if (semester === 'first') {
+                courseSemFirstBtn.classList.add('active');
+                courseSemFirst.classList.add('active');
+                resetLevelTabs('first');
+            } else {
+                courseSemSecondBtn.classList.add('active');
+                courseSemSecond.classList.add('active');
+                resetLevelTabs('second');
+            }
+        }
+
+        courseSemFirstBtn.addEventListener('click', () => switchCourseSemester('first'));
+        courseSemSecondBtn.addEventListener('click', () => switchCourseSemester('second'));
+
+        function resetLevelTabs(semester) {
+            const levelTabs = document.querySelectorAll('#courses .level-tab');
+            const activeSemester = semester === 'first' ? courseSemFirst : courseSemSecond;
+            const allContents = activeSemester.querySelectorAll('.courses-content');
+            
+            levelTabs.forEach(t => t.classList.remove('active'));
+            const firstTab = levelTabs[0];
+            if (firstTab) firstTab.classList.add('active');
+            
+            allContents.forEach(c => c.classList.remove('active'));
+            const firstContent = activeSemester.querySelector('.courses-content.active') || allContents[0];
+            if (firstContent) firstContent.classList.add('active');
+        }
+
+        // ============ LEVEL TABS FOR COURSES ============
+        document.querySelectorAll('#courses .level-tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                const level = this.getAttribute('data-level');
+                const activeSemester = courseSemFirst.classList.contains('active') ? 'first' : 'second';
+                const activeContainer = activeSemester === 'first' ? courseSemFirst : courseSemSecond;
+                
+                document.querySelectorAll('#courses .level-tab').forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+                
+                activeContainer.querySelectorAll('.courses-content').forEach(c => c.classList.remove('active'));
+                const targetContent = activeContainer.querySelector(`[id*="level-${level}"]`);
+                if (targetContent) {
+                    targetContent.classList.add('active');
+                }
+            });
+        });
+
+        // ============ FAQ ACCORDION ============
+        const faqItems = document.querySelectorAll('.faq-item');
+        faqItems.forEach(item => {
+            const question = item.querySelector('.faq-question');
+            question.addEventListener('click', () => {
+                faqItems.forEach(otherItem => {
+                    if (otherItem !== item) {
+                        otherItem.classList.remove('active');
+                    }
+                });
+                item.classList.toggle('active');
+            });
+        });
+
+        // ============ BOOKING FORM LOGIC ============
+        function updateBookingCourses() {
+            const level = document.getElementById('level').value;
+            const semester = document.getElementById('bookingSemester').value;
+            const courseData = semester === 'second' ? coursesDataSecond : coursesDataFirst;
+            const courseSelects = document.querySelectorAll('select[name="course[]"]');
+            
+            courseSelects.forEach(select => {
+                const currentValue = select.value;
+                select.innerHTML = '<option value="">Select Course</option>';
+                
+                if (level && courseData[level]) {
+                    courseData[level].forEach(course => {
+                        const option = document.createElement('option');
+                        option.value = course.code;
+                        option.textContent = `${course.code} - ${course.name}`;
+                        select.appendChild(option);
+                    });
+                }
+                
+                if (currentValue) {
+                    const exists = Array.from(select.options).some(opt => opt.value === currentValue);
+                    if (exists) select.value = currentValue;
+                }
+            });
+        }
+
+        document.getElementById('level').addEventListener('change', updateBookingCourses);
         document.getElementById('bookingSemester').addEventListener('change', updateBookingCourses);
-    }
 
-   // ============ BOOKING FORM SUBMISSION ============
-        document.getElementById('bookingForm').addEventListener('submit', function(e) {
+        document.addEventListener('change', function(e) {
+            if (e.target.name === 'course[]') {
+                const level = document.getElementById('level').value;
+                const semester = document.getElementById('bookingSemester').value;
+                const courseCode = e.target.value;
+                const tutorSelectId = e.target.id.replace('course', 'tutor');
+                const tutorSelect = document.getElementById(tutorSelectId);
+                const courseData = semester === 'second' ? coursesDataSecond : coursesDataFirst;
+                
+                if (tutorSelect) {
+                    const currentValue = tutorSelect.value;
+                    tutorSelect.innerHTML = '<option value="">Any Available Tutor</option>';
+                    
+                    if (level && courseCode && courseData[level]) {
+                        const selectedCourse = courseData[level].find(course => course.code === courseCode);
+                        
+                        if (selectedCourse && selectedCourse.tutors.length > 0) {
+                            selectedCourse.tutors.forEach(tutor => {
+                                const option = document.createElement('option');
+                                option.value = tutor.split(' (')[0];
+                                option.textContent = tutor;
+                                tutorSelect.appendChild(option);
+                            });
+                        }
+                    }
+                    
+                    if (currentValue && Array.from(tutorSelect.options).some(opt => opt.value === currentValue)) {
+                        tutorSelect.value = currentValue;
+                    }
+                }
+            }
+        });
+
+        document.querySelectorAll('input[name="booking_type"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                const studentCountGroup = document.getElementById('studentCountGroup');
+                const courseCountGroup = document.getElementById('courseCountGroup');
+                const tutorCountGroup = document.getElementById('tutorCountGroup');
+                const studentCountInput = document.getElementById('studentCount');
+                const studentCountHelp = document.getElementById('studentCountHelp');
+                
+                if (this.value === 'personal') {
+                    studentCountGroup.style.display = 'none';
+                    courseCountGroup.style.display = 'none';
+                    tutorCountGroup.style.display = 'none';
+                    studentCountInput.value = '1';
+                    studentCountInput.required = false;
+                    resetToSingleSelection();
+                } else if (this.value === 'group' || this.value === 'mass') {
+                    studentCountGroup.style.display = 'block';
+                    courseCountGroup.style.display = 'block';
+                    tutorCountGroup.style.display = 'block';
+                    
+                    if (this.value === 'group') {
+                        studentCountInput.min = 5;
+                        studentCountInput.max = 20;
+                        studentCountHelp.textContent = 'Group tutorials: ₦1,000/student (5-10) | ₦500/student (10+)';
+                    } else {
+                        studentCountInput.min = 21;
+                        studentCountInput.max = 100;
+                        studentCountHelp.textContent = 'Mass tutorials: ₦5,000 per 2 hours (21+ students)';
+                    }
+                    
+                    studentCountInput.value = '';
+                    studentCountInput.required = true;
+                }
+            });
+        });
+
+        function resetToSingleSelection() {
+            const courseContainer = document.getElementById('courseSelectionContainer');
+            const tutorContainer = document.getElementById('tutorSelectionContainer');
+            
+            courseContainer.innerHTML = `
+                <div class="form-group course-selection">
+                    <label for="course1">Course</label>
+                    <select id="course1" name="course[]" required>
+                        <option value="">Select Course</option>
+                    </select>
+                </div>
+            `;
+            
+            tutorContainer.innerHTML = `
+                <div class="form-group tutor-selection">
+                    <label for="tutor1">Preferred Tutor</label>
+                    <select id="tutor1" name="preferred_tutor[]">
+                        <option value="">Any Available Tutor</option>
+                    </select>
+                </div>
+            `;
+            
+            const level = document.getElementById('level').value;
+            if (level) {
+                populateCourseOptions('course1', level);
+            }
+        }
+
+        document.getElementById('courseCount').addEventListener('change', function() {
+            const courseCount = parseInt(this.value);
+            const container = document.getElementById('courseSelectionContainer');
+            if (!courseCount) return;
+            
+            container.innerHTML = '';
+            for (let i = 1; i <= courseCount; i++) {
+                const courseGroup = document.createElement('div');
+                courseGroup.className = 'form-group course-selection';
+                courseGroup.innerHTML = `
+                    <label for="course${i}">Course ${i}</label>
+                    <select id="course${i}" name="course[]" required>
+                        <option value="">Select Course</option>
+                    </select>
+                `;
+                container.appendChild(courseGroup);
+                
+                const level = document.getElementById('level').value;
+                if (level) {
+                    populateCourseOptions(`course${i}`, level);
+                }
+            }
+        });
+
+        document.getElementById('tutorCount').addEventListener('change', function() {
+            const tutorCount = parseInt(this.value);
+            const container = document.getElementById('tutorSelectionContainer');
+            if (!tutorCount) return;
+            
+            container.innerHTML = '';
+            for (let i = 1; i <= tutorCount; i++) {
+                const tutorGroup = document.createElement('div');
+                tutorGroup.className = 'form-group tutor-selection';
+                tutorGroup.innerHTML = `
+                    <label for="tutor${i}">Preferred Tutor ${i}</label>
+                    <select id="tutor${i}" name="preferred_tutor[]">
+                        <option value="">Any Available Tutor</option>
+                    </select>
+                `;
+                container.appendChild(tutorGroup);
+            }
+        });
+
+        function populateCourseOptions(selectId, level) {
+            const courseSelect = document.getElementById(selectId);
+            const semester = document.getElementById('bookingSemester') ? document.getElementById('bookingSemester').value : 'first';
+            const courseData = semester === 'second' ? coursesDataSecond : coursesDataFirst;
+            
+            if (courseSelect && courseData[level]) {
+                courseSelect.innerHTML = '<option value="">Select Course</option>';
+                courseData[level].forEach(course => {
+                    const option = document.createElement('option');
+                    option.value = course.code;
+                    option.textContent = `${course.code} - ${course.name}`;
+                    courseSelect.appendChild(option);
+                });
+            }
+        }
+
+        document.querySelectorAll('.contact-option').forEach(option => {
+            option.addEventListener('click', function() {
+                const checkbox = this.querySelector('input');
+                checkbox.checked = !checkbox.checked;
+                this.classList.toggle('selected', checkbox.checked);
+            });
+        });
+
+        // ============ FIREBASE BOOKING FORM SUBMISSION ============
+        document.getElementById('bookingForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
             const bookingType = document.querySelector('input[name="booking_type"]:checked');
@@ -5247,78 +5295,96 @@
                 }
             }
             
-            const form = this;
-            const formData = new FormData(form);
-            
-            // Add user info if logged in
-            if (currentUser) {
-                formData.append('user_id', currentUser.id);
-                formData.append('user_email', currentUser.email);
-            }
-            
             const submitBtn = document.getElementById('submitBtn');
             const originalText = submitBtn.innerHTML;
             submitBtn.innerHTML = '<span class="spinner"></span> Submitting...';
             submitBtn.disabled = true;
-            
-            fetch('https://formsubmit.co/academygeniuspoint@gmail.com', {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => {
-                if (response.ok) {
-                    const userEmail = document.getElementById('email').value;
-                    document.getElementById('userEmail').textContent = userEmail;
-                    document.getElementById('confirmationMessage').classList.add('show');
-                    document.getElementById('confirmationMessage').scrollIntoView({ behavior: 'smooth' });
-                    
-                    // Log booking
-                    if (currentUser) {
-                        logActivity('booking', currentUser.fullName, currentUser.email, `Booked ${bookingType ? bookingType.value : 'unknown'} tutorial`);
-                    } else {
-                        logActivity('booking', formData.get('name') || 'Guest', formData.get('email') || 'unknown');
-                    }
-                    
-                    form.reset();
-                    document.getElementById('studentCountGroup').style.display = 'none';
-                    document.getElementById('courseCountGroup').style.display = 'none';
-                    document.getElementById('tutorCountGroup').style.display = 'none';
-                    
-                    document.querySelectorAll('.contact-option').forEach(option => {
-                        option.classList.remove('selected');
-                        option.querySelector('input').checked = false;
-                    });
-                    
-                    resetToSingleSelection();
-                    
-                    setTimeout(() => {
-                        document.getElementById('successModal').style.display = 'flex';
-                    }, 500);
-                } else {
-                    throw new Error('Network response was not ok');
+
+            try {
+                // Get all selected courses and tutors
+                const selectedCourses = Array.from(document.querySelectorAll('select[name="course[]"]')).map(el => el.value).filter(val => val);
+                const selectedTutors = Array.from(document.querySelectorAll('select[name="preferred_tutor[]"]')).map(el => el.value).filter(val => val);
+
+                // Save Booking to Firebase
+                await addDoc(collection(db, "bookings"), {
+                    name: document.getElementById('fullName').value,
+                    email: document.getElementById('email').value,
+                    phone: document.getElementById('phone').value,
+                    department: document.getElementById('department').value,
+                    level: document.getElementById('level').value,
+                    semester: document.getElementById('bookingSemester').value,
+                    booking_type: bookingType ? bookingType.value : 'personal',
+                    student_count: studentCount || 1,
+                    courses: selectedCourses,
+                    preferred_tutors: selectedTutors,
+                    message: document.getElementById('message').value,
+                    timestamp: new Date().toISOString(),
+                    status: 'Pending',
+                    userId: currentUser ? currentUser.id : 'guest'
+                });
+
+                // Send email using FormSubmit
+                const formData = new FormData(this);
+                if (currentUser) {
+                    formData.append('user_id', currentUser.id);
+                    formData.append('user_email', currentUser.email);
                 }
-            })
-            .catch(error => {
+                
+                await fetch('https://formsubmit.co/academygeniuspoint@gmail.com', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                // Show Success
+                const userEmail = document.getElementById('email').value;
+                document.getElementById('userEmail').textContent = userEmail;
+                document.getElementById('confirmationMessage').classList.add('show');
+                document.getElementById('confirmationMessage').scrollIntoView({ behavior: 'smooth' });
+                
+                if (currentUser) {
+                    logActivity('booking', currentUser.fullName, currentUser.email, `Booked ${bookingType ? bookingType.value : 'unknown'} tutorial`);
+                } else {
+                    logActivity('booking', document.getElementById('fullName').value || 'Guest', document.getElementById('email').value || 'unknown');
+                }
+                
+                this.reset();
+                document.getElementById('studentCountGroup').style.display = 'none';
+                document.getElementById('courseCountGroup').style.display = 'none';
+                document.getElementById('tutorCountGroup').style.display = 'none';
+                
+                document.querySelectorAll('.contact-option').forEach(option => {
+                    option.classList.remove('selected');
+                    option.querySelector('input').checked = false;
+                });
+                
+                resetToSingleSelection();
+                
+                setTimeout(() => {
+                    document.getElementById('successModal').style.display = 'flex';
+                }, 500);
+
+            } catch (error) {
                 console.error('Error:', error);
-                alert('There was an error submitting your booking. Please try again or contact us via WhatsApp at +2347038248528.');
-            })
-            .finally(() => {
+                alert('There was an error submitting your booking. Please try again or contact us via WhatsApp.');
+            } finally {
                 submitBtn.innerHTML = originalText;
                 submitBtn.disabled = false;
-            });
+            }
         });
 
         // ============ WHATSAPP ============
-        function sendWhatsAppMessage() {
+        window.sendWhatsAppMessage = function() {
             const phone = '+2347038248528';
-            const course = document.getElementById('course1').value || 'a course';
-            const level = document.getElementById('level').value || 'your level';
+            const courseEl = document.getElementById('course1');
+            const course = courseEl ? courseEl.value : 'a course';
+            const levelEl = document.getElementById('level');
+            const level = levelEl ? levelEl.value : 'your level';
             const message = `Hello GPA! I'm interested in booking a tutor for ${course} (${level} Level). Can you provide pricing details?`;
             const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
             window.open(url, '_blank');
         }
 
-        // ============ MODAL ============
+        // ============ MODALS AND SCROLLING ============
         document.querySelector('#successModal .close-modal').addEventListener('click', function() {
             document.getElementById('successModal').style.display = 'none';
         });
@@ -5334,7 +5400,6 @@
             }
         });
 
-        // ============ SMOOTH SCROLLING ============
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function(e) {
                 e.preventDefault();
@@ -5352,12 +5417,10 @@
             });
         });
 
-        // ============ MOBILE MENU ============
         document.querySelector('.mobile-menu').addEventListener('click', function() {
             document.querySelector('.nav-menu').classList.toggle('active');
         });
 
-        // ============ HEADER SCROLL EFFECT ============
         window.addEventListener('scroll', function() {
             const header = document.getElementById('header');
             if (window.scrollY > 50) {
@@ -5367,7 +5430,6 @@
             }
         });
 
-        // ============ ANIMATION ON SCROLL ============
         function animateOnScroll() {
             const elements = document.querySelectorAll('.tutor-card, .course-card, .learning-option, .mission, .vision, .pricing-card, .faq-item');
             
@@ -5391,9 +5453,7 @@
         window.addEventListener('scroll', animateOnScroll);
         window.addEventListener('load', animateOnScroll);
 
-        // ============ KEYBOARD SHORTCUTS ============
         document.addEventListener('keydown', function(e) {
-            // ESC to close panels/modals
             if (e.key === 'Escape') {
                 if (messagePanel.classList.contains('open')) {
                     closeMessagePanel();
@@ -5406,22 +5466,8 @@
             }
         });
 
-        // ============ INITIAL SETUP LOG ============
-        console.log('🚀 Genius Point Academy - Initialized Successfully');
-        console.log('📧 Message System: Active');
-        console.log('👤 Auth System: Ready');
-        console.log('📚 Courses: First & Second Semester Loaded');
-        console.log('👨‍🏫 Tutors: 8 Tutors Available');
-        console.log('💡 Tip: Admin can send messages via admin.html');
-        console.log('📊 Current User:', currentUser ? currentUser.fullName : 'Not logged in');
-        console.log('📬 Unread Messages:', unreadCount);
+        console.log('🚀 Genius Point Academy - Firebase Initialized Successfully');
 
-// ============ EXPORT FUNCTIONS FOR ADMIN ============
-window.exportUserData = function() {
-    return { users: cachedUsers, activities: cachedActivities, messages };
-};
-    console.log('🔥 Genius Point Academy - Firebase Connected!');
-    console.log('☁️ All data syncing to Firebase Cloud');
-</script>
+    </script>
 </body>
 </html>
